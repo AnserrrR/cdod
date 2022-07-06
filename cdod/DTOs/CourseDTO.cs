@@ -15,11 +15,11 @@ namespace cdodDTOs.DTOs
 
         public decimal EquipmentPrice { get; set; }
 
-        public IEnumerable<StudentDTO> Students { get; set; }
-        public IEnumerable<StudentToCourseDTO> StudentToCourses { get; set; }
+        public IEnumerable<StudentDTO?> Students { get; set; } = new List<StudentDTO?>();
+        public IEnumerable<StudentToCourseDTO?> StudentToCourses { get; set; } = new List<StudentToCourseDTO?>();
 
-        public IEnumerable<AnnouncementDTO> Announcements { get; set; }
-        public IEnumerable<TeacherDTO> Teachers { get; set; }
-        public IEnumerable<GroupDTO> Groups { get; set; }
+        public IEnumerable<AnnouncementDTO?> Announcements { get; set; } = new List<AnnouncementDTO?>();
+        public IEnumerable<TeacherDTO?> Teachers { get; set; } = new List<TeacherDTO?>();
+        public IEnumerable<GroupDTO?> Groups { get; set; } = new List<GroupDTO?>();
     }
 }

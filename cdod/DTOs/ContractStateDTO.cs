@@ -9,6 +9,6 @@ namespace cdodDTOs.DTOs
 
         public string Name { get; set; }
 
-        public IEnumerable<StudentToCourseDTO> StudentsToCourses { get; set; }
+        public IEnumerable<StudentToCourseDTO?> StudentsToCourses { get; set; } = new List<StudentToCourseDTO?>();
     }
 }

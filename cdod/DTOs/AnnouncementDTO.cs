@@ -29,7 +29,7 @@ namespace cdodDTOs.DTOs
 
         public UserDTO User { get; set; }
 
-        public IEnumerable<CourseDTO> Courses { get; set; }
-        public IEnumerable<GroupDTO> Groups { get; set; }
+        public IEnumerable<CourseDTO?> Courses { get; set; } = new List<CourseDTO?>();
+        public IEnumerable<GroupDTO?> Groups { get; set; } = new List<GroupDTO?>();
     }
 }

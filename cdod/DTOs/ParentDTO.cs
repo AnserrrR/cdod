@@ -13,7 +13,7 @@ namespace cdodDTOs.DTOs
         public string? SecondEmail { get; set; }
         public DateOnly SignDate { get; set; }
 
-        public IEnumerable<StudentDTO> Students { get; set; }
+        public IEnumerable<StudentDTO?> Students { get; set; } = new List<StudentDTO?>();
 
     }
 }

@@ -1,3 +1,4 @@
+using cdod.Schema;
 using cdod.Schema.Queries;
 using cdod.Services;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddGraphQLServer()
     .AddQueryType<Query>()
+    .AddMutationType<MutationUser>()
     .AddFiltering()
     .AddSorting()
     .AddProjections();

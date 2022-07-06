@@ -19,8 +19,8 @@ namespace cdodDTOs.DTOs
 
         public CourseDTO Course { get; set; }
 
-        public IEnumerable<LessonDTO> Lessons { get; set; }
-        public IEnumerable<AnnouncementDTO> Announcements { get; set; }
-        public IEnumerable<StudentDTO> Students { get; set; }
+        public IEnumerable<LessonDTO?> Lessons { get; set; } = new List<LessonDTO?>();
+        public IEnumerable<AnnouncementDTO?> Announcements { get; set; } = new List<AnnouncementDTO?>();
+        public IEnumerable<StudentDTO?> Students { get; set; } = new List<StudentDTO?>();
     }
 }

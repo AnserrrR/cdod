@@ -16,6 +16,6 @@ namespace cdodDTOs.DTOs
         public string Name { get; set; }
         public District District { get; set; }
 
-        public IEnumerable<StudentDTO> Students { get; set; }
+        public IEnumerable<StudentDTO?> Students { get; set; } = new List<StudentDTO?>();
     }
 }

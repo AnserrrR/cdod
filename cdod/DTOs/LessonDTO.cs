@@ -22,13 +22,12 @@ namespace cdodDTOs.DTOs
 
         public GroupDTO Group { get; set; }
 
+        public IEnumerable<TeacherDTO?> Teachers { get; set; } = new List<TeacherDTO?>();
 
-        public IEnumerable<TeacherDTO> Teachers { get; set; }
+        public IEnumerable<StudentDTO?> Students { get; set; } = new List<StudentDTO?>();
 
-        public IEnumerable<StudentDTO> Students { get; set; }
+        public IEnumerable<TeacherToLessonDTO?> TeacherToLessons { get; set; } = new List<TeacherToLessonDTO?>();
 
-        public IEnumerable<TeacherToLessonDTO> TeacherToLessons { get; set; }
-
-        public IEnumerable<StudentToLessonDTO> StudentsToLessons { get; set; }
+        public IEnumerable<StudentToLessonDTO?> StudentsToLessons { get; set; } = new List<StudentToLessonDTO?>();
     }
 }

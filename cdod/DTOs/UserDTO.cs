@@ -26,8 +26,8 @@ namespace cdodDTOs.DTOs
         public string passportCode { get; set; }
         public bool IsAdmin { get; set; }
 
-        public IEnumerable<PayNoteDTO> PayNotes { get; set; }
-        public IEnumerable<AnnouncementDTO> Announcements { get; set; }
+        public IEnumerable<PayNoteDTO?> PayNotes { get; set; } = new List<PayNoteDTO?>();
+        public IEnumerable<AnnouncementDTO?> Announcements { get; set; } = new List<AnnouncementDTO?>();
 
 
     }

@@ -18,12 +18,12 @@ namespace cdodDTOs.DTOs
         public int ParentId { get; set; }
         public ParentDTO Parent { get; set; }
 
-        public IEnumerable<StudentToCourseDTO> StudentToCourses { get; set; }
-        public IEnumerable<StudentToLessonDTO> StudentToLessons { get; set; }
+        public IEnumerable<StudentToCourseDTO?> StudentToCourses { get; set; } = new List<StudentToCourseDTO?>();
+        public IEnumerable<StudentToLessonDTO?> StudentToLessons { get; set; } = new List<StudentToLessonDTO?>();
 
-        public IEnumerable<CourseDTO> Courses { get; set; }
-        public IEnumerable<LessonDTO> Lessons { get; set; }
-        public IEnumerable<GroupDTO> Groups { get; set; }
-        public IEnumerable<PayNoteDTO> PayNotes { get; set; }
+        public IEnumerable<CourseDTO?> Courses { get; set; } = new List<CourseDTO?>();
+        public IEnumerable<LessonDTO?> Lessons { get; set; } = new List<LessonDTO?>();
+        public IEnumerable<GroupDTO?> Groups { get; set; } = new List<GroupDTO?>();
+        public IEnumerable<PayNoteDTO?> PayNotes { get; set; } = new List<PayNoteDTO?>();
     }
 }
