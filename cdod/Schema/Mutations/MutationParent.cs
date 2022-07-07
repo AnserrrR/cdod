@@ -1,6 +1,6 @@
 ﻿using cdod.Schema.InputTypes;
 using cdod.Services;
-using cdodDTOs.DTOs;
+using cdods.s;
 
 namespace cdod.Schema.Mutations
 {
@@ -8,9 +8,9 @@ namespace cdod.Schema.Mutations
     public class MutationParent
     {
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<ParentDTO> UpdateParent(int id, ParentInput parentForm, [ScopedService] CdodDbContext dBContext)
+        public async Task<Parent> UpdateParent(int id, ParentInput parentForm, [ScopedService] CdodDbContext dBContext)
         { 
-                ParentDTO parent = new ParentDTO()
+                Parent parent = new Parent()
                 {
                     UserId = id,
                     SecondEmail = parentForm.SecondEmail,

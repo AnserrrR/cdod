@@ -1,6 +1,6 @@
 ﻿using cdod.Schema.InputTypes;
 using cdod.Services;
-using cdodDTOs.DTOs;
+using cdods.s;
 
 namespace cdod.Schema.Mutations
 {
@@ -8,9 +8,9 @@ namespace cdod.Schema.Mutations
     public class MutationStudent
     {
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<StudentDTO> CreateStudent(StudentInput studentForm, [ScopedService] CdodDbContext dbContext)
+        public async Task<Student> CreateStudent(StudentInput studentForm, [ScopedService] CdodDbContext dbContext)
         {
-            StudentDTO student = new StudentDTO()
+            Student student = new Student()
             {
                 FirstName = studentForm.FirstName,
                 LastName = studentForm.LastName,
@@ -26,9 +26,9 @@ namespace cdod.Schema.Mutations
         }
 
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<StudentDTO> UpdateStudent(int studentId, StudentInput studentForm, [ScopedService] CdodDbContext dbContext)
+        public async Task<Student> UpdateStudent(int studentId, StudentInput studentForm, [ScopedService] CdodDbContext dbContext)
         {
-            StudentDTO student = new StudentDTO()
+            Student student = new Student()
             {
                 Id = studentId,
                 FirstName = studentForm.FirstName,
@@ -47,7 +47,7 @@ namespace cdod.Schema.Mutations
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<bool> DeleteStudent(int studentId, [ScopedService] CdodDbContext dbContext)
         {
-            StudentDTO student = new StudentDTO()
+            Student student = new Student()
             {
                 Id = studentId
             };
@@ -58,9 +58,9 @@ namespace cdod.Schema.Mutations
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<bool> DeleteManyStudents(List<int> studentIds, [ScopedService] CdodDbContext dbContext)
         {
-            List<StudentDTO> students=new List<StudentDTO>();
-            foreach (int studentId in studentIds) students.Add(new StudentDTO() { Id = studentId });
-            //dbContext.Students.RemoveRange(studentIds.Select(s => new StudentDTO() { Id = s }));
+            List<Student> students=new List<Student>();
+            foreach (int studentId in studentIds) students.Add(new Student() { Id = studentId });
+            //dbContext.Students.RemoveRange(studentIds.Select(s => new Student() { Id = s }));
             return await dbContext.SaveChangesAsync() > 0;
         }
     }

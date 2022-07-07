@@ -2,10 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace cdodDTOs.DTOs
+namespace cdods.s
 {
     [Index("PhoneNumber")]
-    public class UserDTO
+    public class User
     {
         [Key]
         public int Id { get; set; }
@@ -26,8 +26,8 @@ namespace cdodDTOs.DTOs
         public string passportCode { get; set; }
         public bool IsAdmin { get; set; }
 
-        public IEnumerable<PayNoteDTO?> PayNotes { get; set; } = new List<PayNoteDTO?>();
-        public IEnumerable<AnnouncementDTO?> Announcements { get; set; } = new List<AnnouncementDTO?>();
+        public IEnumerable<PayNote?> PayNotes { get; set; } = new List<PayNote?>();
+        public IEnumerable<Announcement?> Announcements { get; set; } = new List<Announcement?>();
 
 
     }

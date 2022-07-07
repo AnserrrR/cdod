@@ -1,6 +1,6 @@
 ﻿using cdod.Schema.InputTypes;
 using cdod.Services;
-using cdodDTOs.DTOs;
+using cdods.s;
 
 namespace cdod.Schema.Mutations
 {
@@ -8,9 +8,9 @@ namespace cdod.Schema.Mutations
     public class MutationSchool
     {
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<SchoolDTO> CreateSchool(SchoolInput schoolForm, [ScopedService] CdodDbContext dbContext)
+        public async Task<School> CreateSchool(SchoolInput schoolForm, [ScopedService] CdodDbContext dbContext)
         {
-            SchoolDTO school = new SchoolDTO()
+            School school = new School()
             {
                 Name = schoolForm.Name,
                 District = schoolForm.District,
@@ -21,9 +21,9 @@ namespace cdod.Schema.Mutations
         }
 
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<SchoolDTO> UpdateSchool(int id, SchoolInput schoolForm, [ScopedService] CdodDbContext dbContext)
+        public async Task<School> UpdateSchool(int id, SchoolInput schoolForm, [ScopedService] CdodDbContext dbContext)
         {
-            SchoolDTO school = new SchoolDTO()
+            School school = new School()
             {
                 Id = id,
                 Name = schoolForm.Name,
@@ -37,7 +37,7 @@ namespace cdod.Schema.Mutations
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<bool> DeleteSchool(int schoolId, [ScopedService] CdodDbContext dbContext)
         {
-            SchoolDTO school = new SchoolDTO() { Id = schoolId };
+            School school = new School() { Id = schoolId };
             dbContext.Schools.Remove(school);
             return await dbContext.SaveChangesAsync() > 0;
         }

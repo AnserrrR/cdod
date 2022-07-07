@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace cdodDTOs.DTOs
+namespace cdods.s
 {
-    public class PostDTO
+    public class Post
     {
         [Key]
         public int Id { get; set; }

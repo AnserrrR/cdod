@@ -1,7 +1,7 @@
 ﻿using cdod.Schema.InputTypes;
 using cdod.Schema.Mutations;
 using cdod.Services;
-using cdodDTOs.DTOs;
+using cdods.s;
 
 namespace cdod.Schema
 {
@@ -9,9 +9,9 @@ namespace cdod.Schema
     public class MutationUser
     {
        [UseDbContext(typeof(CdodDbContext))]
-       public async Task<UserDTO> CreateUser(UserInput userForm, [ScopedService] CdodDbContext dbContext)
+       public async Task<User> CreateUser(UserInput userForm, [ScopedService] CdodDbContext dbContext)
        {
-                    UserDTO user = new UserDTO()
+                    User user = new User()
                     {
                         Firstname = userForm.Firstname,
                         Lastname = userForm.Lastname,
@@ -31,16 +31,16 @@ namespace cdod.Schema
                     };
                     dbContext.Users.Add(user);
                     await dbContext.SaveChangesAsync();
-                    ParentDTO parent = new ParentDTO() { UserId = user.Id };
+                    Parent parent = new Parent() { UserId = user.Id };
                     dbContext.Parents.Add(parent);
                     await dbContext.SaveChangesAsync();
                     return user;
         }
 
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<UserDTO> UpdateUser(int id, UserInput userForm, [ScopedService] CdodDbContext dbContext)
+        public async Task<User> UpdateUser(int id, UserInput userForm, [ScopedService] CdodDbContext dbContext)
         {
-            UserDTO user = new UserDTO()
+            User user = new User()
             {
                 Id = id,
                 Firstname = userForm.Firstname,
@@ -67,7 +67,7 @@ namespace cdod.Schema
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<bool> DeleteUser(int userId, [ScopedService] CdodDbContext dbContext)
         {
-            UserDTO user = new UserDTO() { Id = userId };
+            User user = new User() { Id = userId };
             dbContext.Users.Remove(user);
             return await dbContext.SaveChangesAsync() > 0;
         }

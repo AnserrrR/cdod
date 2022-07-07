@@ -1,4 +1,4 @@
-﻿using cdodDTOs.DTOs;
+﻿using cdods.s;
 using Microsoft.EntityFrameworkCore;
 
 namespace cdod.Services.Repositories
@@ -12,7 +12,7 @@ namespace cdod.Services.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<PayNoteDTO>> GetAllUsers()
+        public async Task<IEnumerable<PayNote>> GetAllUsers()
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
@@ -20,7 +20,7 @@ namespace cdod.Services.Repositories
             }
         }
 
-        public async Task<IEnumerable<PayNoteDTO>> GetManyPayNotesById(IReadOnlyList<int> payNoteIds)
+        public async Task<IEnumerable<PayNote>> GetManyPayNotesById(IReadOnlyList<int> payNoteIds)
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
@@ -28,7 +28,7 @@ namespace cdod.Services.Repositories
             }
         }
 
-        public async Task<PayNoteDTO> GetPayNoteById(int id)
+        public async Task<PayNote> GetPayNoteById(int id)
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
@@ -36,7 +36,7 @@ namespace cdod.Services.Repositories
             }
         }
 
-        public async Task<PayNoteDTO> CreatePayNote(PayNoteDTO payNote)
+        public async Task<PayNote> CreatePayNote(PayNote payNote)
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
@@ -46,7 +46,7 @@ namespace cdod.Services.Repositories
             }
         }
 
-        public async Task<PayNoteDTO> PayNote(PayNoteDTO payNote)
+        public async Task<PayNote> PayNote(PayNote payNote)
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
@@ -60,7 +60,7 @@ namespace cdod.Services.Repositories
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
-                PayNoteDTO payNote = new PayNoteDTO() { Id = id};
+                PayNote payNote = new PayNote() { Id = id};
                 context.PayNotes.Remove(payNote);
                 return await context.SaveChangesAsync() > 0;
                  

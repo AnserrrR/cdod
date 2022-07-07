@@ -1,43 +1,93 @@
 ﻿
 using cdod.Services;
-using cdodDTOs.DTOs;
+using cdods.s;
 using Microsoft.EntityFrameworkCore;
 
 namespace cdod.Schema.Queries
 {
     public class Query
     {
-        //StudentsQueries
+        /* Main queries */
+
+        //Students queries
         [UseDbContext(typeof(CdodDbContext))]
         [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
         [UseProjection]
         [UseFiltering]
         [UseSorting]
-        public IQueryable<StudentDTO> GetStudents([ScopedService] CdodDbContext cdodContext) => cdodContext.Students;
+        public IQueryable<Student> GetStudents([ScopedService] CdodDbContext cdodContext) => cdodContext.Students;
 
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<StudentDTO> GetStudentByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Students.FirstOrDefaultAsync(s => s.Id == id);
+        public async Task<Student> GetStudentByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Students.FirstOrDefaultAsync(e => e.Id == id);
 
-        //CourseQueries
-        [UseDbContext(typeof(CdodDbContext))]
-        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
-        [UseProjection]
-        [UseFiltering]
-        [UseSorting]
-        public IQueryable<CourseDTO> GetCourses([ScopedService] CdodDbContext cdodContext) => cdodContext.Courses;
-
-        [UseDbContext(typeof(CdodDbContext))]
-        public async Task<CourseDTO> GetCourseByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Courses.FirstOrDefaultAsync(s => s.Id == id);
-
-        //GroupQueries
+        //Course queries
         [UseDbContext(typeof(CdodDbContext))]
         [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
         [UseProjection]
         [UseFiltering]
         [UseSorting]
-        public IQueryable<GroupDTO> GetGroups([ScopedService] CdodDbContext cdodContext) => cdodContext.Groups;
+        public IQueryable<Course> GetCourses([ScopedService] CdodDbContext cdodContext) => cdodContext.Courses;
 
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<GroupDTO> GetGroupByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Groups.FirstOrDefaultAsync(s => s.Id == id);
+        public async Task<Course> GetCourseByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Courses.FirstOrDefaultAsync(e => e.Id == id);
+
+        //Group queries
+        [UseDbContext(typeof(CdodDbContext))]
+        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
+        [UseProjection]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<Group> GetGroups([ScopedService] CdodDbContext cdodContext) => cdodContext.Groups;
+
+        [UseDbContext(typeof(CdodDbContext))]
+        public async Task<Group> GetGroupByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Groups.FirstOrDefaultAsync(e => e.Id == id);
+
+
+        /* Other queries */
+
+        //Announcement queries
+        [UseDbContext(typeof(CdodDbContext))]
+        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
+        [UseProjection]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<Announcement> GetAnnouncements([ScopedService] CdodDbContext cdodContext) => cdodContext.Announcements;
+
+        [UseDbContext(typeof(CdodDbContext))]
+        public async Task<Announcement> GetAnnouncementByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Announcements.FirstOrDefaultAsync(e => e.Id == id);
+
+        //ContractState queries
+        [UseDbContext(typeof(CdodDbContext))]
+        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
+        [UseProjection]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<ContractState> GetContactStates([ScopedService] CdodDbContext cdodContext) => cdodContext.ContractStates;
+
+        [UseDbContext(typeof(CdodDbContext))]
+        public async Task<ContractState> GetContactStateByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.ContractStates.FirstOrDefaultAsync(e => e.Id == id);
+        
+        //Lesson queries
+        [UseDbContext(typeof(CdodDbContext))]
+        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
+        [UseProjection]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<Lesson> GetLessons([ScopedService] CdodDbContext cdodContext) => cdodContext.Lessons;
+
+        [UseDbContext(typeof(CdodDbContext))]
+        public async Task<Lesson> GetLessonByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Lessons.FirstOrDefaultAsync(e => e.Id == id);
+
+        //Parent queries
+        [UseDbContext(typeof(CdodDbContext))]
+        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
+        [UseProjection]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<Parent> GetParents([ScopedService] CdodDbContext cdodContext) => cdodContext.Parents;
+
+        [UseDbContext(typeof(CdodDbContext))]
+        public async Task<Parent> GetParentByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Parents.FirstOrDefaultAsync(e => e.UserId == id);
+
     }
 }

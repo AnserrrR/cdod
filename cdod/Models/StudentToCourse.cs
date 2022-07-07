@@ -2,22 +2,22 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.SqlTypes;
 
-namespace cdodDTOs.DTOs
+namespace cdods.s
 {
-    public class StudentToCourseDTO
+    public class StudentToCourse
     {
         public int StudentId { get; set; }
-        public StudentDTO Student { get; set; }
+        public Student Student { get; set; }
 
         public int CourseId { get; set; }
 
-        public CourseDTO Course { get; set; }
+        public Course Course { get; set; }
 
         public int SignYear { get; set; }
 
         public int ContractStateId { get; set; }
 
-        public ContractStateDTO ContractState { get; set; }
+        public ContractState ContractState { get; set; }
 
         public bool IsCoursePaid()
         {

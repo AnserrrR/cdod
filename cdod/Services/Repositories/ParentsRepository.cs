@@ -1,4 +1,4 @@
-﻿using cdodDTOs.DTOs;
+﻿using cdods.s;
 using Microsoft.EntityFrameworkCore;
 
 namespace cdod.Services.Repositories
@@ -12,7 +12,7 @@ namespace cdod.Services.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<ParentDTO>> GetAllParents()
+        public async Task<IEnumerable<Parent>> GetAllParents()
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
@@ -20,7 +20,7 @@ namespace cdod.Services.Repositories
             }
         }
 
-        public async Task<ParentDTO> GetParentById(int parentId)
+        public async Task<Parent> GetParentById(int parentId)
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
@@ -28,13 +28,13 @@ namespace cdod.Services.Repositories
             }
         }
 
-        public async Task<ParentDTO> UpdateParent(ParentDTO parentDTO)
+        public async Task<Parent> UpdateParent(Parent parent)
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
-                context.Parents.Update(parentDTO);
+                context.Parents.Update(parent);
                 await context.SaveChangesAsync();
-                return parentDTO;
+                return parent;
             }
         }
     }
