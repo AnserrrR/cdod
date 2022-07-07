@@ -31,8 +31,8 @@ namespace cdod.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
                     ProgramFileUrl = table.Column<string>(type: "text", nullable: false),
-                    CoursePrice = table.Column<decimal>(type: "numeric", nullable: false),
-                    EquipmentPrice = table.Column<decimal>(type: "numeric", nullable: false)
+                    CoursePrice = table.Column<double>(type: "numeric", nullable: false),
+                    EquipmentPrice = table.Column<double>(type: "numeric", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -277,7 +277,7 @@ namespace cdod.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Sum = table.Column<decimal>(type: "numeric", nullable: false),
+                    Sum = table.Column<double>(type: "numeric", nullable: false),
                     Date = table.Column<DateOnly>(type: "date", nullable: false),
                     Appointment = table.Column<int>(type: "integer", nullable: false),
                     CheckURL = table.Column<string>(type: "text", nullable: false),

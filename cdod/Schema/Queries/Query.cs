@@ -10,6 +10,7 @@ namespace cdod.Schema.Queries
         //StudentsQueries
         [UseDbContext(typeof(CdodDbContext))]
         [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
+        [UseProjection]
         [UseFiltering]
         [UseSorting]
         public IQueryable<StudentDTO> GetStudents([ScopedService] CdodDbContext cdodContext) => cdodContext.Students;
@@ -20,6 +21,7 @@ namespace cdod.Schema.Queries
         //CourseQueries
         [UseDbContext(typeof(CdodDbContext))]
         [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
+        [UseProjection]
         [UseFiltering]
         [UseSorting]
         public IQueryable<CourseDTO> GetCourses([ScopedService] CdodDbContext cdodContext) => cdodContext.Courses;
@@ -30,6 +32,7 @@ namespace cdod.Schema.Queries
         //GroupQueries
         [UseDbContext(typeof(CdodDbContext))]
         [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
+        [UseProjection]
         [UseFiltering]
         [UseSorting]
         public IQueryable<GroupDTO> GetGroups([ScopedService] CdodDbContext cdodContext) => cdodContext.Groups;

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using cdod.Services;
@@ -11,9 +12,10 @@ using cdod.Services;
 namespace cdod.Migrations
 {
     [DbContext(typeof(CdodDbContext))]
-    partial class CdodDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220706115626_Update")]
+    partial class Update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -312,6 +314,9 @@ namespace cdod.Migrations
                     b.Property<DateOnly>("BirthDate")
                         .HasColumnType("date");
 
+                    b.Property<int?>("CourseDTOId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Descriotion")
                         .HasColumnType("text");
 
@@ -333,6 +338,8 @@ namespace cdod.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CourseDTOId");
 
                     b.HasIndex("ParentId");
 
@@ -644,6 +651,10 @@ namespace cdod.Migrations
 
             modelBuilder.Entity("cdodDTOs.DTOs.StudentDTO", b =>
                 {
+                    b.HasOne("cdodDTOs.DTOs.CourseDTO", null)
+                        .WithMany("Students")
+                        .HasForeignKey("CourseDTOId");
+
                     b.HasOne("cdodDTOs.DTOs.ParentDTO", "Parent")
                         .WithMany("Students")
                         .HasForeignKey("ParentId")
@@ -670,7 +681,7 @@ namespace cdod.Migrations
                         .IsRequired();
 
                     b.HasOne("cdodDTOs.DTOs.CourseDTO", "Course")
-                        .WithMany("StudentToCourses")
+                        .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -786,7 +797,7 @@ namespace cdod.Migrations
 
                     b.Navigation("PayNotes");
 
-                    b.Navigation("StudentToCourses");
+                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("cdodDTOs.DTOs.GroupDTO", b =>

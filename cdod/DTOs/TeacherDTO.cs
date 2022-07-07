@@ -17,7 +17,7 @@ namespace cdodDTOs.DTOs
 
         public PostDTO Post { get; set; }
 
-        public IEnumerable<LessonDTO?> Lessons { get; set; } = new List<LessonDTO?>();
+        //public IEnumerable<LessonDTO?> Lessons { get; set; } = new List<LessonDTO?>();
         public IEnumerable<TeacherToLessonDTO?> TeacherToLessons { get; set; } = new List<TeacherToLessonDTO?>();
 
         public IEnumerable<CourseDTO?> Courses { get; set; } = new List<CourseDTO?>();

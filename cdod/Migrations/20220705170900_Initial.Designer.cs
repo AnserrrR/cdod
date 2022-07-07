@@ -118,10 +118,10 @@ namespace cdod.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("CoursePrice")
+                    b.Property<double>("CoursePrice")
                         .HasColumnType("numeric");
 
-                    b.Property<decimal>("EquipmentPrice")
+                    b.Property<double>("EquipmentPrice")
                         .HasColumnType("numeric");
 
                     b.Property<string>("Name")
@@ -243,7 +243,7 @@ namespace cdod.Migrations
                     b.Property<int>("StudentId")
                         .HasColumnType("integer");
 
-                    b.Property<decimal>("Sum")
+                    b.Property<double>("Sum")
                         .HasColumnType("numeric");
 
                     b.Property<int>("UserId")
