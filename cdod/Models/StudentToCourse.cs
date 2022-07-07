@@ -13,11 +13,18 @@ namespace cdods.s
 
         public Course Course { get; set; }
 
-        public int SignYear { get; set; }
+        public DateOnly SignDate { get; set; }
 
         public int ContractStateId { get; set; }
 
         public ContractState ContractState { get; set; }
+
+        public string ContractUrl { get; set; }
+
+        public bool? EquipmentPriceWithRobot { get; set; }
+
+        //Default value = 0
+        public double Debt { get; set; }
 
         public bool IsCoursePaid()
         {
@@ -27,20 +34,44 @@ namespace cdods.s
         public bool? IsEquipmentPaid()
         {
             if (Course.Name != "Робототехника") return null;
-            return IsPaid(Appointment.Material);
+
+            try
+            {
+                return IsPaid(Appointment.Material);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception(e.Message);
+            }
         }
 
         private bool IsPaid(Appointment appointment)
         {
             if (ContractState?.Name == "Зачислен")
             {
-                var MonthCost = appointment == Appointment.Course ? (Course.CoursePrice / Course.DurationInMonths) : Course.EquipmentPrice;
-                var MonthPayment = Course.PayNotes.FirstOrDefault(pn =>
-                {
-                    return (pn.Course.Id == CourseId) && (pn.Date.Month == DateTime.Today.Month) && (pn.Appointment == appointment);
-                })?.Sum ?? 0;
+                var totalPrice = Course.CoursePrice;
 
-                return MonthCost <= MonthPayment;
+                if (appointment == Appointment.Material)
+                {
+                    if (EquipmentPriceWithRobot == true)
+                        totalPrice = Course.EquipmentPriceWithRobot ?? 0;
+                    else if (EquipmentPriceWithRobot == false)
+                        totalPrice = Course.EquipmentPriceWithoutRobot ?? 0;
+                    else
+                        throw new Exception("not enough information: will the student pick up the robot");
+                }
+
+                var totalPayment = Course.PayNotes.Where(pn =>
+                {
+                    return (pn.CourseId == CourseId) && (pn.Appointment == appointment);
+                }).Sum(pn => pn.Sum);
+
+                var monthPassed = (DateTime.Today.Year - SignDate.Year) * 12 + DateTime.Today.Month - SignDate.Month;
+
+                if (monthPassed < Course.DurationInMonths / 2) totalPrice /= 2;
+
+                return totalPrice <= totalPayment;
             }
             return false;
         }

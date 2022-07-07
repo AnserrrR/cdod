@@ -14,7 +14,9 @@ namespace cdods.s
 
         public double CoursePrice { get; set; }
 
-        public double EquipmentPrice { get; set; }
+        public double? EquipmentPriceWithRobot { get; set; }
+
+        public double? EquipmentPriceWithoutRobot { get; set; }
 
         public int DurationInMonths { get; set; }
 
