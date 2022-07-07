@@ -1,4 +1,5 @@
 using cdod.Schema;
+using cdod.Schema.Mutations;
 using cdod.Schema.Queries;
 using cdod.Services;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddGraphQLServer()
     .AddQueryType<Query>()
-    .AddMutationType<MutationUser>()
+    .AddMutationType<Mutation>()
+    .AddTypeExtension<MutationUser>()
+    .AddTypeExtension<MutationParent>()
+    .AddTypeExtension<MutationSchool>()
+    .AddTypeExtension<MutationStudent>()
     .AddFiltering()
     .AddSorting()
     .AddProjections();
