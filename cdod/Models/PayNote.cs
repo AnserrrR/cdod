@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Data.SqlTypes;
 
-namespace cdodDTOs.DTOs
+namespace cdods.s
 {
     public enum Appointment
     {
         Course,
         Material
     }
-    public class PayNoteDTO
+    public class PayNote
     {
         [Key]
         public int Id { get; set; }
@@ -18,12 +18,12 @@ namespace cdodDTOs.DTOs
         public string CheckURL { get; set; }
 
         public int CourseId { get; set; }
-        public CourseDTO Course { get; set; }
+        public Course Course { get; set; }
 
         public int StudentId { get; set; }
-        public StudentDTO Student { get; set; }
+        public Student Student { get; set; }
 
         public int UserId { get; set; }
-        public UserDTO User { get; set; }
+        public User User { get; set; }
     }
 }

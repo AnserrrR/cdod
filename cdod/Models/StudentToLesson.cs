@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace cdodDTOs.DTOs
+namespace cdods.s
 {
-    public class StudentToLessonDTO
+    public class StudentToLesson
     {
         public int StudentId { get; set; }
-        public StudentDTO Student { get; set; }
+        public Student Student { get; set; }
 
         public int LessonId { get; set; }
-        public LessonDTO Lesson { get; set; }
+        public Lesson Lesson { get; set; }
 
         public int Mark { get; set; }
 

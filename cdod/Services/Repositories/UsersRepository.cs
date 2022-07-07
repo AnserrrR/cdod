@@ -1,4 +1,4 @@
-﻿using cdodDTOs.DTOs;
+﻿using cdods.s;
 using Microsoft.EntityFrameworkCore;
 
 namespace cdod.Services.Repositories
@@ -12,7 +12,7 @@ namespace cdod.Services.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<UserDTO>> GetAllUsers()
+        public async Task<IEnumerable<User>> GetAllUsers()
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
@@ -20,7 +20,7 @@ namespace cdod.Services.Repositories
             }
         }
 
-        public async Task<UserDTO> GetUserById(int userId)
+        public async Task<User> GetUserById(int userId)
         {
             // Возмодно сделать обработчик
             using (CdodDbContext context = _dbContext.CreateDbContext())
@@ -29,14 +29,14 @@ namespace cdod.Services.Repositories
             }
         }
 
-        public async Task<int> CreateUser(UserDTO user)
+        public async Task<int> CreateUser(User user)
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
                 try
                 {
                     context.Users.Add(user);
-                    ParentDTO parent = new ParentDTO() { UserId = user.Id};
+                    Parent parent = new Parent() { UserId = user.Id};
                     context.Parents.Add(parent);
                     await context.SaveChangesAsync();
                     return user.Id;
@@ -48,7 +48,7 @@ namespace cdod.Services.Repositories
             }
         }
 
-        public async Task<UserDTO> UpdateUser(UserDTO user)
+        public async Task<User> UpdateUser(User user)
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
@@ -62,7 +62,7 @@ namespace cdod.Services.Repositories
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
-                UserDTO user = new UserDTO() { Id = userId };
+                User user = new User() { Id = userId };
                 context.Users.Remove(user);
                 return await context.SaveChangesAsync() > 0;
             }

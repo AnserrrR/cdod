@@ -1,4 +1,4 @@
-﻿using cdodDTOs.DTOs;
+﻿using cdods.s;
 using Microsoft.EntityFrameworkCore;
 
 namespace cdod.Services.Repositories
@@ -11,7 +11,7 @@ namespace cdod.Services.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<SchoolDTO>> GetAllStudents()
+        public async Task<IEnumerable<School>> GetAllStudents()
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
@@ -19,7 +19,7 @@ namespace cdod.Services.Repositories
             }
         }
 
-        public async Task<SchoolDTO> GetStudentById(int studentId)
+        public async Task<School> GetStudentById(int studentId)
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
@@ -27,23 +27,23 @@ namespace cdod.Services.Repositories
             }
         }
 
-        public async Task<SchoolDTO> CreateStudent(SchoolDTO studentDTO)
+        public async Task<School> CreateStudent(School student)
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
-                context.Schools.Add(studentDTO);
+                context.Schools.Add(student);
                 await context.SaveChangesAsync();
-                return studentDTO;
+                return student;
             }
         }
 
-        public async Task<SchoolDTO> UpdateStudent(SchoolDTO studentDTO)
+        public async Task<School> UpdateStudent(School student)
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
-                context.Schools.Update(studentDTO);
+                context.Schools.Update(student);
                 await context.SaveChangesAsync();
-                return studentDTO;
+                return student;
             }
         }
 
@@ -51,7 +51,7 @@ namespace cdod.Services.Repositories
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
-                SchoolDTO school = new SchoolDTO() { Id = studentId };
+                School school = new School() { Id = studentId };
                 context.Schools.Remove(school);
                 return await context.SaveChangesAsync() > 0;
             }

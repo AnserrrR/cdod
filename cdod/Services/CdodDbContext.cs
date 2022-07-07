@@ -1,4 +1,4 @@
-﻿using cdodDTOs.DTOs;
+﻿using cdods.s;
 using Microsoft.EntityFrameworkCore;
 
 namespace cdod.Services
@@ -8,58 +8,58 @@ namespace cdod.Services
         public CdodDbContext(DbContextOptions<CdodDbContext> options)
            : base(options) { }
 
-        public DbSet<UserDTO> Users { get; set; }
-        public DbSet<ParentDTO> Parents { get; set; }
-        public DbSet<StudentDTO> Students { get; set; }
-        public DbSet<SchoolDTO> Schools { get; set; }
-        public DbSet<AnnouncementDTO> Announcements { get; set; }
-        public DbSet<ContractStateDTO> ContractStates { get; set; }
-        public DbSet<CourseDTO> Courses { get; set; }
-        public DbSet<GroupDTO> Groups { get; set; }
-        public DbSet<LessonDTO> Lessons { get; set; }
-        public DbSet<PayNoteDTO> PayNotes { get; set; }
-        public DbSet<PostDTO> Posts { get; set; }
-        public DbSet<TeacherDTO> Teachers { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Parent> Parents { get; set; }
+        public DbSet<Student> Students { get; set; }
+        public DbSet<School> Schools { get; set; }
+        public DbSet<Announcement> Announcements { get; set; }
+        public DbSet<ContractState> ContractStates { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<Lesson> Lessons { get; set; }
+        public DbSet<PayNote> PayNotes { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
 
-        public DbSet<StudentToCourseDTO> StudentToCourses { get; set; }
-        public DbSet<StudentToLessonDTO> StudentToLessons { get; set; }
-        public DbSet<TeacherToLessonDTO> TeacherToLessons { get; set; }
+        public DbSet<StudentToCourse> StudentToCourses { get; set; }
+        public DbSet<StudentToLesson> StudentToLessons { get; set; }
+        public DbSet<TeacherToLesson> TeacherToLessons { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // USER TABLE BEGIN
-            modelBuilder.Entity<UserDTO>().Property(u => u.IsAdmin).HasDefaultValue(0);
+            modelBuilder.Entity<User>().Property(u => u.IsAdmin).HasDefaultValue(0);
             // USER TABLE END
 
             //PARENT TABLE BEGIN
-            //modelBuilder.Entity<ParentDTO>().Property(u => u.SignDate).HasDefaultValue("GETDATE()");
+            //modelBuilder.Entity<Parent>().Property(u => u.SignDate).HasDefaultValue("GETDATE()");
             //PARENT TABLE END
 
-            modelBuilder.Entity<StudentDTO>()
+            modelBuilder.Entity<Student>()
                 .HasMany(s => s.Groups)
                 .WithMany(g => g.Students)
                 .UsingEntity(j => j.ToTable("StudentsToGroups"));
 
-            modelBuilder.Entity<TeacherDTO>()
+            modelBuilder.Entity<Teacher>()
                 .HasMany(t => t.Courses)
                 .WithMany(c => c.Teachers)
                 .UsingEntity(j => j.ToTable("TeachersToCourses"));
 
-            modelBuilder.Entity<AnnouncementDTO>()
+            modelBuilder.Entity<Announcement>()
                 .HasMany(a => a.Groups)
                 .WithMany(g => g.Announcements)
                 .UsingEntity(j => j.ToTable("AnnouncementsToGroups"));
 
-            modelBuilder.Entity<AnnouncementDTO>()
+            modelBuilder.Entity<Announcement>()
                 .HasMany(a => a.Courses)
                 .WithMany(c => c.Announcements)
                 .UsingEntity(j => j.ToTable("AnnouncementsToCourses"));
 
-           modelBuilder.Entity<StudentToCourseDTO>().HasKey(e => new {e.CourseId, e.StudentId});
+           modelBuilder.Entity<StudentToCourse>().HasKey(e => new {e.CourseId, e.StudentId});
 
-           modelBuilder.Entity<TeacherToLessonDTO>().HasKey(e => new {e.TeacherId, e.LessonId});
+           modelBuilder.Entity<TeacherToLesson>().HasKey(e => new {e.TeacherId, e.LessonId});
 
-           modelBuilder.Entity<StudentToLessonDTO>().HasKey(e => new {e.LessonId, e.StudentId});
+           modelBuilder.Entity<StudentToLesson>().HasKey(e => new {e.LessonId, e.StudentId});
         }
     }
 }

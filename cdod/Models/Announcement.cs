@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace cdodDTOs.DTOs
+namespace cdods.s
 {
     public enum AnnouncementTypeEnum
     {
@@ -8,7 +8,7 @@ namespace cdodDTOs.DTOs
         unimportant
     }
 
-    public class AnnouncementDTO
+    public class Announcement
     {
         [Key]
         public int Id { get; set; } 
@@ -27,9 +27,9 @@ namespace cdodDTOs.DTOs
 
         public int UserId { get; set; }
 
-        public UserDTO User { get; set; }
+        public User User { get; set; }
 
-        public IEnumerable<CourseDTO?> Courses { get; set; } = new List<CourseDTO?>();
-        public IEnumerable<GroupDTO?> Groups { get; set; } = new List<GroupDTO?>();
+        public IEnumerable<Course?> Courses { get; set; } = new List<Course?>();
+        public IEnumerable<Group?> Groups { get; set; } = new List<Group?>();
     }
 }

@@ -1,4 +1,4 @@
-﻿using cdodDTOs.DTOs;
+﻿using cdods.s;
 using Microsoft.EntityFrameworkCore;
 
 namespace cdod.Services.Repositories
@@ -11,7 +11,7 @@ namespace cdod.Services.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<StudentDTO>> GetAllStudents()
+        public async Task<IEnumerable<Student>> GetAllStudents()
         {
             using(CdodDbContext context = _dbContext.CreateDbContext())
             {
@@ -19,7 +19,7 @@ namespace cdod.Services.Repositories
             }
         }
 
-        public async Task<StudentDTO> GetStudentById(int studentId)
+        public async Task<Student> GetStudentById(int studentId)
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
@@ -27,7 +27,7 @@ namespace cdod.Services.Repositories
             }
         }
 
-        public async Task<IEnumerable<StudentDTO>> GetManyStudentsById(IReadOnlyList<int> studentIds)
+        public async Task<IEnumerable<Student>> GetManyStudentsById(IReadOnlyList<int> studentIds)
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
@@ -35,23 +35,23 @@ namespace cdod.Services.Repositories
             }
         }
 
-        public async Task<StudentDTO> CreateStudent(StudentDTO studentDTO)
+        public async Task<Student> CreateStudent(Student student)
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
-                context.Students.Add(studentDTO);
+                context.Students.Add(student);
                 await context.SaveChangesAsync();
-                return studentDTO;
+                return student;
             }
         }
 
-        public async Task<StudentDTO> UpdateStudent(StudentDTO studentDTO)
+        public async Task<Student> UpdateStudent(Student student)
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
-                context.Students.Update(studentDTO);
+                context.Students.Update(student);
                 await context.SaveChangesAsync();
-                return studentDTO;
+                return student;
             }
         }
 
@@ -59,7 +59,7 @@ namespace cdod.Services.Repositories
         {
             using (CdodDbContext context = _dbContext.CreateDbContext())
             {
-                StudentDTO student = new StudentDTO() { Id = studentId };
+                Student student = new Student() { Id = studentId };
                 context.Students.Remove(student);
                 return await context.SaveChangesAsync() > 0;
             }

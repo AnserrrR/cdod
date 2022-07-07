@@ -1,6 +1,6 @@
 ﻿
 using cdod.Services;
-using cdodDTOs.DTOs;
+using cdods.s;
 using Microsoft.EntityFrameworkCore;
 
 namespace cdod.Schema.Queries
@@ -13,10 +13,10 @@ namespace cdod.Schema.Queries
         [UseProjection]
         [UseFiltering]
         [UseSorting]
-        public IQueryable<StudentDTO> GetStudents([ScopedService] CdodDbContext cdodContext) => cdodContext.Students;
+        public IQueryable<Student> GetStudents([ScopedService] CdodDbContext cdodContext) => cdodContext.Students;
 
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<StudentDTO> GetStudentByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Students.FirstOrDefaultAsync(s => s.Id == id);
+        public async Task<Student> GetStudentByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Students.FirstOrDefaultAsync(s => s.Id == id);
 
         //CourseQueries
         [UseDbContext(typeof(CdodDbContext))]
@@ -24,10 +24,10 @@ namespace cdod.Schema.Queries
         [UseProjection]
         [UseFiltering]
         [UseSorting]
-        public IQueryable<CourseDTO> GetCourses([ScopedService] CdodDbContext cdodContext) => cdodContext.Courses;
+        public IQueryable<Course> GetCourses([ScopedService] CdodDbContext cdodContext) => cdodContext.Courses;
 
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<CourseDTO> GetCourseByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Courses.FirstOrDefaultAsync(s => s.Id == id);
+        public async Task<Course> GetCourseByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Courses.FirstOrDefaultAsync(s => s.Id == id);
 
         //GroupQueries
         [UseDbContext(typeof(CdodDbContext))]
@@ -35,9 +35,9 @@ namespace cdod.Schema.Queries
         [UseProjection]
         [UseFiltering]
         [UseSorting]
-        public IQueryable<GroupDTO> GetGroups([ScopedService] CdodDbContext cdodContext) => cdodContext.Groups;
+        public IQueryable<Group> GetGroups([ScopedService] CdodDbContext cdodContext) => cdodContext.Groups;
 
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<GroupDTO> GetGroupByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Groups.FirstOrDefaultAsync(s => s.Id == id);
+        public async Task<Group> GetGroupByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Groups.FirstOrDefaultAsync(s => s.Id == id);
     }
 }

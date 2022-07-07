@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace cdodDTOs.DTOs
+namespace cdods.s
 {
     public enum District
     {
@@ -8,7 +8,7 @@ namespace cdodDTOs.DTOs
         Tractor
     }
 
-    public class SchoolDTO
+    public class School
     {
 
         [Key]
@@ -16,6 +16,6 @@ namespace cdodDTOs.DTOs
         public string Name { get; set; }
         public District District { get; set; }
 
-        public IEnumerable<StudentDTO?> Students { get; set; } = new List<StudentDTO?>();
+        public IEnumerable<Student?> Students { get; set; } = new List<Student?>();
     }
 }
