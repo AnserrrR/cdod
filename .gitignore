@@ -363,4 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # EF core - migration files
-/cdod/MSigrations
+cdod/Migrations
