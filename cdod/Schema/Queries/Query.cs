@@ -89,5 +89,61 @@ namespace cdod.Schema.Queries
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<Parent> GetParentByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Parents.FirstOrDefaultAsync(e => e.UserId == id);
 
+        //PayNote queries
+        [UseDbContext(typeof(CdodDbContext))]
+        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
+        [UseProjection] 
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<PayNote> GetPayNotes([ScopedService] CdodDbContext cdodContext) => cdodContext.PayNotes;
+
+        [UseDbContext(typeof(CdodDbContext))]
+        public async Task<PayNote> GetPayNoteByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.PayNotes.FirstOrDefaultAsync(e => e.Id == id);
+
+        //Post queries
+        [UseDbContext(typeof(CdodDbContext))]
+        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
+        [UseProjection]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<Post> GetPosts([ScopedService] CdodDbContext cdodContext) => cdodContext.Posts;
+
+        [UseDbContext(typeof(CdodDbContext))]
+        public async Task<Post> GetPostByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Posts.FirstOrDefaultAsync(e => e.Id == id);
+
+        //School queries
+        [UseDbContext(typeof(CdodDbContext))]
+        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
+        [UseProjection]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<School> GetSchools([ScopedService] CdodDbContext cdodContext) => cdodContext.Schools;
+
+        [UseDbContext(typeof(CdodDbContext))]
+        public async Task<School> GetSchoolByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Schools.FirstOrDefaultAsync(e => e.Id == id);
+
+
+        //Teacher queries
+        [UseDbContext(typeof(CdodDbContext))]
+        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
+        [UseProjection]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<Teacher> GetTeachers([ScopedService] CdodDbContext cdodContext) => cdodContext.Teachers;
+
+        [UseDbContext(typeof(CdodDbContext))]
+        public async Task<Teacher> GetTeacherByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Teachers.FirstOrDefaultAsync(e => e.UserId == id);
+
+        //User queries
+        [UseDbContext(typeof(CdodDbContext))]
+        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
+        [UseProjection]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<User> GetUsers([ScopedService] CdodDbContext cdodContext) => cdodContext.Users;
+
+        [UseDbContext(typeof(CdodDbContext))]
+        public async Task<User> GetUserByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Users.FirstOrDefaultAsync(e => e.Id == id);
+
     }
 }
