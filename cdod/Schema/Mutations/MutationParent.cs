@@ -9,17 +9,16 @@ namespace cdod.Schema.Mutations
     {
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<Parent> UpdateParent(int id, ParentInput parentForm, [ScopedService] CdodDbContext dBContext)
-        { 
-                Parent parent = new Parent()
-                {
-                    UserId = id,
-                    SecondEmail = parentForm.SecondEmail,
-                    SecondPhoneNumber = parentForm.SecondPhoneNumber,
-                    SignDate = parentForm.SignDate
-                };
-                dBContext.Parents.Update(parent);
-                await dBContext.SaveChangesAsync();
-                return parent;
+        {
+            Parent? parent = dBContext.Parents.FirstOrDefault(p => p.UserId == id);
+            if (parent == null) throw new Exception("Указанного родителя не существует");
+
+            parent.SecondEmail = parentForm.SecondEmail ?? parent.SecondEmail;
+            parent.SecondPhoneNumber = parentForm.SecondPhoneNumber ?? parent.SecondPhoneNumber;
+            parent.SignDate = parentForm.SignDate ?? parent.SignDate;
+            dBContext.Parents.Update(parent);
+            await dBContext.SaveChangesAsync();
+            return parent;
         }
     }
 }

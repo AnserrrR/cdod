@@ -13,7 +13,7 @@ namespace cdod.Schema.Mutations
             School school = new School()
             {
                 Name = schoolForm.Name,
-                District = schoolForm.District,
+                District = (District)schoolForm.District,
             };
             dbContext.Schools.Add(school);
             await dbContext.SaveChangesAsync();
@@ -23,12 +23,12 @@ namespace cdod.Schema.Mutations
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<School> UpdateSchool(int id, SchoolInput schoolForm, [ScopedService] CdodDbContext dbContext)
         {
-            School school = new School()
-            {
-                Id = id,
-                Name = schoolForm.Name,
-                District = schoolForm.District,
-            };
+            School? school = dbContext.Schools.FirstOrDefault(s => s.Id == id);
+            if (school == null) throw new Exception("Уазанной школы не существует");
+
+            school.Name = schoolForm.Name ?? school.Name;
+            school.District = schoolForm.District ?? school.District;
+
             dbContext.Schools.Update(school);
             await dbContext.SaveChangesAsync();
             return school;
@@ -37,7 +37,9 @@ namespace cdod.Schema.Mutations
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<bool> DeleteSchool(int schoolId, [ScopedService] CdodDbContext dbContext)
         {
-            School school = new School() { Id = schoolId };
+            School? school = dbContext.Schools.FirstOrDefault(s => s.Id == schoolId);
+            if (school == null) throw new Exception("Уазанной школы не существует");
+
             dbContext.Schools.Remove(school);
             return await dbContext.SaveChangesAsync() > 0;
         }

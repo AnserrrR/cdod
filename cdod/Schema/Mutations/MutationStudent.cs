@@ -15,10 +15,10 @@ namespace cdod.Schema.Mutations
                 FirstName = studentForm.FirstName,
                 LastName = studentForm.LastName,
                 Patronymic = studentForm.Patronymic,
-                BirthDate = studentForm.BirthDate,
+                BirthDate = (DateOnly)studentForm.BirthDate,
                 Descriotion = studentForm.Descriotion,
-                SchoolId = studentForm.SchoolId,
-                ParentId = studentForm.ParentId
+                SchoolId = (int)studentForm.SchoolId,
+                ParentId = (int)studentForm.ParentId
             };
             dbContext.Students.Add(student);
             await dbContext.SaveChangesAsync();
@@ -28,17 +28,15 @@ namespace cdod.Schema.Mutations
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<Student> UpdateStudent(int studentId, StudentInput studentForm, [ScopedService] CdodDbContext dbContext)
         {
-            Student student = new Student()
-            {
-                Id = studentId,
-                FirstName = studentForm.FirstName,
-                LastName = studentForm.LastName,
-                Patronymic = studentForm.Patronymic,
-                BirthDate = studentForm.BirthDate,
-                Descriotion = studentForm.Descriotion,
-                SchoolId = studentForm.SchoolId,
-                ParentId = studentForm.ParentId
-            };
+            Student? student = dbContext.Students.FirstOrDefault(s => s.Id == studentId);
+            if (student == null) throw new Exception("Указанного студентва не существует");
+            student.FirstName = studentForm.FirstName ?? student.FirstName;
+            student.LastName = studentForm.LastName ?? student.LastName;
+            student.Patronymic = studentForm.Patronymic ?? student.Patronymic;
+            student.BirthDate = studentForm.BirthDate ?? student.BirthDate;
+            student.Descriotion = studentForm.Descriotion ?? student.Descriotion;
+            student.SchoolId = studentForm.SchoolId ?? student.SchoolId;
+
             dbContext.Students.Update(student);
             await dbContext.SaveChangesAsync();
             return student;
@@ -47,10 +45,8 @@ namespace cdod.Schema.Mutations
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<bool> DeleteStudent(int studentId, [ScopedService] CdodDbContext dbContext)
         {
-            Student student = new Student()
-            {
-                Id = studentId
-            };
+            Student? student = dbContext.Students.FirstOrDefault(s => s.Id == studentId);
+            if (student == null) throw new Exception("Указанного студентва не существует");
             dbContext.Students.Remove(student);   
             return await dbContext.SaveChangesAsync() > 0;
         }
@@ -58,9 +54,12 @@ namespace cdod.Schema.Mutations
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<bool> DeleteManyStudents(List<int> studentIds, [ScopedService] CdodDbContext dbContext)
         {
-            List<Student> students=new List<Student>();
-            foreach (int studentId in studentIds) students.Add(new Student() { Id = studentId });
-            //dbContext.Students.RemoveRange(studentIds.Select(s => new Student() { Id = s }));
+            dbContext.Students.RemoveRange(studentIds.Select(s =>
+            {
+                Student? bufStudent = dbContext.Students.FirstOrDefault(sid => sid.Id == s);
+                if (bufStudent == null) throw new Exception($"Вы указали для удаления несущесствующего ученика ID:{s}");
+                return bufStudent;
+            }));
             return await dbContext.SaveChangesAsync() > 0;
         }
     }
