@@ -1,0 +1,14 @@
+type Teacher implements Human{
+  id: ID!
+  lastName: String!
+  firstName: String!
+  patronymic: String!
+
+  phone: String!
+  email: String!
+
+  work_place: String! # TODO: Что такое work_place в БД ?
+  post: String!
+
+  user: User!
+}

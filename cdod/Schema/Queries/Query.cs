@@ -1,6 +1,7 @@
 ﻿
 using cdod.Services;
-using cdods.s;
+using cdod.Models;
+using cdod.Schema.OutputTypes;
 using Microsoft.EntityFrameworkCore;
 
 namespace cdod.Schema.Queries
@@ -10,6 +11,7 @@ namespace cdod.Schema.Queries
         /* Main queries */
 
         //Students queries
+        /*
         [UseDbContext(typeof(CdodDbContext))]
         [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
         [UseProjection]
@@ -19,7 +21,24 @@ namespace cdod.Schema.Queries
 
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<Student> GetStudentByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Students.FirstOrDefaultAsync(e => e.Id == id);
+        */
 
+        //[UseProjection]
+        [UseDbContext(typeof(CdodDbContext))]
+        public IQueryable<StudentType> GetStudents([ScopedService] CdodDbContext cdodContext)
+        {
+            return cdodContext.Students.Select(s => new StudentType()
+            {
+                Id = s.Id,
+                FirstName = s.FirstName,
+                LastName = s.LastName,
+                Patronymic = s.Patronymic,
+                BirthDate = s.BirthDate,
+                Descriotion = s.Descriotion,
+                ParentId = s.ParentId,
+                SchoolId = s.SchoolId
+            });
+        }
         //Course queries
         [UseDbContext(typeof(CdodDbContext))]
         [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]

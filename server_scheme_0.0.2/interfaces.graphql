@@ -1,0 +1,12 @@
+# Это просто проверка для этих схем
+interface Human {
+  id: ID!
+  lastName: String!
+  firstName: String!
+  patronymic: String!
+}
+
+# Для этих "кастомных" типов вероятно потребуется создание graphql-проверок
+scalar Date
+scalar Time
+scalar DateTime

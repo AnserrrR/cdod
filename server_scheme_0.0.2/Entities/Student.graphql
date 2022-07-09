@@ -1,0 +1,28 @@
+type Student implements Human {
+  id:          ID!
+  lastName:    String!
+  firstName:   String!
+  patronymic:  String!
+  birthDate:   Date!
+  studyInfo:   [StudyInfo]! # Т.е. массив групп... текущего студента, с информацией о курсе
+  description: String!
+  parent:      Parent!
+  school:      School!
+}
+
+type StudyInfo {
+  group:           Group!
+  course:          Course!
+  admissionDate:   Date!   # Дата зачисленяи на курс
+  contractState:   String! # Спросить у Соколова можно ли переделать в Enum ?
+  isPaid:          Boolean!
+  isEquipmentPaid: Boolean!
+}
+
+enum ContractState {
+  Consideration # Заявка на рассмотрении
+  Studying,     # Учится
+  Completed,    # Завершил
+  Left,         # Ушёл по собственному желанию
+  Excluded      # Исключен (плохой чел)
+}

@@ -1,0 +1,15 @@
+type Attendance {
+  id: ID! # в бд это составной ключ, здесь наверное нужен concat? Строка вида: `${id_student}_${id_lesson}`
+  student: Student!
+  lesson: Lesson!
+
+  note:   String
+  mark:   Int
+  status: AttendanceStatus
+}
+
+enum AttendanceStatus {
+  Attended,          # Присутствовал
+  Absent,            # Отсутсвовал
+  AbsentValidReason  # Отсутсвовал по уважительной причине
+}

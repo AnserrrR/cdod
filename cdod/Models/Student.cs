@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace cdods.s
+namespace cdod.Models
 {
     public class Student
     {

@@ -1,0 +1,15 @@
+type Lesson {
+  id:        ID!
+  homework:  String
+  dateTime:  DateTime!
+  duration:  Time!
+  classRoom: String!
+  topic:     String
+  group:     Group!
+  teachers:  [TeachersWithWorkTime]! # Массив преподов только !этого! занятия
+}
+
+type TeachersWithWorkTime {
+  teacher:  Teacher!
+  workTime: Time!
+}

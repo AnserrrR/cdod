@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace cdods.s
+namespace cdod.Models
 {
     [Index("PhoneNumber")]
     public class User

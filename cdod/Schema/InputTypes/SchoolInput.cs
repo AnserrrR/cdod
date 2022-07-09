@@ -1,4 +1,4 @@
-﻿using cdods.s;
+﻿using cdod.Models;
 namespace cdod.Schema.InputTypes
 {
     public class SchoolInput

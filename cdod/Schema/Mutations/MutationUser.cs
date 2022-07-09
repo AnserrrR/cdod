@@ -1,7 +1,7 @@
 ﻿using cdod.Schema.InputTypes;
 using cdod.Schema.Mutations;
 using cdod.Services;
-using cdods.s;
+using cdod.Models;
 
 namespace cdod.Schema
 {

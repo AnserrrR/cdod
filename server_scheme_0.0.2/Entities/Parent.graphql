@@ -1,0 +1,16 @@
+type Parent implements Human {
+  id:           ID!
+  lastName:     String!
+  firstName:    String!
+  patronymic:   String!
+
+  phone:        String!
+  secondPhone:  String
+
+  email:        String!
+  secondEmail:  String
+
+  applyingDate: Date! # Дата первого обращения в ЦДОД
+
+  user:         User!
+}

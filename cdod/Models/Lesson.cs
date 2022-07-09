@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
-namespace cdods.s
+namespace cdod.Models
 {
     public class Lesson
     {

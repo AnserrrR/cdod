@@ -1,0 +1,16 @@
+type School {
+  id: ID!
+  name: String!
+  district: District!
+}
+
+enum District {
+  Central,
+  Dzerzhinsky,
+  Kirovsky,
+  Krasnoarmeisky
+  KrasnooKtyabrsky,
+  Soviet,
+  Tractorozavodsky,
+  Voroshilovsky,
+}

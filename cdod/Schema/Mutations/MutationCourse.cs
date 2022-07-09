@@ -1,6 +1,6 @@
 ﻿using cdod.Schema.InputTypes;
 using cdod.Services;
-using cdods.s;
+using cdod.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace cdod.Schema.Mutations

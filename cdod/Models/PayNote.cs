@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Data.SqlTypes;
 
-namespace cdods.s
+namespace cdod.Models
 {
     public enum Appointment
     {

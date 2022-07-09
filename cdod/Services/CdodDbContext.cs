@@ -1,4 +1,4 @@
-﻿using cdods.s;
+﻿using cdod.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace cdod.Services
