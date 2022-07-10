@@ -24,7 +24,7 @@ namespace cdods.s
 
         public ContractState ContractState { get; set; }
 
-        public string ContractUrl { get; set; }
+        public string? ContractUrl { get; set; }
 
         public bool? EquipmentPriceWithRobot { get; set; }
 
@@ -57,7 +57,6 @@ namespace cdods.s
         {
             if (ContractState?.Name == "Зачислен")
             {
-                {
 
             }
             return false;
