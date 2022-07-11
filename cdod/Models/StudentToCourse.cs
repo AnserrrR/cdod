@@ -24,7 +24,7 @@ namespace cdod.Models
 
         public ContractState ContractState { get; set; }
 
-        public string ContractUrl { get; set; }
+        public string? ContractUrl { get; set; }
 
         public bool? EquipmentPriceWithRobot { get; set; }
 
