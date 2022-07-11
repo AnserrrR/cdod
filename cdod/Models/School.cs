@@ -12,6 +12,7 @@ namespace cdod.Models
     {
 
         [Key]
+        [IsProjected]
         public int Id { get; set; }
         public string Name { get; set; }
         public District District { get; set; }

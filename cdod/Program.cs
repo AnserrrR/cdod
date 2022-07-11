@@ -3,6 +3,7 @@ using cdod.Schema.Mutations;
 using cdod.Schema.Queries;
 using cdod.Services;
 using cdod.Models;
+using cdod.Schema.OutputTypes;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

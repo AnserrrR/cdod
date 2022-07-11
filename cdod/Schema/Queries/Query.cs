@@ -11,23 +11,57 @@ namespace cdod.Schema.Queries
         /* Main queries */
 
         //Students queries
-        /*
+
         [UseDbContext(typeof(CdodDbContext))]
-        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
         [UseProjection]
-        [UseFiltering]
-        [UseSorting]
-        public IQueryable<Student> GetStudents([ScopedService] CdodDbContext cdodContext) => cdodContext.Students;
-
-        [UseDbContext(typeof(CdodDbContext))]
-        public async Task<Student> GetStudentByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Students.FirstOrDefaultAsync(e => e.Id == id);
-        */
-
-        //[UseProjection]
-        [UseDbContext(typeof(CdodDbContext))]
-        public IQueryable<StudentType> GetStudents([ScopedService] CdodDbContext cdodContext)
+        public IQueryable<StudentType> GetStudents(int? courseId, int? groupId, int? parentId, 
+            [ScopedService] CdodDbContext ctx)
         {
-            return cdodContext.Students.Select(s => new StudentType()
+            if (courseId is not null)
+                return from s in ctx.Students
+                    join stc in ctx.StudentToCourses on s.Id equals stc.StudentId
+                    where stc.CourseId == courseId
+                    select new StudentType()
+                    {
+                        Id = s.Id,
+                        FirstName = s.FirstName,
+                        LastName = s.LastName,
+                        Patronymic = s.Patronymic,
+                        BirthDate = s.BirthDate,
+                        Descriotion = s.Descriotion,
+                        ParentId = s.ParentId,
+                        SchoolId = s.SchoolId
+                    };
+
+            if (groupId is not null)
+                return ctx.Students.Where(s => s.Groups.Any(g => g.Id == groupId))
+                    .Select(s => new StudentType()
+            {
+                Id = s.Id,
+                FirstName = s.FirstName,
+                LastName = s.LastName,
+                Patronymic = s.Patronymic,
+                BirthDate = s.BirthDate,
+                Descriotion = s.Descriotion,
+                ParentId = s.ParentId,
+                SchoolId = s.SchoolId
+            });
+
+            if (parentId is not null)
+                return ctx.Students.Where(s => s.ParentId == parentId)
+                    .Select(s => new StudentType()
+                    {
+                        Id = s.Id,
+                        FirstName = s.FirstName,
+                        LastName = s.LastName,
+                        Patronymic = s.Patronymic,
+                        BirthDate = s.BirthDate,
+                        Descriotion = s.Descriotion,
+                        ParentId = s.ParentId,
+                        SchoolId = s.SchoolId
+                    });
+
+            return ctx.Students.Select(s => new StudentType()
             {
                 Id = s.Id,
                 FirstName = s.FirstName,

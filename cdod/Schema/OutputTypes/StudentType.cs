@@ -20,25 +20,34 @@ namespace cdod.Schema.OutputTypes
 
         public DateOnly BirthDate { get; set; }
 
+        [IsProjected]
         public int SchoolId { get; set; }
 
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<School> School([ScopedService] CdodDbContext context)
         {
-            School school = await context.Schools.FindAsync(SchoolId);
-            return school;
+            return await context.Schools.FindAsync(SchoolId);  
         }
 
+        [IsProjected]
         public int ParentId { get; set; }
 
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<Parent> Parent([ScopedService] CdodDbContext context)
+        [UseProjection]
+        public async Task<ParentType> Parent([ScopedService] CdodDbContext context)
         {
             Parent parent = await context.Parents.FindAsync(ParentId);
-            return parent;
+            return new ParentType()
+            {
+                UserId = parent.UserId,
+                SecondPhoneNumber = parent.SecondPhoneNumber,
+                SecondEmail = parent.SecondEmail,
+                SignDate = parent.SignDate
+            };
         }
 
         [UseDbContext(typeof(CdodDbContext))]
+        [UseProjection]
         public IQueryable<InfoType> Info([ScopedService]CdodDbContext context)
         {
             return  context.StudentToCourses
@@ -46,7 +55,9 @@ namespace cdod.Schema.OutputTypes
                 .Select(stc => new InfoType()
                 {
                     CourseId = stc.CourseId,
-                    StudentId = Id
+                    StudentId = Id,
+                    AdmissionDate = stc.SignDate,
+                    ContractStateId = stc.ContractStateId
                 });
         }
     }

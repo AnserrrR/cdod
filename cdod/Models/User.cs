@@ -8,6 +8,7 @@ namespace cdod.Models
     public class User
     {
         [Key]
+        [IsProjected]
         public int Id { get; set; }
         public string? Firstname { get; set; }
         public string? Lastname { get; set; }

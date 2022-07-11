@@ -6,12 +6,24 @@ namespace cdod.Schema.OutputTypes
 {
     public class InfoType
     {
-
         [IsProjected]
         public int CourseId { get; set; }
 
         [IsProjected]
         public int StudentId { get; set; }
+
+        public DateOnly AdmissionDate { get; set; }
+
+        [IsProjected]
+        public int ContractStateId { get; set; }
+
+        [UseDbContext(typeof(CdodDbContext))]
+        public async Task<string> ContractState([ScopedService] CdodDbContext context)
+        {
+            ContractState contractState = await context.ContractStates.FindAsync(ContractStateId);
+            return contractState.Name;
+        }
+
 
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<Course> Course([ScopedService] CdodDbContext context)
@@ -21,6 +33,7 @@ namespace cdod.Schema.OutputTypes
         }
 
         [UseDbContext(typeof(CdodDbContext))]
+        [UseProjection]
         public async Task<Group> Group([ScopedService] CdodDbContext context)
         {
             var group = await context.Groups.FirstOrDefaultAsync(g => (g.CourseId == CourseId)
