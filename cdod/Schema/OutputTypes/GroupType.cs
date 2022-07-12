@@ -14,13 +14,14 @@ namespace cdod.Schema.OutputTypes
         [IsProjected]
         public int TeacherId { get; set; }
 
-        [UseProjection]
-        public async Task<TeacherType> Teacher([Service] TeacherDataLoader teacherDataLoader)
+        public async Task<TeacherType> Teacher([Service] TeacherDataLoader teacherDataLoader,
+            [Service]UserDataLoader userDataLoader)
         {
             var teacher = await teacherDataLoader.LoadAsync(TeacherId);
-            return new TeacherType()
+
+            return new TeacherType(await userDataLoader.LoadAsync(TeacherId))
             {
-                UserId = teacher.UserId,
+                Id = teacher.UserId,
                 PostId = teacher.PostId,
                 WorkPlace = teacher.WorkPlace
             };

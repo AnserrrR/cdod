@@ -6,16 +6,32 @@ namespace cdod.Schema.OutputTypes
 {
     public class ParentType
     {
-        [IsProjected]
-        public int UserId { get; set; }
+        private readonly User _user;
 
-        [UseDbContext(typeof(CdodDbContext))]
-        [UseProjection]
-        public async Task<User> User([Service] UserDataLoader userDataLoader)
+        public ParentType(User user)
         {
-            var user = await userDataLoader.LoadAsync(UserId);
-            return user;
+            _user = user;
         }
+
+        [IsProjected]
+        public int Id { get; set; }
+
+        public string FirstName => _user.Firstname;
+        public string LastName => _user.Lastname;
+        public string? Patronymic => _user.Patronymic;
+        public string? PhoneNumber => _user.PhoneNumber;
+        public string? Email => _user.Email;
+        public string Password => _user.Password;
+        public DateOnly? Birthday => _user.Birthday;
+        public string? Address => _user.Address;
+        public string? Education => _user.Education;
+        public string? Inn => _user.Inn;
+        public string? Snils => _user.Snils;
+        public string? passportNo => _user.passportNo;
+        public string? passportIssue => _user.passportIssue;
+        public DateOnly? passportDate => _user.passportDate;
+        public string? passportCode => _user.passportCode;
+        public bool IsAdmin => _user.IsAdmin;
 
         public string? SecondPhoneNumber { get; set; }
 

@@ -40,13 +40,13 @@ namespace cdod.Schema.OutputTypes
         [IsProjected]
         public int ParentId { get; set; }
 
-        [UseProjection]
-        public async Task<ParentType> Parent([Service] ParentDataLoader parentDataLoader)
+        public async Task<ParentType> Parent([Service] ParentDataLoader parentDataLoader,
+            [Service]UserDataLoader userDataLoader)
         {
             var parent = await parentDataLoader.LoadAsync(ParentId);
-            return new ParentType()
+            return new ParentType(await userDataLoader.LoadAsync(ParentId))
             {
-                UserId = parent.UserId,
+                Id = parent.UserId,
                 SecondPhoneNumber = parent.SecondPhoneNumber,
                 SecondEmail = parent.SecondEmail,
                 SignDate = parent.SignDate
