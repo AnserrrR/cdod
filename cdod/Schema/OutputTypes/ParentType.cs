@@ -38,7 +38,5 @@ namespace cdod.Schema.OutputTypes
         public string? SecondEmail { get; set; }
 
         public DateOnly SignDate { get; set; }
-
-        public IEnumerable<Student?> Students { get; set; } = new List<Student?>();
     }
 }

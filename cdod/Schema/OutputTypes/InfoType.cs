@@ -28,10 +28,19 @@ namespace cdod.Schema.OutputTypes
         }
 
         [UseProjection]
-        public async Task<Course> Course([Service] CourseDataLoader courseDataLoader)
+        public async Task<CourseType> Course([Service] CourseDataLoader courseDataLoader)
         {
             var course = await courseDataLoader.LoadAsync(CourseId);
-            return course;
+            return new CourseType()
+            {
+                Id = course.Id,
+                Name = course.Name,
+                ProgramFileUrl = course.ProgramFileUrl,
+                CoursePrice = course.CoursePrice,
+                EquipmentPriceWithRobot = course.EquipmentPriceWithRobot,
+                EquipmentPriceWithoutRobot = course.EquipmentPriceWithoutRobot,
+                DurationInMonths = course.DurationInMonths
+            };
         }
 
         [UseProjection]

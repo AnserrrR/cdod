@@ -137,14 +137,38 @@ namespace cdod.Schema.Queries
 
         //Course queries
         [UseDbContext(typeof(CdodDbContext))]
-        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
         [UseProjection]
-        [UseFiltering]
-        [UseSorting]
-        public IQueryable<Course> GetCourses([ScopedService] CdodDbContext cdodContext) => cdodContext.Courses;
+        public IQueryable<CourseType> GetCourse([ScopedService] CdodDbContext ctx)
+        {
+            return ctx.Courses.Select(c => new CourseType()
+            {
+                Id = c.Id,
+                Name = c.Name,
+                ProgramFileUrl = c.ProgramFileUrl,
+                CoursePrice = c.CoursePrice,
+                EquipmentPriceWithRobot = c.EquipmentPriceWithRobot,
+                EquipmentPriceWithoutRobot = c.EquipmentPriceWithoutRobot,
+                DurationInMonths = c.DurationInMonths
+            });
+        }
 
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<Course> GetCourseByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Courses.FirstOrDefaultAsync(e => e.Id == id);
+        [UseProjection]
+        public async Task<CourseType> GetCourseAsync(int id, [ScopedService] CdodDbContext cdodContext)
+        {
+            var c = await cdodContext.Courses.FindAsync(id);
+            if (c is null) throw new GraphQLException($"{typeof(Course)} not found!");
+            return new CourseType()
+            {
+                Id = c.Id,
+                Name = c.Name,
+                ProgramFileUrl = c.ProgramFileUrl,
+                CoursePrice = c.CoursePrice,
+                EquipmentPriceWithRobot = c.EquipmentPriceWithRobot,
+                EquipmentPriceWithoutRobot = c.EquipmentPriceWithoutRobot,
+                DurationInMonths = c.DurationInMonths
+            };
+        }
 
         /* Other queries */
 
