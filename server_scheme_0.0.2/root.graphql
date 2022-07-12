@@ -1,39 +1,8 @@
-# Версия схем: v0.0.2 (Т.к. эти схемы пока никак не контролируются через git)
+# Версия схем: v0.0.4 (Т.к. эти схемы пока никак не контролируются через git)
 # TODO: Информация об оплате, объявления
+# TODO: Проверить Query
 
 schema {
-  query: Query
-  #  mutation: Mutation
-}
-
-# Если id не найден должна вернуться какая то ошибка
-type Query {
-  students(courseId: ID, groupId: ID, parentId: ID): [Student]!
-  student(id: ID!): Student
-
-  courses: [Course]!
-  course(id: ID!): Course
-
-  groups(courseId: ID): [Group]!
-  group(id: ID!): Group
-
-  lessons(studentId: ID, teacherId: ID, groupId: ID): [Lesson]!
-  lesson(id: ID!): Lesson
-
-  # Если нужно получить {оценки, присутствия, заметки} студентов на занятия, то указываем lessonId
-  # Если в интерфейсе родителя нужно узнать оценки студента по курсу, то указываем studentId и courseId
-  # Если нужна статистика по студенту (по всем занятиям и курсам), то указываем только studentId
-  attendances(lessonId: ID, studentID: ID, courseId: ID): [Attendance]!
-
-  parent(id: ID!): Parent
-
-  teachers(lessonId: ID): [Teacher]!
-  teacher(id: ID, groupId: ID): Teacher
-  # teachersWorkTime # TODO: Как высчитывать зарплату учителям?
-
-  schools: [School]!
-  schools(id: ID!): [School]!
-
-  users: [User]!
-  user(id: ID!): User
+	query:    Query
+	mutation: Mutation
 }

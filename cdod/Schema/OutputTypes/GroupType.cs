@@ -1,20 +1,23 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using cdod.Models;
 
-namespace cdod.Models
+namespace cdod.Schema.OutputTypes
 {
-    public class Group
+    public class GroupType
     {
-        [Key]
+        [IsProjected]
         public int Id { get; set; }
 
         public string Name { get; set; }
 
+        [IsProjected]
         public int TeacherId { get; set; }
 
         public Teacher Teacher { get; set; }
 
         public DateOnly StartDate { get; set; }
 
+        [IsProjected]
         public int CourseId { get; set; }
 
         public Course Course { get; set; }
@@ -23,6 +26,6 @@ namespace cdod.Models
 
         public IEnumerable<Announcement?> Announcements { get; set; } = new List<Announcement?>();
 
-        public IEnumerable<Student?> Students { get; set; } = new List<Student?>();
+        public IEnumerable<StudentType?> Students { get; set; } = new List<StudentType?>();
     }
 }

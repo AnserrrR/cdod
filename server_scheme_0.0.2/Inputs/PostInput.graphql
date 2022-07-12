@@ -1,0 +1,8 @@
+input PostCreate {
+  name: String!
+}
+
+input PostUpdate {
+  id: ID!
+  name: String!
+}

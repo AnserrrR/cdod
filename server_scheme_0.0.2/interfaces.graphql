@@ -10,3 +10,4 @@ interface Human {
 scalar Date
 scalar Time
 scalar DateTime
+scalar Unknown

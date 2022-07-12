@@ -6,6 +6,7 @@ namespace cdod.Services.Repositories
     public class StudentsRepository
     {
         private readonly IDbContextFactory<CdodDbContext> _dbContext;
+
         StudentsRepository(IDbContextFactory<CdodDbContext> dbContext)
         {
             _dbContext = dbContext;
@@ -64,5 +65,6 @@ namespace cdod.Services.Repositories
                 return await context.SaveChangesAsync() > 0;
             }
         }
+
     }
 }

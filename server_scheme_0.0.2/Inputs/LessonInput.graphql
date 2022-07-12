@@ -1,0 +1,18 @@
+input LessonCreate {
+  homework:  String
+  dateTime:  DateTime!
+  duration:  Time!
+  classRoom: String!
+  topic:     String
+  groupId:   ID!
+}
+
+input LessonUpdate {
+  id: ID!
+  homework:  String
+  dateTime:  DateTime
+  duration:  Time
+  classRoom: String
+  topic:     String
+  groupId:   ID
+}

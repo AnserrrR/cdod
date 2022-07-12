@@ -1,0 +1,52 @@
+input TeacherCreate{
+  lastName:       String!
+  firstName:      String!
+  patronymic:     String!
+
+  phone:          String!
+  email:          String!
+  password:       String!
+
+  work_place:     String!
+  post:           String!
+
+  isAdmin:        Boolean
+
+  snils:          String
+  inn:            String
+  address:        String
+  birthday:       String
+  education:      String
+
+  passport_no:    String
+  passport_issue: String
+  passport_date:  String
+  passport_code:  String
+}
+
+input TeacherUpdate {
+  id:             ID!
+  lastName:       String
+  firstName:      String
+  patronymic:     String
+
+  phone:          String
+  email:          String
+  password:       String
+
+  work_place:     String
+  post:           String
+
+  isAdmin:        Boolean
+
+  snils:          String
+  inn:            String
+  address:        String
+  birthday:       String
+  education:      String
+
+  passport_no:    String
+  passport_issue: String
+  passport_date:  String
+  passport_code:  String
+}

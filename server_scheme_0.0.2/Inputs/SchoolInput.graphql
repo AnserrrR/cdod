@@ -1,0 +1,10 @@
+input SchoolCreate {
+  name: String!
+  district: District!
+}
+
+input SchoolUpdate {
+  id: ID!
+  name: String
+  district: District
+}

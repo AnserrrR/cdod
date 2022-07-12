@@ -1,5 +1,6 @@
 ﻿using cdod.Models;
 using cdod.Services;
+using cdod.Services.DataLoaders;
 
 namespace cdod.Schema.OutputTypes
 {
@@ -10,9 +11,9 @@ namespace cdod.Schema.OutputTypes
 
         [UseDbContext(typeof(CdodDbContext))]
         [UseProjection]
-        public async Task<User> User([ScopedService]CdodDbContext context)
+        public async Task<User> User([Service] UserDataLoader userDataLoader)
         {
-            User user = await context.Users.FindAsync(UserId);
+            var user = await userDataLoader.LoadAsync(UserId);
             return user;
         }
 

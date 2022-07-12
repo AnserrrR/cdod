@@ -1,0 +1,60 @@
+# У полноценного родителя необязательные только вторые контакты и образование
+input ParentRegister {
+  email:          String!
+  password:       String!
+}
+
+input ParentCreate {
+  lastName:       String!
+  firstName:      String!
+  patronymic:     String!
+
+  phone:          String!
+  secondPhone:    String
+
+  email:          String!
+  secondEmail:    String
+
+  password:       String!
+
+  applyingDate:   Date     # Дата первого обращения в ЦДОД
+
+  snils:          String
+  inn:            String
+  address:        String
+  birthday:       String
+  education:      String
+
+  passport_no:    String
+  passport_issue: String
+  passport_date:  String
+  passport_code:  String
+}
+
+input ParentUpdate {
+  id:             ID!
+  lastName:       String
+  firstName:      String
+  patronymic:     String
+
+  phone:          String
+  secondPhone:    String
+
+  email:          String
+  secondEmail:    String
+
+  password:       String
+
+  applyingDate:   Date    # Дата первого обращения в ЦДОД
+
+  snils:          String
+  inn:            String
+  address:        String
+  birthday:       String
+  education:      String
+
+  passport_no:    String
+  passport_issue: String
+  passport_date:  String
+  passport_code:  String
+}

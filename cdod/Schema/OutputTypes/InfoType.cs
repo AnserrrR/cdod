@@ -1,5 +1,7 @@
 ﻿using cdod.Models;
 using cdod.Services;
+using cdod.Services.DataLoaders;
+using cdod.Services.HelperTypes;
 using Microsoft.EntityFrameworkCore;
 
 namespace cdod.Schema.OutputTypes
@@ -14,47 +16,44 @@ namespace cdod.Schema.OutputTypes
 
         public DateOnly AdmissionDate { get; set; }
 
+        public bool? IsGetRobot { get; set; }
+
         [IsProjected]
         public int ContractStateId { get; set; }
 
-        [UseDbContext(typeof(CdodDbContext))]
-        public async Task<string> ContractState([ScopedService] CdodDbContext context)
+        public async Task<string> ContractState([Service] ContractStateDataLoader contractStateDataLoader)
         {
-            ContractState contractState = await context.ContractStates.FindAsync(ContractStateId);
+            var contractState = await contractStateDataLoader.LoadAsync(ContractStateId);
             return contractState.Name;
         }
 
-
-        [UseDbContext(typeof(CdodDbContext))]
-        public async Task<Course> Course([ScopedService] CdodDbContext context)
+        [UseProjection]
+        public async Task<Course> Course([Service] CourseDataLoader courseDataLoader)
         {
-            Course course = await context.Courses.FindAsync(CourseId);
+            var course = await courseDataLoader.LoadAsync(CourseId);
             return course;
         }
 
-        [UseDbContext(typeof(CdodDbContext))]
         [UseProjection]
-        public async Task<Group> Group([ScopedService] CdodDbContext context)
+        public async Task<Group?> Group([Service] GroupByStudentIdCourseIdDataLoader groupByStudentIdCourseIdDataLoader)
         {
-            var group = await context.Groups.FirstOrDefaultAsync(g => (g.CourseId == CourseId)
-                                                                        && (g.Students.Select(s => s.Id)
-                                                                            .Contains(StudentId)));
-            return group ?? new Group();
+            var scg = await groupByStudentIdCourseIdDataLoader.LoadAsync((CourseId, StudentId) );
+            return scg?.Group;
         }
 
-        [UseDbContext(typeof(CdodDbContext))]
-        public async Task<bool> IsCoursePaid([ScopedService] CdodDbContext context)
+        public async Task<bool> IsCoursePaid([Service] PayInfoDataLoader payInfoDataLoader,
+            [Service] PayNotesDataLoader payNotesDataLoader)
         {
-            return await IsPaid(Appointment.Course, context) ?? false;
+            return await IsPaid(Appointment.Course, payInfoDataLoader, payNotesDataLoader) ?? false;
         }
 
-        [UseDbContext(typeof(CdodDbContext))]
-        public async Task<bool?> IsEquipmentPaid([ScopedService] CdodDbContext context)
+        public async Task<bool?> IsEquipmentPaid([Service] PayInfoDataLoader payInfoDataLoader,
+            [Service] PayNotesDataLoader payNotesDataLoader)
         {
 
             try
             {
-                return await IsPaid(Appointment.Material, context);
+                return await IsPaid(Appointment.Material, payInfoDataLoader, payNotesDataLoader);
             }
             catch (Exception e)
             {
@@ -63,33 +62,13 @@ namespace cdod.Schema.OutputTypes
             }
         }
 
-        [UseDbContext(typeof(CdodDbContext))]
-        private async Task<bool?> IsPaid(Appointment appointment, [ScopedService] CdodDbContext ctx)
+        private async Task<bool?> IsPaid(Appointment appointment, 
+            [Service] PayInfoDataLoader payInfoDataLoader, [Service]PayNotesDataLoader payNotesDataLoader)
         {
-            var payInfoQuery =
-                from stc in ctx.StudentToCourses
-                join c in ctx.Courses on stc.CourseId equals c.Id
-                join cs in ctx.ContractStates on stc.ContractStateId equals cs.Id
-                //join pn in ctx.PayNotes on stc.CourseId equals pn.CourseId into pns
-                where (stc.CourseId == CourseId) && (stc.StudentId == StudentId)
-                select new
-                {
-                    CourseId = stc.CourseId,
-                    StudentId = stc.StudentId,
-                    ContractState = cs.Name,
-                    CoursePrice = c.CoursePrice,
-                    CourseName = c.Name,
-                    DurationInMonths = c.DurationInMonths,
-                    SignDate = stc.SignDate,
-                    IsEquipmentPriceWithRobot = stc.EquipmentPriceWithRobot,
-                    EquipmentPriceWithRobot = c.EquipmentPriceWithRobot,
-                    EquipmentPriceWithoutRobot = c.EquipmentPriceWithoutRobot,
-                    //PayNotes = pns
-                };
 
-            var payInfo = payInfoQuery.FirstOrDefault();
+            var payInfo = await payInfoDataLoader.LoadAsync((CourseId,StudentId));
 
-           
+            if (appointment == Appointment.Material && payInfo.CourseName != "Робофабрика") return null;
 
             if (payInfo.ContractState == "Зачислен")
             {
@@ -98,8 +77,6 @@ namespace cdod.Schema.OutputTypes
 
                     if (appointment == Appointment.Material)
                     {
-                        if (payInfo.CourseName != "Робототехника") return null;
-
                         if (payInfo.IsEquipmentPriceWithRobot == true)
                             totalPrice = payInfo.EquipmentPriceWithRobot ?? 0;
                         else if (payInfo.IsEquipmentPriceWithRobot == false)
@@ -108,15 +85,13 @@ namespace cdod.Schema.OutputTypes
                             throw new Exception("Not enough information: will the student pick up the robot");
                     }
 
-                    var totalPayment = await ctx.PayNotes.Where(pn =>
-                        (pn.Appointment == appointment) && (pn.CourseId == CourseId) && (pn.StudentId == StudentId)
-                    ).SumAsync(pn => pn.Sum);
+                    var totalPayment = await payNotesDataLoader.LoadAsync((CourseId, StudentId, appointment));
 
                     var monthPassed = (DateTime.Today.Year - payInfo.SignDate.Year) * 12 + DateTime.Today.Month - payInfo.SignDate.Month;
 
                     if (monthPassed < payInfo.DurationInMonths / 2) totalPrice /= 2;
 
-                    return totalPrice <= totalPayment;
+                    return totalPrice <= totalPayment?.TotalSum;
                 }
             }
             return false;

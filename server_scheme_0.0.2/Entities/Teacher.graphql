@@ -6,6 +6,7 @@ type Teacher implements Human{
 
   phone: String!
   email: String!
+  password: String!
 
   work_place: String! # TODO: Что такое work_place в БД ?
   post: String!

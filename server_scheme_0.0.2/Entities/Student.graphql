@@ -4,25 +4,28 @@ type Student implements Human {
   firstName:   String!
   patronymic:  String!
   birthDate:   Date!
-  studyInfo:   [StudyInfo]! # Т.е. массив групп... текущего студента, с информацией о курсе
+  studyInfo:   [StudyInfo!]! # Т.е. массив групп... текущего студента, с информацией о курсе
   description: String!
   parent:      Parent!
   school:      School!
 }
 
 type StudyInfo {
-  group:           Group!
+  group:           Group    # Необязательное, т.к. если уже привязан к курсу, но пока что распределён в группу
   course:          Course!
-  admissionDate:   Date!   # Дата зачисленяи на курс
-  contractState:   String! # Спросить у Соколова можно ли переделать в Enum ?
+  admissionDate:   Date!    # Дата зачисленяи на курс
+  contractState:   String!  # TODO: Спросить у Соколова можно ли переделать в Enum ?
+  contractURL:     String!  # TODO: Что из себя представляет файл по ссылке?
+  isGetRobot:      Boolean
   isPaid:          Boolean!
-  isEquipmentPaid: Boolean!
+  isEquipmentPaid: Boolean
+  # TODO: Кажется, тут не всё
 }
 
-enum ContractState {
-  Consideration # Заявка на рассмотрении
-  Studying,     # Учится
-  Completed,    # Завершил
-  Left,         # Ушёл по собственному желанию
-  Excluded      # Исключен (плохой чел)
-}
+#enum ContractState {
+#  Consideration # Заявка на рассмотрении
+#  Studying      # Учится
+#  Completed     # авершилЗ
+#  Left          # Ушёл по собственному желанию
+#  Excluded      # Исключен (плохой чел)
+#}

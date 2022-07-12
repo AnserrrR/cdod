@@ -1,0 +1,38 @@
+# Если id не найден должна вернуться какая то ошибка
+type Query {
+  students(courseID: ID, groupID: ID, parentID: ID): [Student!]!
+  student(id: ID!): Student
+
+  courses: [Course!]!
+  course(id: ID!): Course
+
+  groups(courseID: ID): [Group!]!
+  group(id: ID!): Group
+
+  lessons(studentID: ID, teacherID: ID, groupID: ID): [Lesson!]!
+  lesson(id: ID!): Lesson
+
+  # Если нужно получить {оценки, присутствия, заметки} студентов на занятия, то указываем lessonID
+  # Если в интерфейсе родителя нужно узнать оценки студента по курсу, то указываем studentID и courseID
+  # Если нужна статистика по студенту (по всем занятиям и курсам), то указываем только studentID
+  attendances(lessonID: ID, studentID: ID, courseID: ID): [Attendance!]!
+
+  parents: [Parent!]!
+  parent(id: ID!): Parent
+
+  teachers(lessonID: ID): [Teacher!]!
+  teacher(id: ID, groupID: ID): Teacher
+  teachersWorkTime(lessonID: ID, teacherID: ID): [TeacherWorkTime!]!
+
+  schools: [School!]!
+  school(id: ID!): School
+
+  users: [User!]!
+  user(id: ID!): User
+
+  posts: [Post!]!
+  post(id: ID!): Post
+
+  contractStates: [ContractState!]!
+  contractState(id: ID!): ContractState
+}

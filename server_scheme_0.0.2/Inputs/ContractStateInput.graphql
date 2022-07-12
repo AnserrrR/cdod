@@ -1,0 +1,4 @@
+input ContractStateUpdate {
+  id: ID!
+  name: String!
+}

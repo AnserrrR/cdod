@@ -1,7 +1,8 @@
 type Course {
-  id: ID!
-  name: String!
-  programFileUrl: String! # TODO: файл представляет из себя json с массивом строк - темы?
-  price: Float!
-  equipmentPrice: Float!
+  id:                         ID!
+  name:                       String!
+  programFileUrl:             String! # TODO: файл представляет из себя json с массивом строк - темы?
+  price:                      Float!
+  equipmentPriceWithRobot:    Float
+  equipmentPriceWithoutRobot: Float
 }

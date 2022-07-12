@@ -1,0 +1,16 @@
+input CreateCourse {
+  name: String!
+  programFileUrl: String!
+  price: Float!
+  equipmentPriceWithRobot: Float
+  equipmentPriceWithoutRobot: Float
+}
+
+input UpdateCourse{
+  id: ID!
+  name: String
+  programFileUrl: String
+  price: Float
+  equipmentPriceWithRobot: Float
+  equipmentPriceWithoutRobot: Float
+}

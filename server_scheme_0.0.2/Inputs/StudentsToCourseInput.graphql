@@ -1,0 +1,23 @@
+input StudentsToCoursesCreate {
+  studentID:       ID!
+  courseID:        ID!
+  # Если на клиенте не указывают дату, то она генерируется по дефолту, если её передают, то она
+  admissionDate:   Date    # Дата зачисленяи на курс
+  contractStateID: ID!     # TODO: если будет enum тут поправить
+  contractURL:     String
+  isGetRobot:      Boolean # null | boolean
+}
+
+input StudentsToCoursesUpdate {
+  studentID:       ID!
+  courseID:        ID!
+  admissionDate:   Date    # Дата зачисленяи на курс
+  contractStateID: ID      # TODO: если будет enum тут поправить
+  contractURL:     String
+  isGetRobot:      Boolean # null | boolean
+}
+
+input StudentsToCoursesDetach {
+  studentID: ID!
+  courseID:  ID!
+}

@@ -364,3 +364,6 @@ FodyWeavers.xsd
 
 # EF core - migration files
 cdod/Migrations
+
+# JetBrains products
+.idea/

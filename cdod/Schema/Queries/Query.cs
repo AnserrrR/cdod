@@ -28,7 +28,7 @@ namespace cdod.Schema.Queries
                         LastName = s.LastName,
                         Patronymic = s.Patronymic,
                         BirthDate = s.BirthDate,
-                        Descriotion = s.Descriotion,
+                        Description = s.Description,
                         ParentId = s.ParentId,
                         SchoolId = s.SchoolId
                     };
@@ -42,7 +42,7 @@ namespace cdod.Schema.Queries
                 LastName = s.LastName,
                 Patronymic = s.Patronymic,
                 BirthDate = s.BirthDate,
-                Descriotion = s.Descriotion,
+                Description = s.Description,
                 ParentId = s.ParentId,
                 SchoolId = s.SchoolId
             });
@@ -56,7 +56,7 @@ namespace cdod.Schema.Queries
                         LastName = s.LastName,
                         Patronymic = s.Patronymic,
                         BirthDate = s.BirthDate,
-                        Descriotion = s.Descriotion,
+                        Description = s.Description,
                         ParentId = s.ParentId,
                         SchoolId = s.SchoolId
                     });
@@ -68,11 +68,13 @@ namespace cdod.Schema.Queries
                 LastName = s.LastName,
                 Patronymic = s.Patronymic,
                 BirthDate = s.BirthDate,
-                Descriotion = s.Descriotion,
+                Description = s.Description,
                 ParentId = s.ParentId,
                 SchoolId = s.SchoolId
             });
         }
+
+
         //Course queries
         [UseDbContext(typeof(CdodDbContext))]
         [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]

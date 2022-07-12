@@ -1,0 +1,20 @@
+input StudentCreate {
+  lastName:    String!
+  firstName:   String!
+  patronymic:  String!
+  birthDate:   Date!
+  description: String
+  parent:      ID!
+  school:      ID      # TODO: Спросить у Вани сделали ли они FK необязательным
+}
+
+input StudentUpdate {
+  id:          ID!    # обновление студента по этому id, а не изменение самого id
+  lastName:    String
+  firstName:   String
+  patronymic:  String
+  birthDate:   Date
+  description: String
+  parent:      ID
+  school:      ID
+}

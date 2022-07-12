@@ -1,0 +1,13 @@
+input GroupCreate{
+  name: String!
+  startDate: Date!
+  courseID: ID!
+  teacherID: ID!
+}
+
+input GroupUpdate{
+  id: ID!
+  name: String
+  startDate: Date
+  teacherID: ID
+}

@@ -1,0 +1,15 @@
+input StudentAttendanceInput {
+  studentID: ID!
+  lessonID:  ID!
+
+  note:      String
+  mark:      Int
+  status:    AttendanceStatus
+}
+
+input TeacherAttendanceInput {
+  teacherID: ID!
+  lessonID:  ID!
+
+  workTime:  Time!
+}

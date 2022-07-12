@@ -16,7 +16,7 @@ namespace cdod.Schema.Mutations
                 LastName = studentForm.LastName,
                 Patronymic = studentForm.Patronymic,
                 BirthDate = (DateOnly)studentForm.BirthDate,
-                Descriotion = studentForm.Descriotion,
+                Description = studentForm.Descriotion,
                 SchoolId = (int)studentForm.SchoolId,
                 ParentId = (int)studentForm.ParentId
             };
@@ -34,7 +34,7 @@ namespace cdod.Schema.Mutations
             student.LastName = studentForm.LastName ?? student.LastName;
             student.Patronymic = studentForm.Patronymic ?? student.Patronymic;
             student.BirthDate = studentForm.BirthDate ?? student.BirthDate;
-            student.Descriotion = studentForm.Descriotion ?? student.Descriotion;
+            student.Description = studentForm.Descriotion ?? student.Description;
             student.SchoolId = studentForm.SchoolId ?? student.SchoolId;
 
             dbContext.Students.Update(student);

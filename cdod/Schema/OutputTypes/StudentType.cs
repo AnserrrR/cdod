@@ -1,5 +1,6 @@
 ﻿using cdod.Models;
 using cdod.Services;
+using cdod.Services.DataLoaders;
 using Microsoft.EntityFrameworkCore;
 using Group = System.Text.RegularExpressions.Group;
 
@@ -16,27 +17,32 @@ namespace cdod.Schema.OutputTypes
 
         public string? Patronymic { get; set; }
 
-        public string? Descriotion { get; set; }
+        public string? Description { get; set; }
 
         public DateOnly BirthDate { get; set; }
 
         [IsProjected]
         public int SchoolId { get; set; }
 
-        [UseDbContext(typeof(CdodDbContext))]
-        public async Task<School> School([ScopedService] CdodDbContext context)
+        [UseProjection]
+        public async Task<SchoolType> School([Service] SchoolDataLoader schoolDataLoader)
         {
-            return await context.Schools.FindAsync(SchoolId);  
+            var school = await schoolDataLoader.LoadAsync(SchoolId);
+            return new SchoolType()
+            {
+                Id = school.Id,
+                Name = school.Name,
+                District = school.District
+            };
         }
 
         [IsProjected]
         public int ParentId { get; set; }
 
-        [UseDbContext(typeof(CdodDbContext))]
         [UseProjection]
-        public async Task<ParentType> Parent([ScopedService] CdodDbContext context)
+        public async Task<ParentType> Parent([Service] ParentDataLoader parentDataLoader)
         {
-            Parent parent = await context.Parents.FindAsync(ParentId);
+            var parent = await parentDataLoader.LoadAsync(ParentId);
             return new ParentType()
             {
                 UserId = parent.UserId,
@@ -46,17 +52,18 @@ namespace cdod.Schema.OutputTypes
             };
         }
 
-        [UseDbContext(typeof(CdodDbContext))]
         [UseProjection]
-        public IQueryable<InfoType> Info([ScopedService]CdodDbContext context)
+        public async Task<IEnumerable<InfoType>> Info([Service] StcDataLoader stcDataLoader)
         {
-            return  context.StudentToCourses
-                .Where(stc => stc.StudentId == Id)
+            IEnumerable<StudentToCourse> STCs = await stcDataLoader.LoadAsync(Id);
+
+            return  STCs
                 .Select(stc => new InfoType()
                 {
                     CourseId = stc.CourseId,
                     StudentId = Id,
                     AdmissionDate = stc.SignDate,
+                    IsGetRobot = stc.EquipmentPriceWithRobot,
                     ContractStateId = stc.ContractStateId
                 });
         }

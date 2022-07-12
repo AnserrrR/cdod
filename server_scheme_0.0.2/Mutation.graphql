@@ -1,0 +1,50 @@
+type Mutation {
+  parentRegister(register: ParentRegister!): Parent!
+  parentCreate(parent: ParentCreate!): Parent!
+  parentUpdateMany(parents: [ParentUpdate!]!): [Parent!]!
+  parentDeleteMany(parentsIDs: [ID!]!): Boolean!
+
+  teacherCreate(teacher: TeacherCreate!): Teacher!
+  teacherUpdateMany(teachers: [TeacherUpdate!]!): [Teacher!]!
+  teacherDeleteMany(teachersIDs: [ID!]!): Boolean!
+
+  studentCreate(student: StudentCreate!): Student!
+  studentUpdateMany(students: [StudentUpdate!]!): [Student!]!
+  studentDeleteMany(studentIDs: [ID!]!): Boolean!
+
+  courseCreate(course: CreateCourse!): Course!
+  courseUpdateMany(courses: [UpdateCourse!]!): [Course!]!
+  courseDeleteMany(coursesIDs: [ID!]!): Boolean!
+
+  groupCreate(group: GroupCreate!): Group!
+  groupUpdateMany(groups: [GroupUpdate!]!): [Group!]!
+  groupDeleteMany(groupsIDs: [ID!]!): Boolean!
+
+  attachStudentsToCourses(info: [StudentsToCoursesCreate!]!): Unknown
+  updateStudentToCourses(info: [StudentsToCoursesUpdate!]!): Unknown # update в основном необходим для изменения статуса обучения (contract state)
+  detachStudentsFromCourses(info: [StudentsToCoursesDetach!]!): Unknown # Если студент по ошибке был привязан к курсу
+
+  attachStudentsToGroups(info: [StudentsToGroups!]!): Unknown
+  detachStudentsFromGroup(info: [StudentsToGroups!]!): Unknown
+
+  lessonCreateMany(lessons: [LessonCreate!]!): [Lesson!]!
+  lessonUpdateMany(lessons: [LessonUpdate!]!): [Lesson!]!
+  lessonDeleteMany(lessonsIDs: [ID!]!): Boolean!
+
+  attendanceStudentsMany(students: [StudentAttendanceInput!]!): [Attendance!]!
+  attendanceTeachersMany(teachers: [TeacherAttendanceInput!]!): [TeacherWorkTime!]!
+
+
+
+  schoolCreateMany(schools: SchoolCreate!): [School!]!
+  schoolUpdateMany(schools: [SchoolUpdate!]!): [School!]!
+  schoolDeleteMany(schoolsIDs: [ID!]!): Boolean!
+
+  postCreateMany(posts: [PostCreate!]!): [Post!]!
+  postUpdateMany(posts: [PostUpdate!]!): [Post!]!
+  postDeleteMany(postsIDs: [ID!]!): Boolean!
+
+  contractStatesCreateMany(contractStates: [String!]!): [ContractState!]!
+  contractStatesUpdateMany(contractStates: [ContractStateUpdate!]!): [ContractState!]!
+  contractStatesDeleteMany(contractStates: [ID!]!): Boolean!
+}
