@@ -3,5 +3,5 @@ type Group {
   name:      String!
   startDate: Date!
   course:    Course!
-  teacher:   Teacher!
+  teacher:   Teacher! 
 }

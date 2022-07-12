@@ -39,6 +39,8 @@ builder.Services.AddScoped<CourseDataLoader>();
 builder.Services.AddScoped<GroupByStudentIdCourseIdDataLoader>();
 builder.Services.AddScoped<PayNotesDataLoader>();
 builder.Services.AddScoped<PayInfoDataLoader>();
+builder.Services.AddScoped<TeacherDataLoader>();
+builder.Services.AddScoped<PostDataLoader>();
 
 var app = builder.Build();
 

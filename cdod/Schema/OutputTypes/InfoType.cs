@@ -35,10 +35,20 @@ namespace cdod.Schema.OutputTypes
         }
 
         [UseProjection]
-        public async Task<Group?> Group([Service] GroupByStudentIdCourseIdDataLoader groupByStudentIdCourseIdDataLoader)
+        public async Task<GroupType?> Group([Service] GroupByStudentIdCourseIdDataLoader groupByStudentIdCourseIdDataLoader)
         {
             var scg = await groupByStudentIdCourseIdDataLoader.LoadAsync((CourseId, StudentId) );
-            return scg?.Group;
+
+            if (scg is null) return null;
+
+            return new GroupType()
+            {
+                Id = scg.GroupId,
+                Name = scg.Group.Name,
+                StartDate = scg.Group.StartDate,
+                CourseId = scg.Group.CourseId,
+                TeacherId = scg.Group.TeacherId
+            };
         }
 
         public async Task<bool> IsCoursePaid([Service] PayInfoDataLoader payInfoDataLoader,

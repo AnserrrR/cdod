@@ -8,6 +8,7 @@ namespace cdod.Schema.OutputTypes
 {
     public class StudentType
     {
+
         [IsProjected]
         public int Id { get; set; }
 

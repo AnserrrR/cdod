@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using cdod.Models;
+using cdod.Services.DataLoaders;
 
 namespace cdod.Schema.OutputTypes
 {
@@ -13,19 +14,29 @@ namespace cdod.Schema.OutputTypes
         [IsProjected]
         public int TeacherId { get; set; }
 
-        public Teacher Teacher { get; set; }
+        [UseProjection]
+        public async Task<TeacherType> Teacher([Service] TeacherDataLoader teacherDataLoader)
+        {
+            var teacher = await teacherDataLoader.LoadAsync(TeacherId);
+            return new TeacherType()
+            {
+                UserId = teacher.UserId,
+                PostId = teacher.PostId,
+                WorkPlace = teacher.WorkPlace
+            };
+        }
 
         public DateOnly StartDate { get; set; }
 
         [IsProjected]
         public int CourseId { get; set; }
 
-        public Course Course { get; set; }
+        [UseProjection]
+        public async Task<Course> Course([Service] CourseDataLoader courseDataLoader)
+        {
+            var course = await courseDataLoader.LoadAsync(CourseId);
+            return course;
+        }
 
-        public IEnumerable<Lesson?> Lessons { get; set; } = new List<Lesson?>();
-
-        public IEnumerable<Announcement?> Announcements { get; set; } = new List<Announcement?>();
-
-        public IEnumerable<StudentType?> Students { get; set; } = new List<StudentType?>();
     }
 }

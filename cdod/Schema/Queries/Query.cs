@@ -74,6 +74,66 @@ namespace cdod.Schema.Queries
             });
         }
 
+        [UseDbContext(typeof(CdodDbContext))]
+        [UseProjection]
+        public async Task<StudentType> GetStudentAsync(int id, [ScopedService] CdodDbContext cdodContext)
+        {
+            var s = await cdodContext.Students.FindAsync(id);
+            if (s is null) throw new GraphQLException($"{typeof(Student)} not found!");
+            return new StudentType()
+            {
+                Id = s.Id,
+                FirstName = s.FirstName,
+                LastName = s.LastName,
+                Patronymic = s.Patronymic,
+                BirthDate = s.BirthDate,
+                Description = s.Description,
+                ParentId = s.ParentId,
+                SchoolId = s.SchoolId
+            };
+        }
+
+        //Group queries
+        [UseDbContext(typeof(CdodDbContext))]
+        [UseProjection]
+        public IQueryable<GroupType> GetGroups(int? courseId, [ScopedService] CdodDbContext ctx)
+        {
+            if (courseId is not null)
+                return ctx.Groups.Where(g => g.CourseId == courseId)
+                    .Select(g => new GroupType()
+                    {
+                        Id = g.Id,
+                        Name = g.Name,
+                        StartDate = g.StartDate,
+                        CourseId = g.CourseId,
+                        TeacherId = g.TeacherId
+                    });
+
+            return ctx.Groups.Select(g => new GroupType()
+                {
+                    Id = g.Id,
+                    Name = g.Name,
+                    StartDate = g.StartDate,
+                    CourseId = g.CourseId,
+                    TeacherId = g.TeacherId
+                });
+        }
+
+        [UseDbContext(typeof(CdodDbContext))]
+        [UseProjection]
+        public async Task<GroupType> GetGroupAsync(int id, [ScopedService] CdodDbContext cdodContext)
+        {
+            var g = await cdodContext.Groups.FindAsync(id);
+            if (g is null) throw new GraphQLException($"{typeof(Group)} not found!");
+            return new GroupType()
+            {
+                Id = g.Id,
+                Name = g.Name,
+                StartDate = g.StartDate,
+                CourseId = g.CourseId,
+                TeacherId = g.TeacherId
+            };
+        }
 
         //Course queries
         [UseDbContext(typeof(CdodDbContext))]
@@ -85,18 +145,6 @@ namespace cdod.Schema.Queries
 
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<Course> GetCourseByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Courses.FirstOrDefaultAsync(e => e.Id == id);
-
-        //Group queries
-        [UseDbContext(typeof(CdodDbContext))]
-        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
-        [UseProjection]
-        [UseFiltering]
-        [UseSorting]
-        public IQueryable<Group> GetGroups([ScopedService] CdodDbContext cdodContext) => cdodContext.Groups;
-
-        [UseDbContext(typeof(CdodDbContext))]
-        public async Task<Group> GetGroupByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Groups.FirstOrDefaultAsync(e => e.Id == id);
-
 
         /* Other queries */
 
