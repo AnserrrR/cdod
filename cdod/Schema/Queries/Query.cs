@@ -1,8 +1,10 @@
 ﻿
+using System.Runtime.InteropServices.ComTypes;
 using cdod.Services;
 using cdod.Models;
 using cdod.Schema.OutputTypes;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace cdod.Schema.Queries
 {
@@ -170,6 +172,68 @@ namespace cdod.Schema.Queries
             };
         }
 
+        //Teacher queries
+        [UseDbContext(typeof(CdodDbContext))]
+        public IQueryable<TeacherType> GetTeachers(int? lessonId, [ScopedService] CdodDbContext ctx)
+        {
+            if (lessonId is not null)
+                return from t in ctx.Teachers
+                    join ttl in ctx.TeacherToLessons on t.UserId equals ttl.TeacherId
+                    where ttl.LessonId == lessonId
+                    select new TeacherType(t.User)
+                    {
+                        Id = t.UserId,
+                        PostId = t.PostId,
+                        WorkPlace = t.WorkPlace
+                    };
+            return ctx.Teachers.Select(t => new TeacherType(t.User)
+            {
+                Id = t.UserId,
+                PostId = t.PostId,
+                WorkPlace = t.WorkPlace
+            });
+        }
+
+        [UseDbContext(typeof(CdodDbContext))]
+        public async Task<TeacherType> GetTeacherAsync(int? id, int? groupId, [ScopedService] CdodDbContext cdodContext)
+        {
+            if (id is not null)
+            {
+                var query = from t in cdodContext.Teachers
+                    where t.UserId == id
+                    select new TeacherType(t.User)
+                    {
+                        Id = t.UserId,
+                        PostId = t.PostId,
+                        WorkPlace = t.WorkPlace
+                    };
+
+                var teacher = await query.FirstOrDefaultAsync();
+
+                if (teacher is null) throw new GraphQLException($"{typeof(Teacher)} not found!");
+                return teacher;
+            }
+            else if (groupId is not null)
+            {
+                var query = from t in cdodContext.Teachers 
+                            join g in cdodContext.Groups on t.UserId equals g.TeacherId
+                            where g.Id == groupId
+                            select new TeacherType(t.User)
+                            {
+                                Id = t.UserId,
+                                PostId = t.PostId,
+                                WorkPlace = t.WorkPlace
+                            };
+
+                var teacher = await query.FirstOrDefaultAsync();
+
+                if (teacher is null) throw new GraphQLException($"{typeof(Teacher)} not found!");
+                return teacher;
+            }
+
+            throw new GraphQLException("Not enough params");
+        }
+
         /* Other queries */
 
         //Announcement queries
@@ -248,18 +312,6 @@ namespace cdod.Schema.Queries
 
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<School> GetSchoolByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Schools.FirstOrDefaultAsync(e => e.Id == id);
-
-
-        //Teacher queries
-        [UseDbContext(typeof(CdodDbContext))]
-        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
-        [UseProjection]
-        [UseFiltering]
-        [UseSorting]
-        public IQueryable<Teacher> GetTeachers([ScopedService] CdodDbContext cdodContext) => cdodContext.Teachers;
-
-        [UseDbContext(typeof(CdodDbContext))]
-        public async Task<Teacher> GetTeacherByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Teachers.FirstOrDefaultAsync(e => e.UserId == id);
 
         //User queries
         [UseDbContext(typeof(CdodDbContext))]
