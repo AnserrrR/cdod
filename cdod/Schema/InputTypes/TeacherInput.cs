@@ -1,12 +1,6 @@
 ﻿namespace cdod.Schema.InputTypes
 {
-    public class ParentRegister
-    {
-        public string email { get; set; }
-        public string password { get; set; }
-    }
-
-    public class ParentCreateInput
+    public class TeacherCreateInput
     {
         public string Firstname { get; set; }
         public string Lastname { get; set; }
@@ -23,12 +17,12 @@
         public string? passportIssue { get; set; }
         public DateOnly? passportDate { get; set; }
         public string? passportCode { get; set; }
-        public string? SecondPhoneNumber { get; set; }
-        public string? SecondEmail { get; set; }
-        public DateOnly applyingDate { get; set; }
+        public bool? isAdmin { get; set; }
+        public string WorkPlace { get; set; }
+        public int PostId { get; set; }
     }
-    
-    public class ParentUpdateInput
+
+    public class TeacherUpdateInput
     {
         public int Id { get; set; }
         public string? Firstname { get; set; }
@@ -46,8 +40,7 @@
         public string? passportIssue { get; set; }
         public DateOnly? passportDate { get; set; }
         public string? passportCode { get; set; }
-        public string? SecondPhoneNumber { get; set; }
-        public string? SecondEmail { get; set; }
-        public DateOnly? applyingDate { get; set; }
+        public string? WorkPlace { get; set; }
+        public int? PostId { get; set; }
     }
 }
