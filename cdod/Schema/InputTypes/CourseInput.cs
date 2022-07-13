@@ -1,12 +1,23 @@
 ﻿namespace cdod.Schema.InputTypes
 {
 
-    public class CourseInput
+    public class CourseCreateInput
     {
-        public string? Name { get; set; }
-        public string? ProgramFileUrl { get; set; }
-        public double? CoursePrice { get; set; }
-        public double? EquipmentPrice { get; set; }
-        public int? DurationInMonths { get; set; }
+        public string name { get; set; }
+        public string programFileUrl { get; set; }
+        public double coursePrice { get; set; }
+        public double? equipmentPriceWithRobot { get; set; }
+        public double? equipmentPriceWithoutRobot { get; set; }
+        public int durationInMonths { get; set; } // ????
+    }
+
+    public class CourseUpdateInput
+    {
+        int id { get; set; }
+        public string? name { get; set; }
+        public string? programFileUrl { get; set; }
+        public double? coursePrice { get; set; }
+        public double? equipmentPrice { get; set; }
+        public int? durationInMonths { get; set; }
     }
 }
