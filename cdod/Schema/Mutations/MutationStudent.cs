@@ -1,6 +1,7 @@
 ﻿using cdod.Schema.InputTypes;
 using cdod.Services;
 using cdod.Models;
+using cdod.Schema.OutputTypes;
 
 namespace cdod.Schema.Mutations
 {
@@ -8,51 +9,68 @@ namespace cdod.Schema.Mutations
     public class MutationStudent
     {
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<Student> CreateStudent(StudentInput studentForm, [ScopedService] CdodDbContext dbContext)
+        public async Task<Student> StudentCreate(StudentCreateInput student, [ScopedService] CdodDbContext dbContext)
         {
-            Student student = new Student()
+            Student _student = new Student()
             {
-                FirstName = studentForm.FirstName,
-                LastName = studentForm.LastName,
-                Patronymic = studentForm.Patronymic,
-                BirthDate = (DateOnly)studentForm.BirthDate,
-                Description = studentForm.Descriotion,
-                SchoolId = (int)studentForm.SchoolId,
-                ParentId = (int)studentForm.ParentId
+                FirstName = student.FirstName,
+                LastName = student.LastName,
+                Patronymic = student.Patronymic,
+                BirthDate = student.BirthDate,
+                Description = student.Descriotion,
+                SchoolId = student.SchoolId,
+                ParentId = student.ParentId
             };
-            dbContext.Students.Add(student);
+            dbContext.Students.Add(_student);
             await dbContext.SaveChangesAsync();
-            return student;
+            StudentType studentOutput = new StudentType()
+            {
+                Id = _student.Id,
+                LastName = _student.LastName,
+                FirstName = _student.FirstName,
+                Patronymic = _student.Patronymic,
+                BirthDate = _student.BirthDate,
+                Description = _student.Description,
+                SchoolId = _student.SchoolId,
+                ParentId = _student.ParentId
+            };
+            return _student;
         }
 
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<Student> UpdateStudent(int studentId, StudentInput studentForm, [ScopedService] CdodDbContext dbContext)
+        public async Task<bool> StudentUpdateMany(List<StudentUpdateInput> students, [ScopedService] CdodDbContext dbContext)
         {
-            Student? student = dbContext.Students.FirstOrDefault(s => s.Id == studentId);
-            if (student == null) throw new Exception("Указанного студентва не существует");
-            student.FirstName = studentForm.FirstName ?? student.FirstName;
-            student.LastName = studentForm.LastName ?? student.LastName;
-            student.Patronymic = studentForm.Patronymic ?? student.Patronymic;
-            student.BirthDate = studentForm.BirthDate ?? student.BirthDate;
-            student.Description = studentForm.Descriotion ?? student.Description;
-            student.SchoolId = studentForm.SchoolId ?? student.SchoolId;
-
-            dbContext.Students.Update(student);
-            await dbContext.SaveChangesAsync();
-            return student;
-        }
-
-        [UseDbContext(typeof(CdodDbContext))]
-        public async Task<bool> DeleteStudent(int studentId, [ScopedService] CdodDbContext dbContext)
-        {
-            Student? student = dbContext.Students.FirstOrDefault(s => s.Id == studentId);
-            if (student == null) throw new Exception("Указанного студентва не существует");
-            dbContext.Students.Remove(student);   
+            List<int> errorStudentIds = new List<int>();
+            List<Student> studentUpdated = new List<Student>();
+            foreach (StudentUpdateInput el in students)
+            {
+                Student? _student = dbContext.Students.FirstOrDefault(s => s.Id == el.Id);
+                if (_student == null) { errorStudentIds.Add(el.Id); continue; }
+                Student student = new Student()
+                {
+                    Id = el.Id,
+                    FirstName = el.FirstName ?? _student.FirstName,
+                    LastName = el.LastName ?? _student.LastName,
+                    Patronymic = el.Patronymic ?? _student.Patronymic,
+                    BirthDate = el.BirthDate ?? _student.BirthDate,
+                    Description = el.Description ?? _student.Description,
+                    SchoolId = el.SchoolId ?? _student.SchoolId,
+                    ParentId = el.ParentId ?? _student.ParentId
+                };
+                studentUpdated.Add(student);
+            }
+            dbContext.Students.UpdateRange(studentUpdated);
+            if (errorStudentIds.Count() > 0)
+            {
+                    throw new GraphQLException($"Невозможно обновить следующих пользователей:\n" +
+                        $"ID следующих пользователей нет в системе: {string.Join(" ", errorStudentIds)}\n");
+                
+            }
             return await dbContext.SaveChangesAsync() > 0;
         }
 
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<bool> DeleteManyStudents(List<int> studentIds, [ScopedService] CdodDbContext dbContext)
+        public async Task<bool> StudentDeleteMany(List<int> studentIds, [ScopedService] CdodDbContext dbContext)
         {
             dbContext.Students.RemoveRange(studentIds.Select(s =>
             {

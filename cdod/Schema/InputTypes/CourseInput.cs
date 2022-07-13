@@ -13,11 +13,12 @@
 
     public class CourseUpdateInput
     {
-        int id { get; set; }
+        public int Id { get; set; }
         public string? name { get; set; }
         public string? programFileUrl { get; set; }
         public double? coursePrice { get; set; }
-        public double? equipmentPrice { get; set; }
+        public double? equipmentPriceWithRobot { get; set; }
+        public double? equipmentPriceWithoutRobot { get; set; }
         public int? durationInMonths { get; set; }
     }
 }

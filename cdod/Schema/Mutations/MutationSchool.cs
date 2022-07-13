@@ -7,7 +7,7 @@ namespace cdod.Schema.Mutations
     [ExtendObjectType(typeof(Mutation))]
     public class MutationSchool
     {
-        [UseDbContext(typeof(CdodDbContext))]
+        /*[UseDbContext(typeof(CdodDbContext))]
         public async Task<School> CreateSchool(SchoolInput schoolForm, [ScopedService] CdodDbContext dbContext)
         {
             School school = new School()
@@ -42,6 +42,6 @@ namespace cdod.Schema.Mutations
 
             dbContext.Schools.Remove(school);
             return await dbContext.SaveChangesAsync() > 0;
-        }
+        }*/
     }
 }

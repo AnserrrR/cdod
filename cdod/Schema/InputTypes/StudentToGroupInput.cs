@@ -2,7 +2,7 @@
 {
     public class StudentToGroupInput
     {
-        int studentId { get; set; }
-        int groupId { get; set; }
+        public int studentId { get; set; }
+        public int groupId { get; set; }
     }
 }
