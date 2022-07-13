@@ -5,6 +5,7 @@ using cdod.Services;
 
 namespace cdod.Schema.Mutations
 {
+    [ExtendObjectType(typeof(Mutation))]
     public class MutationGroup
     {
         [UseDbContext(typeof(CdodDbContext))]

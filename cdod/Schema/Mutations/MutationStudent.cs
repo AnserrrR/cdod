@@ -17,7 +17,7 @@ namespace cdod.Schema.Mutations
                 LastName = student.LastName,
                 Patronymic = student.Patronymic,
                 BirthDate = student.BirthDate,
-                Description = student.Descriotion,
+                Description = student.Description,
                 SchoolId = student.SchoolId,
                 ParentId = student.ParentId
             };

@@ -5,6 +5,7 @@ using cdod.Services;
 
 namespace cdod.Schema.Mutations
 {
+    [ExtendObjectType(typeof(Mutation))]
     public class MutationTeacher
     {
         [UseDbContext(typeof(CdodDbContext))]
@@ -123,7 +124,7 @@ namespace cdod.Schema.Mutations
             {
                 dbContext.Teachers.RemoveRange(teacherIds.Select(t =>
                 {
-                    Teacher? _teacher = dbContext.Teachers.FirstOrDefault(tid => tid.UserId == p);
+                    Teacher? _teacher = dbContext.Teachers.FirstOrDefault(tid => tid.UserId == t);
                     if (_teacher is null)
                     {
                         errorNotTeacherIds.Add(t);

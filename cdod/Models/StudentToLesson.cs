@@ -2,6 +2,11 @@
 
 namespace cdod.Models
 {
+    public enum Status
+    {
+        was,
+        dontwas
+    };
     public class StudentToLesson
     {
         public int StudentId { get; set; }
@@ -14,6 +19,6 @@ namespace cdod.Models
 
         public string Note { get; set; }
 
-        public string Status { get; set; }
+        public Status Status { get; set; }
     }
 }

@@ -20,6 +20,7 @@ builder.Services.AddGraphQLServer()
     .AddTypeExtension<MutationSchool>()
     .AddTypeExtension<MutationStudent>()
     .AddTypeExtension<MutationCourse>()
+    .AddTypeExtension<MutationGroup>()
     .AddFiltering()
     .AddSorting()
     .AddProjections();
