@@ -42,6 +42,7 @@ builder.Services.AddScoped<PayNotesDataLoader>();
 builder.Services.AddScoped<PayInfoDataLoader>();
 builder.Services.AddScoped<TeacherDataLoader>();
 builder.Services.AddScoped<PostDataLoader>();
+builder.Services.AddScoped<StudentsCountDataLoader>();
 
 var app = builder.Build();
 

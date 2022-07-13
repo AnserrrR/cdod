@@ -48,5 +48,10 @@ namespace cdod.Schema.OutputTypes
             };
         }
 
+        public async Task<int> StudentsCount([Service] StudentsCountDataLoader studentsCountDataLoader)
+        {
+            var count = await studentsCountDataLoader.LoadAsync(Id);
+            return count.StudentsCount;
+        }
     }
 }
