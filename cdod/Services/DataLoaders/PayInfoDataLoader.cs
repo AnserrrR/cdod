@@ -43,7 +43,10 @@ namespace cdod.Services.DataLoaders
                     EquipmentPriceWithoutRobot = c.EquipmentPriceWithoutRobot,
                 };
 
-            IEnumerable<PayInfo> PIs = await query.ToListAsync();
+            IEnumerable<PayInfo> PIs =  from pi in await query.ToListAsync()
+                join key in keys on new { pi.CourseId, pi.StudentId, }
+                    equals new { CourseId = key.Item1, StudentId = key.Item2 }
+                select pi;
 
             return PIs.ToDictionary(i => (i.CourseId, i.StudentId));
 

@@ -37,7 +37,10 @@ namespace cdod.Services.DataLoaders
                     TotalSum = res.Sum(pn => pn.Sum)
                 };
 
-            IEnumerable<PayNotesSum> PNSs = await query.ToListAsync();
+            IEnumerable<PayNotesSum> PNSs = from pns in await query.ToListAsync()
+                join key in keys on new { pns.CourseId, pns.StudentId, pns.Appointment }
+                    equals new { CourseId = key.Item1, StudentId = key.Item2, Appointment = key.Item3 }
+                select pns;
 
             return PNSs.ToDictionary(i => (i.CourseId, i.StudentId, i.Appointment));
         }

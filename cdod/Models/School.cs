@@ -5,7 +5,8 @@ namespace cdod.Models
     public enum District
     {
         Central,
-        Tractor
+        Tractor,
+        Voroshilovskiy
     }
 
     public class School

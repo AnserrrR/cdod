@@ -25,19 +25,24 @@ namespace cdod.Services.DataLoaders
             var courseIds = keys.Select(k => k.Item1);
             var studentIds = keys.Select(k => k.Item2);
 
-            var query = from g in context.Groups
+            var rawSelection = from g in context.Groups
                 join c in context.Courses on g.CourseId equals c.Id
-                join stc in context.StudentToCourses on c.Id equals stc.CourseId
-                where courseIds.Contains(c.Id) && studentIds.Contains(stc.StudentId)
+                join stg in context.StudentsToGroups on g.Id equals stg.GroupId
+                where courseIds.Contains(g.CourseId) && courseIds.Contains(stg.StudentId)
                 select new StudentCourseGroup()
                 {
-                    StudentId = stc.StudentId,
+                    StudentId = stg.StudentId,
                     CourseId = c.Id,
                     GroupId = g.Id,
                     Group = g
                 };
 
-            IEnumerable<StudentCourseGroup> scgs = await query.ToListAsync();
+
+            var scgs = from scg in await rawSelection.ToListAsync()
+                join key in keys on new { scg.CourseId, scg.StudentId }
+                    equals new { CourseId = key.Item1, StudentId = key.Item2 }
+                select scg;
+
 
             return scgs.ToDictionary(i => ( i.CourseId, i.StudentId ));
 

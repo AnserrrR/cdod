@@ -20,10 +20,11 @@ namespace cdod.Models
 
         public IEnumerable<StudentToCourse?> StudentToCourses { get; set; } = new List<StudentToCourse?>();
         public IEnumerable<StudentToLesson?> StudentToLessons { get; set; } = new List<StudentToLesson?>();
+        public IEnumerable<StudentsToGroups?> StudentsToGroups { get; set; } = new List<StudentsToGroups?>();
 
         //public IEnumerable<Course?> Courses { get; set; } = new List<Course?>();
         //public IEnumerable<Lesson?> Lessons { get; set; } = new List<Lesson?>();
-        public IEnumerable<Group?> Groups { get; set; } = new List<Group?>();
+        //public IEnumerable<Group?> Groups { get; set; } = new List<Group?>();
         public IEnumerable<PayNote?> PayNotes { get; set; } = new List<PayNote?>();
     }
 }

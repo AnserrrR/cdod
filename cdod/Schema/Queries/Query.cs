@@ -16,6 +16,7 @@ namespace cdod.Schema.Queries
 
         [UseDbContext(typeof(CdodDbContext))]
         [UseProjection]
+        [UseFiltering]
         public IQueryable<StudentType> GetStudents(int? courseId, int? groupId, int? parentId, 
             [ScopedService] CdodDbContext ctx)
         {
@@ -36,7 +37,8 @@ namespace cdod.Schema.Queries
                     };
 
             if (groupId is not null)
-                return ctx.Students.Where(s => s.Groups.Any(g => g.Id == groupId))
+                return ctx.Students.Where(s => s.StudentsToGroups
+                        .Any(stg => stg.GroupId == groupId))
                     .Select(s => new StudentType()
             {
                 Id = s.Id,
