@@ -27,7 +27,7 @@ namespace cdod.Services.DataLoaders
             var appointments = keys.Select(k => k.Item3);
 
             var query = from pn in context.PayNotes
-                where courseIds.Contains(pn.Id) && studentIds.Contains(pn.StudentId) && appointments.Contains(pn.Appointment)
+                where courseIds.Contains(pn.CourseId) && studentIds.Contains(pn.StudentId) && appointments.Contains(pn.Appointment)
                 group pn by new {pn.CourseId, pn.StudentId, pn.Appointment} into res
                 select new PayNotesSum()
                 {

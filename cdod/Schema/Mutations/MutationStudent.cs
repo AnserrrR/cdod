@@ -44,7 +44,7 @@ namespace cdod.Schema.Mutations
             List<Student> studentUpdated = new List<Student>();
             foreach (StudentUpdateInput el in students)
             {
-                Student? _student = dbContext.Students.FirstOrDefault(s => s.Id == el.Id);
+                Student? _student = dbContext.Students.Find(el.Id);
                 if (_student == null) { errorStudentIds.Add(el.Id); continue; }
                 Student student = new Student()
                 {

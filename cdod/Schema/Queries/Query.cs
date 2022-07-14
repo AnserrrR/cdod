@@ -17,6 +17,7 @@ namespace cdod.Schema.Queries
         [UseDbContext(typeof(CdodDbContext))]
         [UseProjection]
         [UseFiltering]
+        [UseSorting]
         public IQueryable<StudentType> GetStudents(int? courseId, int? groupId, int? parentId, 
             [ScopedService] CdodDbContext ctx)
         {
@@ -83,7 +84,7 @@ namespace cdod.Schema.Queries
         public async Task<StudentType> GetStudentAsync(int id, [ScopedService] CdodDbContext cdodContext)
         {
             var s = await cdodContext.Students.FindAsync(id);
-            if (s is null) throw new GraphQLException($"{typeof(Student)} not found!");
+            if (s is null) throw new GraphQLException($"{nameof(Student)} not found!");
             return new StudentType()
             {
                 Id = s.Id,
@@ -100,6 +101,8 @@ namespace cdod.Schema.Queries
         //Group queries
         [UseDbContext(typeof(CdodDbContext))]
         [UseProjection]
+        [UseFiltering]
+        [UseSorting]
         public IQueryable<GroupType> GetGroups(int? courseId, [ScopedService] CdodDbContext ctx)
         {
             if (courseId is not null)
@@ -128,7 +131,7 @@ namespace cdod.Schema.Queries
         public async Task<GroupType> GetGroupAsync(int id, [ScopedService] CdodDbContext cdodContext)
         {
             var g = await cdodContext.Groups.FindAsync(id);
-            if (g is null) throw new GraphQLException($"{typeof(Group)} not found!");
+            if (g is null) throw new GraphQLException($"{nameof(Group)} not found!");
             return new GroupType()
             {
                 Id = g.Id,
@@ -142,6 +145,8 @@ namespace cdod.Schema.Queries
         //Course queries
         [UseDbContext(typeof(CdodDbContext))]
         [UseProjection]
+        [UseFiltering]
+        [UseSorting]
         public IQueryable<CourseType> GetCourse([ScopedService] CdodDbContext ctx)
         {
             return ctx.Courses.Select(c => new CourseType()
@@ -161,7 +166,7 @@ namespace cdod.Schema.Queries
         public async Task<CourseType> GetCourseAsync(int id, [ScopedService] CdodDbContext cdodContext)
         {
             var c = await cdodContext.Courses.FindAsync(id);
-            if (c is null) throw new GraphQLException($"{typeof(Course)} not found!");
+            if (c is null) throw new GraphQLException($"{nameof(Course)} not found!");
             return new CourseType()
             {
                 Id = c.Id,
@@ -176,8 +181,13 @@ namespace cdod.Schema.Queries
 
         //Teacher queries
         [UseDbContext(typeof(CdodDbContext))]
+        [UseFiltering]
+        [UseSorting]
         public IQueryable<TeacherType> GetTeachers(int? lessonId, [ScopedService] CdodDbContext ctx)
         {
+            if (!ctx.Lessons.Any(l => l.Id == lessonId)) 
+                throw new GraphQLException($"{nameof(Lesson)} not found!");
+
             if (lessonId is not null)
                 return from t in ctx.Teachers
                     join ttl in ctx.TeacherToLessons on t.UserId equals ttl.TeacherId
@@ -212,7 +222,7 @@ namespace cdod.Schema.Queries
 
                 var teacher = await query.FirstOrDefaultAsync();
 
-                if (teacher is null) throw new GraphQLException($"{typeof(Teacher)} not found!");
+                if (teacher is null) throw new GraphQLException($"{nameof(Teacher)} not found!");
                 return teacher;
             }
             else if (groupId is not null)
@@ -229,7 +239,7 @@ namespace cdod.Schema.Queries
 
                 var teacher = await query.FirstOrDefaultAsync();
 
-                if (teacher is null) throw new GraphQLException($"{typeof(Teacher)} not found!");
+                if (teacher is null) throw new GraphQLException($"{nameof(Teacher)} not found!");
                 return teacher;
             }
 
