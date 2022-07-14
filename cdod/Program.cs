@@ -44,7 +44,11 @@ builder.Services.AddScoped<TeacherDataLoader>();
 builder.Services.AddScoped<PostDataLoader>();
 builder.Services.AddScoped<StudentsCountDataLoader>();
 
+builder.Services.AddCors();
+
 var app = builder.Build();
+
+app.UseCors(b => b.AllowAnyOrigin());
 
 app.MapGraphQL("/");
 
