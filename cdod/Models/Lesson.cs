@@ -10,7 +10,7 @@ namespace cdod.Models
 
         public string Homework { get; set; }
 
-        public TimeOnly StartTime { get; set; }
+        public DateTime StartDateTime { get; set; }
 
         public int Duration { get; set; }
 
@@ -21,10 +21,6 @@ namespace cdod.Models
         public int GroupId { get; set; }
 
         public Group Group { get; set; }
-
-        //public IEnumerable<Teacher?> Teachers { get; set; } = new List<Teacher?>();
-
-        //public IEnumerable<Student?> Students { get; set; } = new List<Student?>();
 
         public IEnumerable<TeacherToLesson?> TeacherToLessons { get; set; } = new List<TeacherToLesson?>();
 

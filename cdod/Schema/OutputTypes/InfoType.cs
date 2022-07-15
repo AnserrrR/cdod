@@ -77,7 +77,7 @@ namespace cdod.Schema.OutputTypes
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                throw new Exception(e.Message);
+                throw new GraphQLException(e.Message);
             }
         }
 

@@ -18,3 +18,7 @@ select nextval('"Groups_Id_seq"');
 select max(G."Id") from "Groups" G where G."Id" is not null;
 ALTER SEQUENCE "Groups_Id_seq" RESTART WITH 21;
 
+select nextval('"PayNotes_Id_seq"');
+select max(PN."Id") from "PayNotes" PN where PN."Id" is not null;
+ALTER SEQUENCE "PayNotes_Id_seq" RESTART WITH 2001;
+

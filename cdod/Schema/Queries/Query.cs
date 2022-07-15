@@ -18,10 +18,14 @@ namespace cdod.Schema.Queries
         [UseProjection]
         [UseFiltering]
         [UseSorting]
-        public IQueryable<StudentType> GetStudents(int? courseId, int? groupId, int? parentId, 
+        public IQueryable<StudentType> GetStudents(int? courseId, int? groupId, int? parentId, int? schoolId,
             [ScopedService] CdodDbContext ctx)
         {
             if (courseId is not null)
+            {
+                if (!ctx.Courses.Any(c => c.Id == courseId))
+                    throw new GraphQLException($"{nameof(Course)} not found!");
+
                 return from s in ctx.Students
                     join stc in ctx.StudentToCourses on s.Id equals stc.StudentId
                     where stc.CourseId == courseId
@@ -36,23 +40,33 @@ namespace cdod.Schema.Queries
                         ParentId = s.ParentId,
                         SchoolId = s.SchoolId
                     };
+            }
 
             if (groupId is not null)
+            {
+                if (!ctx.Groups.Any(g => g.Id == groupId))
+                    throw new GraphQLException($"{nameof(Group)} not found!");
+
                 return ctx.Students.Where(s => s.StudentsToGroups
                         .Any(stg => stg.GroupId == groupId))
                     .Select(s => new StudentType()
-            {
-                Id = s.Id,
-                FirstName = s.FirstName,
-                LastName = s.LastName,
-                Patronymic = s.Patronymic,
-                BirthDate = s.BirthDate,
-                Description = s.Description,
-                ParentId = s.ParentId,
-                SchoolId = s.SchoolId
-            });
+                    {
+                        Id = s.Id,
+                        FirstName = s.FirstName,
+                        LastName = s.LastName,
+                        Patronymic = s.Patronymic,
+                        BirthDate = s.BirthDate,
+                        Description = s.Description,
+                        ParentId = s.ParentId,
+                        SchoolId = s.SchoolId
+                    });
+            }
 
             if (parentId is not null)
+            {
+                if (!ctx.Parents.Any(p => p.UserId == parentId))
+                    throw new GraphQLException($"{nameof(Parent)} not found!");
+
                 return ctx.Students.Where(s => s.ParentId == parentId)
                     .Select(s => new StudentType()
                     {
@@ -65,6 +79,28 @@ namespace cdod.Schema.Queries
                         ParentId = s.ParentId,
                         SchoolId = s.SchoolId
                     });
+            }
+
+            if (schoolId is not null)
+            {
+                if (!ctx.Schools.Any(sc => sc.Id == schoolId))
+                    throw new GraphQLException($"{nameof(School)} not found!");
+
+                return from sc in ctx.Schools
+                    where sc.Id == schoolId
+                    join s in ctx.Students on sc.Id equals s.SchoolId
+                    select new StudentType()
+                    {
+                        Id = s.Id,
+                        FirstName = s.FirstName,
+                        LastName = s.LastName,
+                        Patronymic = s.Patronymic,
+                        BirthDate = s.BirthDate,
+                        Description = s.Description,
+                        ParentId = s.ParentId,
+                        SchoolId = s.SchoolId
+                    };
+            }
 
             return ctx.Students.Select(s => new StudentType()
             {
@@ -106,6 +142,10 @@ namespace cdod.Schema.Queries
         public IQueryable<GroupType> GetGroups(int? courseId, [ScopedService] CdodDbContext ctx)
         {
             if (courseId is not null)
+            {
+                if (!ctx.Courses.Any(c => c.Id == courseId))
+                    throw new GraphQLException($"{nameof(Course)} not found!");
+
                 return ctx.Groups.Where(g => g.CourseId == courseId)
                     .Select(g => new GroupType()
                     {
@@ -115,6 +155,7 @@ namespace cdod.Schema.Queries
                         CourseId = g.CourseId,
                         TeacherId = g.TeacherId
                     });
+            }
 
             return ctx.Groups.Select(g => new GroupType()
                 {
@@ -185,10 +226,10 @@ namespace cdod.Schema.Queries
         [UseSorting]
         public IQueryable<TeacherType> GetTeachers(int? lessonId, [ScopedService] CdodDbContext ctx)
         {
-            if (!ctx.Lessons.Any(l => l.Id == lessonId)) 
-                throw new GraphQLException($"{nameof(Lesson)} not found!");
-
             if (lessonId is not null)
+            {
+                if (!ctx.Lessons.Any(l => l.Id == lessonId))
+                    throw new GraphQLException($"{nameof(Lesson)} not found!");
                 return from t in ctx.Teachers
                     join ttl in ctx.TeacherToLessons on t.UserId equals ttl.TeacherId
                     where ttl.LessonId == lessonId
@@ -198,6 +239,8 @@ namespace cdod.Schema.Queries
                         PostId = t.PostId,
                         WorkPlace = t.WorkPlace
                     };
+            }
+
             return ctx.Teachers.Select(t => new TeacherType(t.User)
             {
                 Id = t.UserId,
@@ -246,6 +289,147 @@ namespace cdod.Schema.Queries
             throw new GraphQLException("Not enough params");
         }
 
+        [UseDbContext(typeof(CdodDbContext))]
+        [UseProjection]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<TeachersWorkTimeType> GetTeachersWorkTime(int? lessonId, int? teacherId,
+            [ScopedService] CdodDbContext ctx)
+        {
+            if (lessonId is not null)
+            {
+                if (!ctx.Lessons.Any(l => l.Id == lessonId))
+                    throw new GraphQLException($"{nameof(Lesson)} not found!");
+
+                return from ttl in ctx.TeacherToLessons
+                    where ttl.LessonId == lessonId
+                    select new TeachersWorkTimeType()
+                    {
+                        TeacherId = ttl.TeacherId,
+                        LessonId = ttl.LessonId,
+                        WorkTime = ttl.WorkTime
+                    };
+            }
+            if (teacherId is not null)
+            {
+                if (!ctx.Teachers.Any(t => t.UserId == teacherId))
+                    throw new GraphQLException($"{nameof(Teacher)} not found!");
+
+                return from ttl in ctx.TeacherToLessons
+                    where ttl.TeacherId == teacherId
+                    select new TeachersWorkTimeType()
+                    {
+                        TeacherId = ttl.TeacherId,
+                        LessonId = ttl.LessonId,
+                        WorkTime = ttl.WorkTime
+                    };
+            }
+
+            throw new GraphQLException("Not enough params");
+        }
+
+        //Lesson queries
+        [UseDbContext(typeof(CdodDbContext))]
+        [UseProjection]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<LessonType> GetLessons(int? studentId, int? teacherId, int? groupId, 
+            [ScopedService] CdodDbContext ctx)
+        {
+            if (studentId is not null)
+            {
+                if (!ctx.Students.Any(s => s.Id == studentId))
+                    throw new GraphQLException($"{nameof(Student)} not found!");
+
+                return from l in ctx.Lessons
+                       join stl in ctx.StudentToLessons on l.Id equals stl.LessonId
+                       where stl.StudentId == studentId
+                       select new LessonType()
+                       {
+                           Id = l.Id,
+                           Homework = l.Homework,
+                           StartDateTime = l.StartDateTime,
+                           Duration = l.Duration,
+                           ClassRoom = l.ClassRoom,
+                           LessonTopic = l.LessonTopic,
+                           GroupId = l.GroupId
+
+                       };
+            }
+
+            if (teacherId is not null)
+            {
+                if (!ctx.Teachers.Any(t => t.UserId == teacherId))
+                    throw new GraphQLException($"{nameof(Teacher)} not found!");
+
+                return from l in ctx.Lessons
+                    join ttl in ctx.TeacherToLessons on l.Id equals ttl.LessonId
+                    where ttl.TeacherId == teacherId
+                    select new LessonType()
+                    {
+                        Id = l.Id,
+                        Homework = l.Homework,
+                        StartDateTime = l.StartDateTime,
+                        Duration = l.Duration,
+                        ClassRoom = l.ClassRoom,
+                        LessonTopic = l.LessonTopic,
+                        GroupId = l.GroupId
+
+                    };
+            }
+
+
+            if (groupId is not null)
+            {
+                if (!ctx.Groups.Any(g => g.Id == groupId))
+                    throw new GraphQLException($"{nameof(Group)} not found!");
+
+                return from l in ctx.Lessons
+                    where l.GroupId == groupId
+                    select new LessonType()
+                    {
+                        Id = l.Id,
+                        Homework = l.Homework,
+                        StartDateTime = l.StartDateTime,
+                        Duration = l.Duration,
+                        ClassRoom = l.ClassRoom,
+                        LessonTopic = l.LessonTopic,
+                        GroupId = l.GroupId
+
+                    };
+            }
+
+            return ctx.Lessons.Select(l => new LessonType()
+            {
+                Id = l.Id,
+                Homework = l.Homework,
+                StartDateTime = l.StartDateTime,
+                Duration = l.Duration,
+                ClassRoom = l.ClassRoom,
+                LessonTopic = l.LessonTopic,
+                GroupId = l.GroupId
+
+            });
+        }
+
+        [UseDbContext(typeof(CdodDbContext))]
+        [UseProjection]
+        public async Task<LessonType> GetLessonAsync(int id, [ScopedService] CdodDbContext cdodContext)
+        {
+            var l = await cdodContext.Lessons.FindAsync(id);
+            if (l is null) throw new GraphQLException($"{nameof(Lesson)} not found!");
+            return new LessonType()
+            {
+                Id = l.Id,
+                Homework = l.Homework,
+                StartDateTime = l.StartDateTime,
+                Duration = l.Duration,
+                ClassRoom = l.ClassRoom,
+                LessonTopic = l.LessonTopic,
+                GroupId = l.GroupId
+            };
+        }
+
         /* Other queries */
 
         //Announcement queries
@@ -270,17 +454,6 @@ namespace cdod.Schema.Queries
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<ContractState> GetContactStateByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.ContractStates.FirstOrDefaultAsync(e => e.Id == id);
         
-        //Lesson queries
-        [UseDbContext(typeof(CdodDbContext))]
-        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
-        [UseProjection]
-        [UseFiltering]
-        [UseSorting]
-        public IQueryable<Lesson> GetLessons([ScopedService] CdodDbContext cdodContext) => cdodContext.Lessons;
-
-        [UseDbContext(typeof(CdodDbContext))]
-        public async Task<Lesson> GetLessonByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Lessons.FirstOrDefaultAsync(e => e.Id == id);
-
         //Parent queries
         [UseDbContext(typeof(CdodDbContext))]
         [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
