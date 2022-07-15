@@ -4,8 +4,9 @@ namespace cdod.Models
 {
     public enum Status
     {
-        was,
-        dontwas
+        Attended,
+        Absent,
+        AbsentValidReason
     };
     public class StudentToLesson
     {

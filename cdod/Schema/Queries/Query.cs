@@ -430,84 +430,71 @@ namespace cdod.Schema.Queries
             };
         }
 
-        /* Other queries */
-
-        //Announcement queries
+        //Attendance query
         [UseDbContext(typeof(CdodDbContext))]
-        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
         [UseProjection]
         [UseFiltering]
         [UseSorting]
-        public IQueryable<Announcement> GetAnnouncements([ScopedService] CdodDbContext cdodContext) => cdodContext.Announcements;
+        public IQueryable<AttendanceType> GetAttendances(int? lessonId, int? studentId, int? courseId,
+            [ScopedService] CdodDbContext ctx)
+        {
+            if ((studentId is not null) && (courseId is not null))
+            {
+                if (!ctx.Students.Any(s => s.Id == studentId))
+                    throw new GraphQLException($"{nameof(Student)} not found!");
 
-        [UseDbContext(typeof(CdodDbContext))]
-        public async Task<Announcement> GetAnnouncementByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Announcements.FirstOrDefaultAsync(e => e.Id == id);
+                if (!ctx.Courses.Any(c => c.Id == courseId))
+                    throw new GraphQLException($"{nameof(Course)} not found!");
 
-        //ContractState queries
-        [UseDbContext(typeof(CdodDbContext))]
-        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
-        [UseProjection]
-        [UseFiltering]
-        [UseSorting]
-        public IQueryable<ContractState> GetContactStates([ScopedService] CdodDbContext cdodContext) => cdodContext.ContractStates;
+                return from stl in ctx.StudentToLessons
+                    join stc in ctx.StudentToCourses on stl.StudentId equals stc.CourseId
+                    where stc.StudentId == studentId && stc.CourseId == courseId
+                    select new AttendanceType()
+                    {
+                        LessonId = stl.LessonId,
+                        Mark = stl.Mark,
+                        Note = stl.Note,
+                        Status = stl.Status,
+                        StudentId = stl.StudentId
+                    };
+            }
 
-        [UseDbContext(typeof(CdodDbContext))]
-        public async Task<ContractState> GetContactStateByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.ContractStates.FirstOrDefaultAsync(e => e.Id == id);
-        
-        //Parent queries
-        [UseDbContext(typeof(CdodDbContext))]
-        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
-        [UseProjection]
-        [UseFiltering]
-        [UseSorting]
-        public IQueryable<Parent> GetParents([ScopedService] CdodDbContext cdodContext) => cdodContext.Parents;
+            if (studentId is not null)
+            {
+                if (!ctx.Students.Any(s => s.Id == studentId))
+                    throw new GraphQLException($"{nameof(Student)} not found!");
 
-        [UseDbContext(typeof(CdodDbContext))]
-        public async Task<Parent> GetParentByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Parents.FirstOrDefaultAsync(e => e.UserId == id);
+                return from stl in ctx.StudentToLessons
+                    where stl.StudentId == studentId
+                    select new AttendanceType()
+                    {
+                        LessonId = stl.LessonId,
+                        Mark = stl.Mark,
+                        Note = stl.Note,
+                        Status = stl.Status,
+                        StudentId = stl.StudentId
+                    };
+            }
 
-        //PayNote queries
-        [UseDbContext(typeof(CdodDbContext))]
-        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
-        [UseProjection] 
-        [UseFiltering]
-        [UseSorting]
-        public IQueryable<PayNote> GetPayNotes([ScopedService] CdodDbContext cdodContext) => cdodContext.PayNotes;
 
-        [UseDbContext(typeof(CdodDbContext))]
-        public async Task<PayNote> GetPayNoteByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.PayNotes.FirstOrDefaultAsync(e => e.Id == id);
+            if (studentId is not null)
+            {
+                if (!ctx.Lessons.Any(l => l.Id == lessonId))
+                    throw new GraphQLException($"{nameof(Lesson)} not found!");
 
-        //Post queries
-        [UseDbContext(typeof(CdodDbContext))]
-        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
-        [UseProjection]
-        [UseFiltering]
-        [UseSorting]
-        public IQueryable<Post> GetPosts([ScopedService] CdodDbContext cdodContext) => cdodContext.Posts;
+                return from stl in ctx.StudentToLessons
+                    where stl.LessonId == lessonId
+                    select new AttendanceType()
+                    {
+                        LessonId = stl.LessonId,
+                        Mark = stl.Mark,
+                        Note = stl.Note,
+                        Status = stl.Status,
+                        StudentId = stl.StudentId
+                    };
+            }
 
-        [UseDbContext(typeof(CdodDbContext))]
-        public async Task<Post> GetPostByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Posts.FirstOrDefaultAsync(e => e.Id == id);
-
-        //School queries
-        [UseDbContext(typeof(CdodDbContext))]
-        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
-        [UseProjection]
-        [UseFiltering]
-        [UseSorting]
-        public IQueryable<School> GetSchools([ScopedService] CdodDbContext cdodContext) => cdodContext.Schools;
-
-        [UseDbContext(typeof(CdodDbContext))]
-        public async Task<School> GetSchoolByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Schools.FirstOrDefaultAsync(e => e.Id == id);
-
-        //User queries
-        [UseDbContext(typeof(CdodDbContext))]
-        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
-        [UseProjection]
-        [UseFiltering]
-        [UseSorting]
-        public IQueryable<User> GetUsers([ScopedService] CdodDbContext cdodContext) => cdodContext.Users;
-
-        [UseDbContext(typeof(CdodDbContext))]
-        public async Task<User> GetUserByIdAsync(int id, [ScopedService] CdodDbContext cdodContext) => await cdodContext.Users.FirstOrDefaultAsync(e => e.Id == id);
-
+            throw new GraphQLException("Not enough params");
+        }
     }
 }

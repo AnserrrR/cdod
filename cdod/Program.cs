@@ -43,6 +43,9 @@ builder.Services.AddScoped<PayInfoDataLoader>();
 builder.Services.AddScoped<TeacherDataLoader>();
 builder.Services.AddScoped<PostDataLoader>();
 builder.Services.AddScoped<StudentsCountDataLoader>();
+builder.Services.AddScoped<StudentDataLoader>();
+builder.Services.AddScoped<GroupDataLoader>();
+builder.Services.AddScoped<LessonDataLoader>();
 
 builder.Services.AddCors();
 
