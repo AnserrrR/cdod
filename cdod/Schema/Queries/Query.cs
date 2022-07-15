@@ -188,7 +188,7 @@ namespace cdod.Schema.Queries
         [UseProjection]
         [UseFiltering]
         [UseSorting]
-        public IQueryable<CourseType> GetCourse([ScopedService] CdodDbContext ctx)
+        public IQueryable<CourseType> GetCourses([ScopedService] CdodDbContext ctx)
         {
             return ctx.Courses.Select(c => new CourseType()
             {
@@ -495,6 +495,96 @@ namespace cdod.Schema.Queries
             }
 
             throw new GraphQLException("Not enough params");
+        }
+
+        //Parent queries
+        [UseDbContext(typeof(CdodDbContext))]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<ParentType> GetParents([ScopedService] CdodDbContext ctx)
+        {
+            return ctx.Parents.Select(p => new ParentType(p.User)
+            {
+                Id = p.UserId,
+                SignDate = p.SignDate,
+                SecondEmail = p.SecondEmail,
+                SecondPhoneNumber = p.SecondPhoneNumber
+            });
+        }
+
+        [UseDbContext(typeof(CdodDbContext))]
+        public async Task<ParentType> GetParentAsync(int id, [ScopedService] CdodDbContext cdodContext)
+        {
+            var query = from p in cdodContext.Parents
+                where p.UserId == id
+                select new ParentType(p.User)
+                {
+                    Id = p.UserId,
+                    SignDate = p.SignDate,
+                    SecondEmail = p.SecondEmail,
+                    SecondPhoneNumber = p.SecondPhoneNumber
+                };
+
+            var parent = await query.FirstOrDefaultAsync();
+
+            if (parent is null) throw new GraphQLException($"{nameof(Parent)} not found!");
+            return parent;
+        }
+
+        //School queries
+        [UseDbContext(typeof(CdodDbContext))]
+        [UseProjection]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<SchoolType> GetSchools([ScopedService] CdodDbContext ctx)
+        {
+            return ctx.Schools.Select(s => new SchoolType()
+            {
+                Id = s.Id,
+                Name = s.Name,
+                District = s.District
+            });
+        }
+
+        [UseDbContext(typeof(CdodDbContext))]
+        [UseProjection]
+        public async Task<SchoolType> GetSchoolAsync(int id, [ScopedService] CdodDbContext cdodContext)
+        {
+            var s = await cdodContext.Schools.FindAsync(id);
+            if (s is null) throw new GraphQLException($"{nameof(School)} not found!");
+            return new SchoolType()
+            {
+                Id = s.Id,
+                Name = s.Name,
+                District = s.District
+            };
+        }
+
+        //Post queries
+        [UseDbContext(typeof(CdodDbContext))]
+        [UseProjection]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<PostType> GetPosts([ScopedService] CdodDbContext ctx)
+        {
+            return ctx.Posts.Select(p => new PostType()
+            {
+                Id = p.Id,
+                Name = p.Name
+            });
+        }
+
+        [UseDbContext(typeof(CdodDbContext))]
+        [UseProjection]
+        public async Task<PostType> GetPostAsync(int id, [ScopedService] CdodDbContext cdodContext)
+        {
+            var p = await cdodContext.Posts.FindAsync(id);
+            if (p is null) throw new GraphQLException($"{nameof(Post)} not found!");
+            return new PostType()
+            {
+                Id = p.Id,
+                Name = p.Name
+            };
         }
     }
 }
