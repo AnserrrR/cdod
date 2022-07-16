@@ -37,6 +37,7 @@ namespace cdod.Schema.OutputTypes
 
         public string? SecondEmail { get; set; }
 
+        [GraphQLName("applyingDate")]
         public DateOnly SignDate { get; set; }
     }
 }
