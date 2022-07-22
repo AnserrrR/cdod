@@ -367,3 +367,6 @@ cdod/Migrations
 
 # JetBrains products
 .idea/
+
+# VS Code
+.vscode
