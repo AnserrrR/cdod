@@ -51,7 +51,7 @@ namespace cdod.Schema.Mutations
         }
 
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<bool>  TeacherUpdateMany(List<TeacherUpdateInput> teacher, [ScopedService] CdodDbContext dbContext)
+        public async Task<bool> TeacherUpdateMany(List<TeacherUpdateInput> teacher, [ScopedService] CdodDbContext dbContext)
         {
             List<int> errorUserIds = new List<int>();
             List<int> errorNotTeacherIds = new List<int>();
@@ -63,33 +63,26 @@ namespace cdod.Schema.Mutations
                 if (_user == null) { errorUserIds.Add(el.Id); continue; }
                 Teacher? _teacher = dbContext.Teachers.FirstOrDefault(t => t.UserId == el.Id);
                 if (_teacher is null) { errorNotTeacherIds.Add(el.Id); continue; }
-                User userPiece = new User()
-                {
-                    Id = el.Id,
-                    Firstname = el.Firstname ?? _user.Firstname,
-                    Lastname = el.Lastname ?? _user.Lastname,
-                    Patronymic = el.Patronymic ?? _user.Patronymic,
-                    PhoneNumber = el.PhoneNumber ?? _user.PhoneNumber,
-                    Email = el.Email ?? _user.Email,
-                    Password = el.Password ?? _user.Password,
-                    Birthday = el.Birthday ?? _user.Birthday,
-                    Address = el.Address ?? _user.Address,
-                    Education = el.Education ?? _user.Education,
-                    Inn = el.Inn ?? _user.Inn,
-                    Snils = el.Snils ?? _user.Snils,
-                    passportNo = el.passportNo ?? _user.passportNo,
-                    passportIssue = el.passportIssue ?? _user.passportIssue,
-                    passportDate = el.passportDate ?? _user.passportDate,
-                    passportCode = el.passportCode ?? _user.passportCode,
-                };
-                Teacher teacherPiece = new Teacher()
-                {
-                    UserId = el.Id,
-                    WorkPlace = el.WorkPlace ?? _teacher.WorkPlace,
-                    PostId = el.PostId ?? _teacher.PostId
-                };
-                userUpdated.Add(userPiece);
-                teacherUpdated.Add(teacherPiece);
+                _user.Firstname = el.Firstname ?? _user.Firstname;
+                _user.Lastname = el.Lastname ?? _user.Lastname;
+                _user.Patronymic = el.Patronymic ?? _user.Patronymic;
+                _user.PhoneNumber = el.PhoneNumber ?? _user.PhoneNumber;
+                _user.Email = el.Email ?? _user.Email;
+                _user.Password = el.Password ?? _user.Password;
+                _user.Birthday = el.Birthday ?? _user.Birthday;
+                _user.Address = el.Address ?? _user.Address;
+                _user.Education = el.Education ?? _user.Education;
+                _user.Inn = el.Inn ?? _user.Inn;
+                _user.Snils = el.Snils ?? _user.Snils;
+                _user.passportNo = el.passportNo ?? _user.passportNo;
+                _user.passportIssue = el.passportIssue ?? _user.passportIssue;
+                _user.passportDate = el.passportDate ?? _user.passportDate;
+                _user.passportCode = el.passportCode ?? _user.passportCode;
+                _teacher.WorkPlace = el.WorkPlace ?? _teacher.WorkPlace;
+                _teacher.PostId = el.PostId ?? _teacher.PostId;
+
+                userUpdated.Add(_user);
+                teacherUpdated.Add(_teacher);
             }
             dbContext.Users.UpdateRange(userUpdated);
             dbContext.Teachers.UpdateRange(teacherUpdated);

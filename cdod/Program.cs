@@ -25,6 +25,10 @@ builder.Services.AddGraphQLServer()
     .AddSorting()
     .AddProjections();
 
+// ƒÀﬂ ¿¬“Œ–»«¿÷»»
+builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
+//
+
 //builder.Services.AddPooledDbContextFactory<CdodDbContext>(o => o.UseMySql("server=localhost;user=root;password=Student;database=test_db1;", new MySqlServerVersion(new Version("8.0.28"))));
 string connectionString = builder.Configuration.GetConnectionString("default");
 builder.Services.AddPooledDbContextFactory<CdodDbContext>(o => o.UseNpgsql(connectionString).LogTo(Console.WriteLine));

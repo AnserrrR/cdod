@@ -9,7 +9,7 @@ namespace cdod.Schema.Mutations
     public class MutationStudent
     {
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<Student> StudentCreate(StudentCreateInput student, [ScopedService] CdodDbContext dbContext)
+        public async Task<StudentType> StudentCreate(StudentCreateInput student, [ScopedService] CdodDbContext dbContext)
         {
             Student _student = new Student()
             {
@@ -34,7 +34,7 @@ namespace cdod.Schema.Mutations
                 SchoolId = _student.SchoolId,
                 ParentId = _student.ParentId
             };
-            return _student;
+            return studentOutput;
         }
 
         [UseDbContext(typeof(CdodDbContext))]
@@ -44,27 +44,26 @@ namespace cdod.Schema.Mutations
             List<Student> studentUpdated = new List<Student>();
             foreach (StudentUpdateInput el in students)
             {
+                Student? student = dbContext.Students.FirstOrDefault(s => s.Id == el.Id);
+                if (student == null) { errorStudentIds.Add(el.Id); continue; }
+                student.FirstName = el.FirstName ?? student.FirstName;
+                student.LastName = el.LastName ?? student.LastName;
+                student.Patronymic = el.Patronymic ?? student.Patronymic;
+                student.BirthDate = el.BirthDate ?? student.BirthDate;
+                student.Description = el.Description ?? student.Description;
+                student.SchoolId = el.SchoolId ?? student.SchoolId;
+                student.ParentId = el.ParentId ?? student.ParentId;
+
                 Student? _student = dbContext.Students.Find(el.Id);
                 if (_student == null) { errorStudentIds.Add(el.Id); continue; }
-                Student student = new Student()
-                {
-                    Id = el.Id,
-                    FirstName = el.FirstName ?? _student.FirstName,
-                    LastName = el.LastName ?? _student.LastName,
-                    Patronymic = el.Patronymic ?? _student.Patronymic,
-                    BirthDate = el.BirthDate ?? _student.BirthDate,
-                    Description = el.Description ?? _student.Description,
-                    SchoolId = el.SchoolId ?? _student.SchoolId,
-                    ParentId = el.ParentId ?? _student.ParentId
-                };
                 studentUpdated.Add(student);
             }
             dbContext.Students.UpdateRange(studentUpdated);
             if (errorStudentIds.Count() > 0)
             {
-                    throw new GraphQLException($"Невозможно обновить следующих пользователей:\n" +
-                        $"ID следующих пользователей нет в системе: {string.Join(" ", errorStudentIds)}\n");
-                
+                throw new GraphQLException($"Невозможно обновить следующих пользователей:\n" +
+                    $"ID следующих пользователей нет в системе: {string.Join(" ", errorStudentIds)}\n");
+
             }
             return await dbContext.SaveChangesAsync() > 0;
         }

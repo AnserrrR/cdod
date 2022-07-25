@@ -1,47 +1,61 @@
 ﻿using cdod.Schema.InputTypes;
 using cdod.Services;
 using cdod.Models;
+using cdod.Schema.OutputTypes;
 
 namespace cdod.Schema.Mutations
 {
     [ExtendObjectType(typeof(Mutation))]
     public class MutationSchool
     {
-        /*[UseDbContext(typeof(CdodDbContext))]
-        public async Task<School> CreateSchool(SchoolInput schoolForm, [ScopedService] CdodDbContext dbContext)
+        [UseDbContext(typeof(CdodDbContext))]
+        public async Task<SchoolType> CreateSchool(SchoolCreateInput school, [ScopedService] CdodDbContext dbContext)
         {
-            School school = new School()
+            School _school = new School()
             {
-                Name = schoolForm.Name,
-                District = (District)schoolForm.District,
+                Name = school.Name,
+                District = school.District,
             };
-            dbContext.Schools.Add(school);
+            dbContext.Schools.Add(_school);
             await dbContext.SaveChangesAsync();
-            return school;
+            SchoolType schoolOutput = new SchoolType()
+            {
+                Name = _school.Name,
+                District = _school.District,
+            };
+            return schoolOutput;
         }
 
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<School> UpdateSchool(int id, SchoolInput schoolForm, [ScopedService] CdodDbContext dbContext)
+        public async Task<bool> SchoolUpdateMany(List<SchoolUpdateInput> schools, [ScopedService] CdodDbContext dbContext)
         {
-            School? school = dbContext.Schools.FirstOrDefault(s => s.Id == id);
-            if (school == null) throw new Exception("Уазанной школы не существует");
+            List<int> errorSchoolIds = new List<int>();
+            List<School> schoolUpdated = new List<School>();
+            foreach (var school in schools)
+            {
+                School? _school = dbContext.Schools.FirstOrDefault(s => s.Id == school.Id);
+                if (_school == null) { errorSchoolIds.Add(school.Id); continue; };
 
-            school.Name = schoolForm.Name ?? school.Name;
-            school.District = schoolForm.District ?? school.District;
+                _school.Name = school.Name ?? _school.Name;
+                _school.District = school.District ?? _school.District;
+                schoolUpdated.Add(_school);
+            }
 
-            dbContext.Schools.Update(school);
-            await dbContext.SaveChangesAsync();
-            return school;
-        }
+            dbContext.Schools.UpdateRange(schoolUpdated);
 
-        [UseDbContext(typeof(CdodDbContext))]
-        public async Task<bool> DeleteSchool(int schoolId, [ScopedService] CdodDbContext dbContext)
-        {
-            School? school = dbContext.Schools.FirstOrDefault(s => s.Id == schoolId);
-            if (school == null) throw new Exception("Уазанной школы не существует");
-
-            dbContext.Schools.Remove(school);
             return await dbContext.SaveChangesAsync() > 0;
-        }*/
+        }
+
+        [UseDbContext(typeof(CdodDbContext))]
+        public async Task<bool> SchoolDeleteMany(List<int> schoolIds, [ScopedService] CdodDbContext dbContext)
+        {
+            dbContext.Schools.RemoveRange(schoolIds.Select(s =>
+            {
+                School? school = dbContext.Schools.FirstOrDefault(sid => sid.Id == s);
+                if (school == null) throw new Exception($"Вы указали для удаления несущесствующего ученика ID:{s}");
+                return school;
+            }));
+            return await dbContext.SaveChangesAsync() > 0;
+        }
     }
 }

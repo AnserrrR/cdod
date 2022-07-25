@@ -42,22 +42,17 @@ namespace cdod.Schema.Mutations
             List<Course> courseUpdated = new List<Course>();
             foreach (CourseUpdateInput el in courses)
             {
-                Course? _course = dbContext.Courses.FirstOrDefault(s => s.Id == el.Id);
+                Course? _course = dbContext.Courses.FirstOrDefault(с => с.Id == el.Id);
                 if (_course == null) { errorCourseIds.Add(el.Id); continue; }
-                Course course = new Course()
-                {
-                    Id = el.Id,
-                    Name = el.name ?? _course.Name,
-                    ProgramFileUrl = el.programFileUrl ?? _course.ProgramFileUrl,
-                    CoursePrice = el.coursePrice ?? _course.CoursePrice,
-                    EquipmentPriceWithRobot = el.equipmentPriceWithRobot ?? _course.EquipmentPriceWithRobot,
-                    EquipmentPriceWithoutRobot = el.equipmentPriceWithoutRobot ?? _course.EquipmentPriceWithoutRobot,
-
-                };
-                courseUpdated.Add(course);
+                _course.Name = el.name ?? _course.Name;
+                _course.ProgramFileUrl = el.programFileUrl ?? _course.ProgramFileUrl;
+                _course.CoursePrice = el.coursePrice ?? _course.CoursePrice;
+                _course.EquipmentPriceWithRobot = el.equipmentPriceWithRobot ?? _course.EquipmentPriceWithRobot;
+                _course.EquipmentPriceWithoutRobot = el.equipmentPriceWithoutRobot ?? _course.EquipmentPriceWithoutRobot;
+                courseUpdated.Add(_course);
             }
             dbContext.Courses.UpdateRange(courseUpdated);
-            if (courseUpdated.Count() > 0)
+            if (errorCourseIds.Count() > 0)
             {
                 throw new GraphQLException($"Невозможно обновить следующие курсы:\n" +
                     $"ID следующих курсов нет в системе: {string.Join(" ", courseUpdated)}\n");
@@ -77,17 +72,18 @@ namespace cdod.Schema.Mutations
             }));
             return await dbContext.SaveChangesAsync() > 0;
         }
-    
+
+        [UseDbContext(typeof(CdodDbContext))]
         public async Task<bool> AttachStudentsToCourses(List<StudentToCourseCreateInput> studentsToCourses, [ScopedService] CdodDbContext dbContext)
         {
             List<int> ErrorStudentToCourseIds = new List<int>();
             List<int> ErrorStudentIds = new List<int>();
             List<int> ErrorCourseIds = new List<int>();
-            List < StudentToCourse > studentToCourseAdded = new List<StudentToCourse>();
-            foreach(var el in studentsToCourses)
+            List<StudentToCourse> studentToCourseAdded = new List<StudentToCourse>();
+            foreach (var el in studentsToCourses)
             {
-                var studentToCourses = dbContext.StudentToCourses.FirstOrDefault(stc => ((stc.StudentId == el.StudentId) 
-                                                                                       &&(stc.CourseId == el.CourseId)
+                var studentToCourses = dbContext.StudentToCourses.FirstOrDefault(stc => ((stc.StudentId == el.StudentId)
+                                                                                       && (stc.CourseId == el.CourseId)
                                                                                        && (stc.ContractStateId == el.ContractStateId)));
                 var course = dbContext.Courses.FirstOrDefault(c => c.Id == el.CourseId);
                 var student = dbContext.Students.FirstOrDefault(s => s.Id == el.StudentId);
@@ -98,7 +94,7 @@ namespace cdod.Schema.Mutations
                 StudentToCourse studentToCourse = new StudentToCourse()
                 {
                     StudentId = el.StudentId,
-                    CourseId = el.StudentId,
+                    CourseId = el.CourseId,
                     SignDate = el.admissionDate,
                     ContractStateId = el.ContractStateId,
                     ContractUrl = el.ContractUrl,
@@ -111,6 +107,7 @@ namespace cdod.Schema.Mutations
             return await dbContext.SaveChangesAsync() > 0;
         }
 
+        [UseDbContext(typeof(CdodDbContext))]
         public async Task<bool> UpdateStudentsToCourses(List<StudentToCourseUpdateInput> studentsToCourses, [ScopedService] CdodDbContext dbContext)
         {
             List<int> ErrorStudentToCourseIds = new List<int>();
@@ -120,35 +117,29 @@ namespace cdod.Schema.Mutations
             foreach (var el in studentsToCourses)
             {
                 var studentToCourse = dbContext.StudentToCourses.FirstOrDefault(stc => ((stc.StudentId == el.StudentId)
-                                                                                       && (stc.CourseId == el.CourseId)
-                                                                                       && (stc.ContractStateId == el.ContractStateId)));
+                                                                                       && (stc.CourseId == el.CourseId)));
                 var course = dbContext.Courses.FirstOrDefault(c => c.Id == el.CourseId);
                 var student = dbContext.Students.FirstOrDefault(s => s.Id == el.StudentId);
                 if (studentToCourse is null) { ErrorStudentToCourseIds.Add(el.CourseId); continue; }
                 if (course is null) { ErrorStudentIds.Add(el.CourseId); continue; }
                 if (student is null) { ErrorCourseIds.Add(el.CourseId); continue; }
-                
-                StudentToCourse studentToCourseNew = new StudentToCourse()
-                {
-                    StudentId = el.StudentId,
-                    CourseId = el.StudentId,
-                    SignDate = el.admissionDate ?? studentToCourse.SignDate,
-                    ContractStateId = el.ContractStateId ?? studentToCourse.ContractStateId,
-                    ContractUrl = el.ContractUrl ?? studentToCourse.ContractUrl,
-                    EquipmentPriceWithRobot = el.isGetRobot ?? studentToCourse.EquipmentPriceWithRobot
-                };
-                studentToCourseUpdated.Add(studentToCourseNew);
+                studentToCourse.SignDate = el.admissionDate ?? studentToCourse.SignDate;
+                studentToCourse.ContractStateId = el.ContractStateId ?? studentToCourse.ContractStateId;
+                studentToCourse.ContractUrl = el.ContractUrl ?? studentToCourse.ContractUrl;
+                studentToCourse.EquipmentPriceWithRobot = el.isGetRobot ?? studentToCourse.EquipmentPriceWithRobot;
+                studentToCourseUpdated.Add(studentToCourse);
             }
-            dbContext.StudentToCourses.AddRange(studentToCourseUpdated);
+            dbContext.StudentToCourses.UpdateRange(studentToCourseUpdated);
             return await dbContext.SaveChangesAsync() > 0;
         }
 
+        [UseDbContext(typeof(CdodDbContext))]
         public async Task<bool> DetachStudentsToCourses(List<StudentToCourseDetach> studentsToCourses, [ScopedService] CdodDbContext dbContext)
         {
             dbContext.StudentToCourses.RemoveRange(studentsToCourses.Select(stc =>
             {
-                var studentToCourse = dbContext.StudentToCourses.FirstOrDefault(_stc => 
-                ((stc.courseId == _stc.CourseId)&&(stc.studentId == _stc.StudentId)));
+                var studentToCourse = dbContext.StudentToCourses.FirstOrDefault(_stc =>
+                ((stc.courseId == _stc.CourseId) && (stc.studentId == _stc.StudentId)));
                 if (studentToCourse == null) throw new Exception($"Вы указали для удаления несущесствующего ученика ID:{stc.studentId}");
                 return studentToCourse;
             }));

@@ -39,19 +39,15 @@ namespace cdod.Schema.Mutations
             List<int> groupErrorIds = new List<int>();
             dbContext.Groups.UpdateRange(groups.Select(g =>
             {
-                Group? _group = dbContext.Groups.FirstOrDefault(gid => gid.Id == g.Id);
-                if (_group is null) { groupErrorIds.Add(g.Id);  }
-                Group group = new Group()
-                {
-                    Id = g.Id,
-                    Name = g.Name ?? _group.Name,
-                    StartDate = g.StartDate ?? _group.StartDate,
-                    TeacherId = g.TeacherId ?? _group.TeacherId
-                };
+                Group? group = dbContext.Groups.FirstOrDefault(gid => gid.Id == g.Id);
+                if (group is null) { groupErrorIds.Add(g.Id); }
+                group.Name = g.Name ?? group.Name;
+                group.StartDate = g.StartDate ?? group.StartDate;
+                group.TeacherId = g.TeacherId ?? group.TeacherId;
                 return group;
             }));
-            
-            if(groupErrorIds.Count() > 0)
+
+            if (groupErrorIds.Count() > 0)
             {
                 throw new GraphQLException($"Не удалось обновить группы со следующим ID: {string.Join(" ", groupErrorIds)}");
             }
@@ -65,7 +61,7 @@ namespace cdod.Schema.Mutations
             dbContext.Groups.RemoveRange(groupIds.Select(g =>
             {
                 Group? _group = dbContext.Groups.FirstOrDefault(gid => gid.Id == g);
-                if (_group is null) { groupErrorIds.Add(g);  throw new Exception($"Ошибка произошла туть {g}"); }
+                if (_group is null) { groupErrorIds.Add(g); throw new Exception($"Ошибка произошла туть {g}"); }
                 return _group;
             }));
 
@@ -79,12 +75,17 @@ namespace cdod.Schema.Mutations
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<bool> AttachStudentsToGroups(List<StudentToGroupInput> studentsToGroups, [ScopedService] CdodDbContext dbContext)
         {
-            dbContext.StudentsToGroups.AddRange(studentsToGroups.Select(stg=>
+            dbContext.StudentsToGroups.AddRange(studentsToGroups.Select(stg =>
             {
-                var studentTogroup = dbContext.StudentsToGroups.FirstOrDefault(_stg =>
-                    ((stg.groupId == _stg.GroupId)&&(stg.studentId == _stg.StudentId)));
+                StudentsToGroups? studentTogroup = dbContext.StudentsToGroups.FirstOrDefault(_stg =>
+                    ((stg.groupId == _stg.GroupId) && (stg.studentId == _stg.StudentId)));
                 if (studentTogroup is not null) throw new Exception("Ученик уже привязан к группе");
-                return studentTogroup;
+                StudentsToGroups rec = new StudentsToGroups()
+                {
+                    GroupId = stg.groupId,
+                    StudentId = stg.studentId,
+                };
+                return rec;
             }));
             return await dbContext.SaveChangesAsync() > 0;
         }
