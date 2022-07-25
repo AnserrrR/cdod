@@ -508,7 +508,8 @@ namespace cdod.Schema.Queries
                 Id = p.UserId,
                 SignDate = p.SignDate,
                 SecondEmail = p.SecondEmail,
-                SecondPhoneNumber = p.SecondPhoneNumber
+                SecondPhoneNumber = p.SecondPhoneNumber,
+                Type = p.Type
             });
         }
 
@@ -522,7 +523,8 @@ namespace cdod.Schema.Queries
                     Id = p.UserId,
                     SignDate = p.SignDate,
                     SecondEmail = p.SecondEmail,
-                    SecondPhoneNumber = p.SecondPhoneNumber
+                    SecondPhoneNumber = p.SecondPhoneNumber,
+                    Type = p.Type
                 };
 
             var parent = await query.FirstOrDefaultAsync();
@@ -542,7 +544,7 @@ namespace cdod.Schema.Queries
             {
                 Id = s.Id,
                 Name = s.Name,
-                District = s.District
+                District = s.District,
             });
         }
 

@@ -20,7 +20,7 @@ namespace cdod.Schema.OutputTypes
 
         public string? Description { get; set; }
 
-        public DateOnly BirthDate { get; set; }
+        public DateOnly? BirthDate { get; set; }
 
         [IsProjected]
         public int SchoolId { get; set; }
@@ -49,7 +49,8 @@ namespace cdod.Schema.OutputTypes
                 Id = parent.UserId,
                 SecondPhoneNumber = parent.SecondPhoneNumber,
                 SecondEmail = parent.SecondEmail,
-                SignDate = parent.SignDate
+                SignDate = parent.SignDate,
+                Type = parent.Type
             };
         }
 
