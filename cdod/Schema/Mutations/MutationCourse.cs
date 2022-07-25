@@ -88,7 +88,7 @@ namespace cdod.Schema.Mutations
             {
                 var studentToCourses = dbContext.StudentToCourses.FirstOrDefault(stc => ((stc.StudentId == el.StudentId) 
                                                                                        &&(stc.CourseId == el.CourseId)
-                                                                                       && (stc.ContractStateId == el.ContractStateId)));
+                                                                                       && (stc.ContractState == el.ContractState)));
                 var course = dbContext.Courses.FirstOrDefault(c => c.Id == el.CourseId);
                 var student = dbContext.Students.FirstOrDefault(s => s.Id == el.StudentId);
                 if (studentToCourses is not null) { ErrorStudentToCourseIds.Add(el.CourseId); continue; }
@@ -100,7 +100,7 @@ namespace cdod.Schema.Mutations
                     StudentId = el.StudentId,
                     CourseId = el.StudentId,
                     SignDate = el.admissionDate,
-                    ContractStateId = el.ContractStateId,
+                    ContractState = el.ContractState,
                     ContractUrl = el.ContractUrl,
                     EquipmentPriceWithRobot = el.isGetRobot
                 };
@@ -121,7 +121,7 @@ namespace cdod.Schema.Mutations
             {
                 var studentToCourse = dbContext.StudentToCourses.FirstOrDefault(stc => ((stc.StudentId == el.StudentId)
                                                                                        && (stc.CourseId == el.CourseId)
-                                                                                       && (stc.ContractStateId == el.ContractStateId)));
+                                                                                       && (stc.ContractState == el.ContractState)));
                 var course = dbContext.Courses.FirstOrDefault(c => c.Id == el.CourseId);
                 var student = dbContext.Students.FirstOrDefault(s => s.Id == el.StudentId);
                 if (studentToCourse is null) { ErrorStudentToCourseIds.Add(el.CourseId); continue; }
@@ -133,7 +133,7 @@ namespace cdod.Schema.Mutations
                     StudentId = el.StudentId,
                     CourseId = el.StudentId,
                     SignDate = el.admissionDate ?? studentToCourse.SignDate,
-                    ContractStateId = el.ContractStateId ?? studentToCourse.ContractStateId,
+                    ContractState = el.ContractState ?? studentToCourse.ContractState,
                     ContractUrl = el.ContractUrl ?? studentToCourse.ContractUrl,
                     EquipmentPriceWithRobot = el.isGetRobot ?? studentToCourse.EquipmentPriceWithRobot
                 };

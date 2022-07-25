@@ -5,22 +5,27 @@ using cdod.Services;
 
 namespace cdod.Models
 {
+    public enum ContractState
+    {
+        Consideration,
+        Rejected,
+        Studying,     
+        Completed,   
+        Left,         
+        Excluded     
+    }
+
     public class StudentToCourse
     {
-        [IsProjected]
         public int StudentId { get; set; }
 
         public Student Student { get; set; }
 
-        [IsProjected]
         public int CourseId { get; set; }
 
         public Course Course { get; set; }
 
         public DateOnly SignDate { get; set; }
-
-        [IsProjected]
-        public int ContractStateId { get; set; }
 
         public ContractState ContractState { get; set; }
 

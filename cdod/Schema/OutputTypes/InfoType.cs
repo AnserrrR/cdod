@@ -18,14 +18,7 @@ namespace cdod.Schema.OutputTypes
 
         public bool? IsGetRobot { get; set; }
 
-        [IsProjected]
-        public int ContractStateId { get; set; }
-
-        public async Task<string> ContractState([Service] ContractStateDataLoader contractStateDataLoader)
-        {
-            var contractState = await contractStateDataLoader.LoadAsync(ContractStateId);
-            return contractState.Name;
-        }
+        public ContractState ContractState { get; set; }
 
         [UseProjection]
         public async Task<CourseType> Course([Service] CourseDataLoader courseDataLoader)
@@ -89,7 +82,7 @@ namespace cdod.Schema.OutputTypes
 
             if (appointment == Appointment.Material && payInfo.CourseName != "Робофабрика") return null;
 
-            if (payInfo.ContractState == "Зачислен")
+            if (payInfo.ContractState == ContractState.Studying)
             {
                 {
                     var totalPrice = payInfo.CoursePrice;

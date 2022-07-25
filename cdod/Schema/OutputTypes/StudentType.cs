@@ -65,7 +65,7 @@ namespace cdod.Schema.OutputTypes
                     StudentId = Id,
                     AdmissionDate = stc.SignDate,
                     IsGetRobot = stc.EquipmentPriceWithRobot,
-                    ContractStateId = stc.ContractStateId
+                    ContractState = stc.ContractState
                 });
         }
     }

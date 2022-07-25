@@ -141,7 +141,7 @@ namespace cdod.Schema.Mutations
                             {
                                 CourseId = idCourse,
                                 StudentId = (studentBuf == null ? student.Id : studentBuf.Id),
-                                ContractStateId = 1,
+                                ContractState = ContractState.Consideration,
                                 SignDate = DateOnly.Parse(dateCreateRecord[0]),
                                 ContractUrl = null,
                                 Debt = 0.0,

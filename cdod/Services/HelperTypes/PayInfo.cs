@@ -1,4 +1,6 @@
-﻿namespace cdod.Services.HelperTypes
+﻿using cdod.Models;
+
+namespace cdod.Services.HelperTypes
 {
     public class PayInfo
     {
@@ -6,7 +8,7 @@
 
         public int StudentId { get; set; }
 
-        public string ContractState { get; set; }
+        public ContractState ContractState { get; set; }
 
         public double CoursePrice { get; set; }
 
