@@ -13,7 +13,6 @@ namespace cdod.Services
         public DbSet<Student> Students { get; set; }
         public DbSet<School> Schools { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
-        public DbSet<ContractState> ContractStates { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Lesson> Lessons { get; set; }

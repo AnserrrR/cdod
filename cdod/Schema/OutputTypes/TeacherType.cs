@@ -16,8 +16,8 @@ namespace cdod.Schema.OutputTypes
         [IsProjected]
         public int Id { get; set; }
 
-        public string FirstName => _user.Firstname;
-        public string LastName => _user.Lastname;
+        public string? FirstName => _user.Firstname;
+        public string? LastName => _user.Lastname;
         public string? Patronymic => _user.Patronymic;
         public string? PhoneNumber => _user.PhoneNumber;
         public string Email => _user.Email;

@@ -1,4 +1,6 @@
-﻿namespace cdod.Schema.InputTypes
+﻿using cdod.Models;
+
+namespace cdod.Schema.InputTypes
 {
     public class StudentToCourseCreateInput
     {
@@ -6,7 +8,8 @@
         public int CourseId { get; set; }
 
         public DateOnly admissionDate { get; set; }
-        public int ContractStateId { get; set; }
+
+        public ContractState ContractState { get; set; }
 
         public string? ContractUrl { get; set; }
 
@@ -19,7 +22,8 @@
         public int CourseId { get; set; }
 
         public DateOnly? admissionDate { get; set; }
-        public int? ContractStateId { get; set; }
+
+        public ContractState? ContractState { get; set; }
 
         public string? ContractUrl { get; set; }
 

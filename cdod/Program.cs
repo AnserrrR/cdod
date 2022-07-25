@@ -39,7 +39,6 @@ builder.Services.AddScoped<SchoolDataLoader>();
 builder.Services.AddScoped<StcDataLoader>();
 builder.Services.AddScoped<ParentDataLoader>();
 builder.Services.AddScoped<UserDataLoader>();
-builder.Services.AddScoped<ContractStateDataLoader>();
 builder.Services.AddScoped<CourseDataLoader>();
 builder.Services.AddScoped<GroupByStudentIdCourseIdDataLoader>();
 builder.Services.AddScoped<PayNotesDataLoader>();

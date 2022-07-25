@@ -96,7 +96,7 @@ namespace cdod.Schema.Mutations
                     StudentId = el.StudentId,
                     CourseId = el.CourseId,
                     SignDate = el.admissionDate,
-                    ContractStateId = el.ContractStateId,
+                    ContractState = el.ContractState,
                     ContractUrl = el.ContractUrl,
                     EquipmentPriceWithRobot = el.isGetRobot
                 };

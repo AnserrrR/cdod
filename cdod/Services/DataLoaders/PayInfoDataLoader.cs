@@ -27,13 +27,12 @@ namespace cdod.Services.DataLoaders
 
             var query = from stc in context.StudentToCourses
                 join c in context.Courses on stc.CourseId equals c.Id
-                join cs in context.ContractStates on stc.ContractStateId equals cs.Id
                 where courseIds.Contains(c.Id) && studentIds.Contains(stc.StudentId)
                 select new PayInfo()
                 {
                     CourseId = stc.CourseId,
                     StudentId = stc.StudentId,
-                    ContractState = cs.Name,
+                    ContractState = stc.ContractState,
                     CoursePrice = c.CoursePrice,
                     CourseName = c.Name,
                     DurationInMonths = c.DurationInMonths,
