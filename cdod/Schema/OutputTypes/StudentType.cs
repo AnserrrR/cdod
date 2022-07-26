@@ -23,18 +23,23 @@ namespace cdod.Schema.OutputTypes
         public DateOnly? BirthDate { get; set; }
 
         [IsProjected]
-        public int SchoolId { get; set; }
+        public int? SchoolId { get; set; }
 
         [UseProjection]
-        public async Task<SchoolType> School([Service] SchoolDataLoader schoolDataLoader)
+        public async Task<SchoolType?> School([Service] SchoolDataLoader schoolDataLoader)
         {
-            var school = await schoolDataLoader.LoadAsync(SchoolId);
-            return new SchoolType()
+            if(SchoolId is int schoolId)
             {
-                Id = school.Id,
-                Name = school.Name,
-                District = school.District
-            };
+                var school = await schoolDataLoader.LoadAsync(schoolId);
+                return new SchoolType()
+                {
+                    Id = school.Id,
+                    Name = school.Name,
+                    District = school.District
+                };
+            }
+
+            return null;
         }
 
         [IsProjected]

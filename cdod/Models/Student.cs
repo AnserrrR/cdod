@@ -12,8 +12,8 @@ namespace cdod.Models
         public string? Description { get; set; }
         public DateOnly? BirthDate { get; set; }
 
-        public int SchoolId { get; set; }
-        public School School { get; set; }
+        public int? SchoolId { get; set; }
+        public School? School { get; set; }
 
         public int ParentId { get; set; }
         public Parent Parent { get; set; }
