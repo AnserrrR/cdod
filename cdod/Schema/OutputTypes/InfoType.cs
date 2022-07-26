@@ -28,7 +28,7 @@ namespace cdod.Schema.OutputTypes
             {
                 Id = course.Id,
                 Name = course.Name,
-                ProgramFileUrl = course.ProgramFileUrl,
+                ProgramId = course.ProgramId,
                 CoursePrice = course.CoursePrice,
                 EquipmentPriceWithRobot = course.EquipmentPriceWithRobot,
                 EquipmentPriceWithoutRobot = course.EquipmentPriceWithoutRobot,

@@ -7,7 +7,7 @@
 
         public string Name { get; set; }
 
-        public string ProgramFileUrl { get; set; }
+        public int? ProgramId { get; set; }
 
         [GraphQLName("price")]
         public double CoursePrice { get; set; }

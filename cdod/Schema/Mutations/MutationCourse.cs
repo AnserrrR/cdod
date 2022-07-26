@@ -14,7 +14,7 @@ namespace cdod.Schema.Mutations
             Course _course = new Course()
             {
                 Name = course.name,
-                ProgramFileUrl = course.programFileUrl,
+                ProgramId = course.programId,
                 CoursePrice = course.coursePrice,
                 EquipmentPriceWithoutRobot = course.equipmentPriceWithoutRobot,
                 EquipmentPriceWithRobot = course.equipmentPriceWithRobot,
@@ -26,7 +26,7 @@ namespace cdod.Schema.Mutations
             {
                 Id = _course.Id,
                 Name = _course.Name,
-                ProgramFileUrl = _course.ProgramFileUrl,
+                ProgramId = _course.ProgramId,
                 CoursePrice = _course.CoursePrice,
                 EquipmentPriceWithoutRobot = _course.EquipmentPriceWithoutRobot,
                 EquipmentPriceWithRobot = _course.EquipmentPriceWithRobot,
@@ -45,7 +45,7 @@ namespace cdod.Schema.Mutations
                 Course? _course = dbContext.Courses.FirstOrDefault(с => с.Id == el.Id);
                 if (_course == null) { errorCourseIds.Add(el.Id); continue; }
                 _course.Name = el.name ?? _course.Name;
-                _course.ProgramFileUrl = el.programFileUrl ?? _course.ProgramFileUrl;
+                _course.ProgramId = el.programId ?? _course.ProgramId;
                 _course.CoursePrice = el.coursePrice ?? _course.CoursePrice;
                 _course.EquipmentPriceWithRobot = el.equipmentPriceWithRobot ?? _course.EquipmentPriceWithRobot;
                 _course.EquipmentPriceWithoutRobot = el.equipmentPriceWithoutRobot ?? _course.EquipmentPriceWithoutRobot;

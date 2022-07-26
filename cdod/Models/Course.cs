@@ -10,8 +10,6 @@ namespace cdod.Models
 
         public string Name { get; set; }
 
-        public string ProgramFileUrl { get; set; }
-
         public double CoursePrice { get; set; }
 
         public double? EquipmentPriceWithRobot { get; set; }
@@ -24,8 +22,8 @@ namespace cdod.Models
 
         public string? SvgIconUrl { get; set; }
 
-        public int ProgramId { get; set; }
-        public CourseProgram Program { get; set; }
+        public int? ProgramId { get; set; }
+        public CourseProgram? Program { get; set; }
 
         public IEnumerable<StudentToCourse?> StudentToCourses { get; set; } = new List<StudentToCourse?>();
         public IEnumerable<PayNote> PayNotes { get; set; } = new List<PayNote>();

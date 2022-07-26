@@ -194,7 +194,7 @@ namespace cdod.Schema.Queries
             {
                 Id = c.Id,
                 Name = c.Name,
-                ProgramFileUrl = c.ProgramFileUrl,
+                ProgramId = c.ProgramId,
                 CoursePrice = c.CoursePrice,
                 EquipmentPriceWithRobot = c.EquipmentPriceWithRobot,
                 EquipmentPriceWithoutRobot = c.EquipmentPriceWithoutRobot,
@@ -212,7 +212,7 @@ namespace cdod.Schema.Queries
             {
                 Id = c.Id,
                 Name = c.Name,
-                ProgramFileUrl = c.ProgramFileUrl,
+                ProgramId = c.ProgramId,
                 CoursePrice = c.CoursePrice,
                 EquipmentPriceWithRobot = c.EquipmentPriceWithRobot,
                 EquipmentPriceWithoutRobot = c.EquipmentPriceWithoutRobot,

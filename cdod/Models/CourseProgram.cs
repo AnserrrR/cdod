@@ -11,6 +11,8 @@ namespace cdod.Models
 
         public string Name { get; set; }
 
+        public string? ProgramFileUrl { get; set; }
+
         public IEnumerable<Course?> Courses { get; set; } = new List<Course?>();
         public IEnumerable<Topic?> Topics { get; set; } = new List<Topic?>();
     }
