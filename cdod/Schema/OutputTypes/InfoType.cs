@@ -41,16 +41,18 @@ namespace cdod.Schema.OutputTypes
         {
             var scg = await groupByStudentIdCourseIdDataLoader.LoadAsync((CourseId, StudentId) );
 
-            if (scg is null) return null;
-
-            return new GroupType()
+            if (scg?.GroupId is int groupId)
             {
-                Id = scg.GroupId,
-                Name = scg.Group.Name,
-                StartDate = scg.Group.StartDate,
-                CourseId = scg.Group.CourseId,
-                TeacherId = scg.Group.TeacherId
-            };
+                return new GroupType()
+                {
+                    Id = groupId,
+                    Name = scg.Group.Name,
+                    StartDate = scg.Group.StartDate,
+                    CourseId = scg.Group.CourseId,
+                    TeacherId = scg.Group.TeacherId
+                };
+            }
+            return null;
         }
 
         public async Task<bool> IsCoursePaid([Service] PayInfoDataLoader payInfoDataLoader,

@@ -26,14 +26,13 @@ namespace cdod.Services.DataLoaders
             var studentIds = keys.Select(k => k.Item2);
 
             var rawSelection = from g in context.Groups
-                join c in context.Courses on g.CourseId equals c.Id
-                join stg in context.StudentToCourses on g.Id equals stg.GroupId
-                where courseIds.Contains(g.CourseId) && studentIds.Contains(stg.StudentId)
+                join stc in context.StudentToCourses on g.Id equals stc.GroupId
+                where courseIds.Contains(stc.CourseId) && studentIds.Contains(stc.StudentId)
                 select new StudentCourseGroup()
                 {
-                    StudentId = stg.StudentId,
-                    CourseId = c.Id,
-                    GroupId = g.Id,
+                    StudentId = stc.StudentId,
+                    CourseId = stc.CourseId,
+                    GroupId = stc.GroupId,
                     Group = g
                 };
 
