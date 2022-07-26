@@ -20,9 +20,14 @@ namespace cdod.Models
 
         public int DurationInMonths { get; set; }
 
-        //public IEnumerable<Student?> Students { get; set; } = new List<Student?>();
-        public IEnumerable<StudentToCourse?> StudentToCourses { get; set; } = new List<StudentToCourse?>();
+        public string? Color { get; set; }
 
+        public string? SvgIconUrl { get; set; }
+
+        public int ProgramId { get; set; }
+        public CourseProgram Program { get; set; }
+
+        public IEnumerable<StudentToCourse?> StudentToCourses { get; set; } = new List<StudentToCourse?>();
         public IEnumerable<PayNote> PayNotes { get; set; } = new List<PayNote>();
         public IEnumerable<Announcement?> Announcements { get; set; } = new List<Announcement?>();
         public IEnumerable<Teacher?> Teachers { get; set; } = new List<Teacher?>();

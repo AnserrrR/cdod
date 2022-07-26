@@ -29,6 +29,7 @@ namespace cdod.Models
 
         public IEnumerable<PayNote?> PayNotes { get; set; } = new List<PayNote?>();
         public IEnumerable<Announcement?> Announcements { get; set; } = new List<Announcement?>();
+        public IEnumerable<AnnouncementToUser?> AnnouncementsToUser { get; set; } = new List<AnnouncementToUser?>();
 
 
     }

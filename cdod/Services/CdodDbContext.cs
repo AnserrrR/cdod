@@ -19,11 +19,15 @@ namespace cdod.Services
         public DbSet<PayNote> PayNotes { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<CourseProgram> Programs { get; set; }
+        public DbSet<Topic> Topics { get; set; }
+        public DbSet<WageRate> WageRates { get; set; }
 
         public DbSet<StudentToCourse> StudentToCourses { get; set; }
         public DbSet<StudentToLesson> StudentToLessons { get; set; }
         public DbSet<TeacherToLesson> TeacherToLessons { get; set; }
         public DbSet<StudentsToGroups> StudentsToGroups { get; set; }
+        public DbSet<AnnouncementToUser> AnnouncementsToUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -62,6 +66,8 @@ namespace cdod.Services
            modelBuilder.Entity<StudentToLesson>().HasKey(e => new {e.LessonId, e.StudentId});
 
            modelBuilder.Entity<StudentsToGroups>().HasKey(e => new {e.GroupId, e.StudentId});
+
+           modelBuilder.Entity<AnnouncementToUser>().HasKey(e => new {e.AnnouncementId, e.UserId});
         }
     }
 }

@@ -17,7 +17,10 @@ namespace cdod.Models
 
         public Post Post { get; set; }
 
-        //public IEnumerable<Lesson?> Lessons { get; set; } = new List<Lesson?>();
+        public int WageRateId { get; set; }
+
+        public WageRate WageRate { get; set; }
+
         public IEnumerable<TeacherToLesson?> TeacherToLessons { get; set; } = new List<TeacherToLesson?>();
 
         public IEnumerable<Course?> Courses { get; set; } = new List<Course?>();

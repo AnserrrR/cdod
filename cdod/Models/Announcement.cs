@@ -27,9 +27,10 @@ namespace cdod.Models
 
         public int UserId { get; set; }
 
-        public User User { get; set; }
+        public User UserCreator { get; set; }
 
         public IEnumerable<Course?> Courses { get; set; } = new List<Course?>();
         public IEnumerable<Group?> Groups { get; set; } = new List<Group?>();
+        public IEnumerable<AnnouncementToUser?> AnnouncementToUsers { get; set; } = new List<AnnouncementToUser?>();
     }
 }
