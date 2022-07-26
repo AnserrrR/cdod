@@ -58,7 +58,7 @@ namespace cdod.Services
                 .WithMany(c => c.Announcements)
                 .UsingEntity(j => j.ToTable("AnnouncementsToCourses"));
 
-           modelBuilder.Entity<StudentToCourse>().HasKey(e => new {e.CourseId, e.StudentId});
+           modelBuilder.Entity<StudentToCourse>().HasKey(e => new {e.CourseId, e.StudentId, e.Attempt});
 
            modelBuilder.Entity<TeacherToLesson>().HasKey(e => new {e.TeacherId, e.LessonId});
 

@@ -14,6 +14,9 @@ namespace cdod.Schema.OutputTypes
         [IsProjected]
         public int StudentId { get; set; }
 
+        [IsProjected]
+        public int Attempt { get; set; }
+
         public DateOnly AdmissionDate { get; set; }
 
         public bool? IsGetRobot { get; set; }
@@ -39,7 +42,7 @@ namespace cdod.Schema.OutputTypes
         [UseProjection]
         public async Task<GroupType?> Group([Service] GroupByStudentIdCourseIdDataLoader groupByStudentIdCourseIdDataLoader)
         {
-            var scg = await groupByStudentIdCourseIdDataLoader.LoadAsync((CourseId, StudentId) );
+            var scg = await groupByStudentIdCourseIdDataLoader.LoadAsync((CourseId, StudentId, Attempt) );
 
             if (scg?.GroupId is int groupId)
             {
@@ -80,10 +83,11 @@ namespace cdod.Schema.OutputTypes
             [Service] PayInfoDataLoader payInfoDataLoader, [Service]PayNotesDataLoader payNotesDataLoader)
         {
 
-            var payInfo = await payInfoDataLoader.LoadAsync((CourseId,StudentId));
+            var payInfo = await payInfoDataLoader.LoadAsync((CourseId,StudentId, Attempt));
 
             if (appointment == Appointment.Material && payInfo.CourseName != "Робофабрика") return null;
 
+            //Номер попытки не важен
             if (payInfo.ContractState == ContractState.Studying)
             {
                 {

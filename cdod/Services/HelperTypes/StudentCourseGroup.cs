@@ -8,6 +8,8 @@ namespace cdod.Services.HelperTypes
 
         public int CourseId { get; set; }
 
+        public int Attempt { get; set; }
+
         public int? GroupId { get; set; }
 
         public Group Group { get; set; }

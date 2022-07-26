@@ -25,6 +25,8 @@ namespace cdod.Models
 
         public Course Course { get; set; }
 
+        public int Attempt { get; set; }
+
         public DateOnly SignDate { get; set; }
 
         public ContractState ContractState { get; set; }

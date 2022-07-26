@@ -68,7 +68,8 @@ namespace cdod.Schema.OutputTypes
                 .Select(stc => new InfoType()
                 {
                     CourseId = stc.CourseId,
-                    StudentId = Id,
+                    StudentId = stc.StudentId,
+                    Attempt = stc.Attempt,
                     AdmissionDate = stc.SignDate,
                     IsGetRobot = stc.EquipmentPriceWithRobot,
                     ContractState = stc.ContractState

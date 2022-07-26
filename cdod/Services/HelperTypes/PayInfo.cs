@@ -8,6 +8,8 @@ namespace cdod.Services.HelperTypes
 
         public int StudentId { get; set; }
 
+        public int Attempt { get; set; }
+
         public ContractState ContractState { get; set; }
 
         public double CoursePrice { get; set; }
