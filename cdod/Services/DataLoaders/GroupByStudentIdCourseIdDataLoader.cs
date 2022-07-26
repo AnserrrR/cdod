@@ -27,7 +27,7 @@ namespace cdod.Services.DataLoaders
 
             var rawSelection = from g in context.Groups
                 join c in context.Courses on g.CourseId equals c.Id
-                join stg in context.StudentsToGroups on g.Id equals stg.GroupId
+                join stg in context.StudentToCourses on g.Id equals stg.GroupId
                 where courseIds.Contains(g.CourseId) && studentIds.Contains(stg.StudentId)
                 select new StudentCourseGroup()
                 {

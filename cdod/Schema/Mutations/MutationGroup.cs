@@ -72,6 +72,7 @@ namespace cdod.Schema.Mutations
             return await dbContext.SaveChangesAsync() > 0;
         }
 
+        /* TODO: Исправить
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<bool> AttachStudentsToGroups(List<StudentToGroupInput> studentsToGroups, [ScopedService] CdodDbContext dbContext)
         {
@@ -102,5 +103,6 @@ namespace cdod.Schema.Mutations
             }));
             return await dbContext.SaveChangesAsync() > 0;
         }
+        */
     }
 }

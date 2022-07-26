@@ -33,6 +33,10 @@ namespace cdod.Models
 
         public bool? EquipmentPriceWithRobot { get; set; }
 
+        public int? GroupId { get; set; }
+
+        public Group? Group { get; set; }
+
         //Default value = 0
         public double? Debt { get; set; }
     }

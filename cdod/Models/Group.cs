@@ -24,6 +24,6 @@ namespace cdod.Models
         public IEnumerable<Announcement?> Announcements { get; set; } = new List<Announcement?>();
 
         //public IEnumerable<Student?> Students { get; set; } = new List<Student?>();
-        public IEnumerable<StudentsToGroups?> StudentsToGroups { get; set; } = new List<StudentsToGroups?>();
+        public IEnumerable<StudentToCourse?> StudentsToGroups { get; set; } = new List<StudentToCourse?>();
     }
 }

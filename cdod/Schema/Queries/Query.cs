@@ -47,7 +47,7 @@ namespace cdod.Schema.Queries
                 if (!ctx.Groups.Any(g => g.Id == groupId))
                     throw new GraphQLException($"{nameof(Group)} not found!");
 
-                return ctx.Students.Where(s => s.StudentsToGroups
+                return ctx.Students.Where(s => s.StudentToCourses
                         .Any(stg => stg.GroupId == groupId))
                     .Select(s => new StudentType()
                     {
