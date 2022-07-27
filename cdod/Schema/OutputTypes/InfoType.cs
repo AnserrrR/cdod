@@ -103,7 +103,7 @@ namespace cdod.Schema.OutputTypes
                             throw new Exception("Not enough information: will the student pick up the robot");
                     }
 
-                    var totalPayment = await payNotesDataLoader.LoadAsync((CourseId, StudentId, appointment));
+                    var totalPayment = await payNotesDataLoader.LoadAsync((CourseId, StudentId, Attempt, appointment));
 
                     var monthPassed = (DateTime.Today.Year - payInfo.SignDate.Year) * 12 + DateTime.Today.Month - payInfo.SignDate.Month;
 

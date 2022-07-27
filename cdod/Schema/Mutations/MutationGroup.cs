@@ -72,25 +72,25 @@ namespace cdod.Schema.Mutations
             return await dbContext.SaveChangesAsync() > 0;
         }
 
-        /* TODO: Исправить
-        [UseDbContext(typeof(CdodDbContext))]
-        public async Task<bool> AttachStudentsToGroups(List<StudentToGroupInput> studentsToGroups, [ScopedService] CdodDbContext dbContext)
-        {
-            dbContext.StudentsToGroups.AddRange(studentsToGroups.Select(stg =>
-            {
-                StudentsToGroups? studentTogroup = dbContext.StudentsToGroups.FirstOrDefault(_stg =>
-                    ((stg.groupId == _stg.GroupId) && (stg.studentId == _stg.StudentId)));
-                if (studentTogroup is not null) throw new Exception("Ученик уже привязан к группе");
-                StudentsToGroups rec = new StudentsToGroups()
-                {
-                    GroupId = stg.groupId,
-                    StudentId = stg.studentId,
-                };
-                return rec;
-            }));
-            return await dbContext.SaveChangesAsync() > 0;
-        }
-
+        // TODO: Исправить
+        //[UseDbContext(typeof(CdodDbContext))]
+        //public async Task<bool> AttachStudentsToGroups(List<StudentToGroupInput> studentsToGroups, [ScopedService] CdodDbContext dbContext)
+        //{
+        //    dbContext.StudentsToGroups.AddRange(studentsToGroups.Select(stg =>
+        //    {
+        //        StudentsToGroups? studentTogroup = dbContext.StudentsToGroups.FirstOrDefault(_stg =>
+        //            ((stg.groupId == _stg.GroupId) && (stg.studentId == _stg.StudentId)));
+        //        if (studentTogroup is not null) throw new Exception("Ученик уже привязан к группе");
+        //        StudentsToGroups rec = new StudentsToGroups()
+        //        {
+        //            GroupId = stg.groupId,
+        //            StudentId = stg.studentId,
+        //        };
+        //        return rec;
+        //    }));
+        //    return await dbContext.SaveChangesAsync() > 0;
+        //}
+        /*
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<bool> DettachStudentsFromGroups(List<StudentToGroupInput> studentsToGroups, [ScopedService] CdodDbContext dbContext)
         {

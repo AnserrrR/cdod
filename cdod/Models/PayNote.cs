@@ -23,6 +23,8 @@ namespace cdod.Models
         public int StudentId { get; set; }
         public Student Student { get; set; }
 
+        public int Attempt { get; set; }
+
         public int UserId { get; set; }
         public User User { get; set; }
     }
