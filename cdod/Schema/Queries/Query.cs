@@ -198,7 +198,9 @@ namespace cdod.Schema.Queries
                 CoursePrice = c.CoursePrice,
                 EquipmentPriceWithRobot = c.EquipmentPriceWithRobot,
                 EquipmentPriceWithoutRobot = c.EquipmentPriceWithoutRobot,
-                DurationInMonths = c.DurationInMonths
+                DurationInMonths = c.DurationInMonths,
+                Color = c.Color,
+                SvgIconUrl = c.SvgIconUrl
             });
         }
 
@@ -216,7 +218,9 @@ namespace cdod.Schema.Queries
                 CoursePrice = c.CoursePrice,
                 EquipmentPriceWithRobot = c.EquipmentPriceWithRobot,
                 EquipmentPriceWithoutRobot = c.EquipmentPriceWithoutRobot,
-                DurationInMonths = c.DurationInMonths
+                DurationInMonths = c.DurationInMonths,
+                Color = c.Color,
+                SvgIconUrl = c.SvgIconUrl
             };
         }
 

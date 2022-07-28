@@ -12,6 +12,10 @@
         [GraphQLName("price")]
         public double CoursePrice { get; set; }
 
+        public string? Color { get; set; }
+
+        public string? SvgIconUrl { get; set; }
+
         public double? EquipmentPriceWithRobot { get; set; }
 
         public double? EquipmentPriceWithoutRobot { get; set; }
