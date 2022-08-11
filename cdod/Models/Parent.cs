@@ -31,7 +31,7 @@ namespace cdod.Models
 
         public string? SecondEmail { get; set; }
 
-        public DateOnly SignDate { get; set; }
+        public DateOnly? SignDate { get; set; }
 
         public RelationType? Type { get; set; }
 

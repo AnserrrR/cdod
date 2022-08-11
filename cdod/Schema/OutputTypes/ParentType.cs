@@ -20,8 +20,8 @@ namespace cdod.Schema.OutputTypes
         public string? LastName => _user.Lastname;
         public string? Patronymic => _user.Patronymic;
         public string? PhoneNumber => _user.PhoneNumber;
-        public string Email => _user.Email;
-        public string Password => _user.Password;
+        public string? Email => _user.Email;
+        public string? Password => _user.Password;
         public DateOnly? Birthday => _user.Birthday;
         public string? Address => _user.Address;
         public string? Education => _user.Education;
@@ -38,7 +38,7 @@ namespace cdod.Schema.OutputTypes
         public string? SecondEmail { get; set; }
 
         [GraphQLName("applyingDate")]
-        public DateOnly SignDate { get; set; }
+        public DateOnly? SignDate { get; set; }
 
         public RelationType? Type { get; set; }
     }

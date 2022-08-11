@@ -10,7 +10,7 @@ namespace cdod.Schema.OutputTypes
 
         public string Name { get; set; }
 
-        public District District { get; set; }
+        public District? District { get; set; }
 
         [UseDbContext(typeof(CdodDbContext))]
         [UseProjection]

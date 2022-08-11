@@ -1,151 +1,123 @@
-﻿//using cdod.Models;
-//using cdod.Schema.InputTypes;
-//using cdod.Schema.OutputTypes;
-//using cdod.Services;
+﻿using cdod.Models;
+using cdod.Schema.InputTypes;
+using cdod.Schema.OutputTypes;
+using cdod.Services;
+using HotChocolate.AspNetCore.Authorization;
 
-//namespace cdod.Schema.Mutations
-//{
-//    [ExtendObjectType(typeof(Mutation))]
-//    public class MutationParent
-//    {
+namespace cdod.Schema.Mutations
+{
+    [ExtendObjectType(typeof(Mutation))]
+    public class MutationParent
+    {
 
-//        [UseDbContext(typeof(CdodDbContext))]
-//        public async Task<ParentType> ParentCreate(ParentInput  parent, [ScopedService] CdodDbContext dbContext)
-//        { // throw new GraphQLException("Пользователь с таким емейлом уже существует")
-//            //if (dbContext.Users.FirstOrDefault(u => u.Email == parent.Email) is not null) throw new GraphQLException("Пользователь с таким емейлом уже существует");
-//            try
-//            {
-//                User user = new User()
-//                {
-//                    Firstname = parent.Firstname,
-//                    Lastname = parent.Firstname,
-//                    Patronymic = parent.Firstname,
-//                    PhoneNumber = parent.PhoneNumber,
-//                    Email = parent.Email,
-//                    Password = parent.Password,
-//                    Birthday = parent.Birthday,
-//                    Address = parent.Address,
-//                    Education = parent.Education,
-//                    Inn = parent.Inn,
-//                    Snils = parent.Snils,
-//                    passportNo = parent.passportNo,
-//                    passportIssue = parent.passportIssue,
-//                    passportDate = parent.passportDate,
-//                    passportCode = parent.passportCode,
-//                };
-//                dbContext.Users.Add(user);
-//                await dbContext.SaveChangesAsync();
-//                Parent parentSave = new Parent()
-//                {
-//                    UserId = user.Id,
-//                    SecondEmail = parent.SecondEmail,
-//                    SecondPhoneNumber = parent.SecondPhoneNumber,
-//                    SignDate = parent.applyingDate
-//                };
-//                dbContext.Parents.Add(parentSave);
-//                await dbContext.SaveChangesAsync();
-//                ParentType parentOutput = new ParentType(user)
-//                {
-//                    Id = user.Id,
-//                    SecondEmail = parent.SecondEmail,
-//                    SecondPhoneNumber = parent.SecondPhoneNumber,
-//                    SignDate = parent.applyingDate
-//                };
+        [Authorize(Roles = new[] { "admin" })]
+        [UseDbContext(typeof(CdodDbContext))]
+        public async Task<ParentType> ParentCreate(ParentInput  parent, [ScopedService] CdodDbContext dbContext)
+        {
+            if (dbContext.Users.FirstOrDefault(u => ((u.Email == parent.Email) && (parent.Email != null))) is not null) throw new GraphQLException("Пользователь с таким емейлом уже существует");
+                User user = new User()
+                {
+                    Firstname = parent.Firstname,
+                    Lastname = parent.Firstname,
+                    Patronymic = parent.Firstname,
+                    PhoneNumber = parent.PhoneNumber,
+                    Email = parent.Email,
+                    Password = parent.Password,
+                    Birthday = parent.Birthday,
+                    Address = parent.Address,
+                    Education = parent.Education,
+                    Inn = parent.Inn,
+                    Snils = parent.Snils,
+                    passportNo = parent.passportNo,
+                    passportIssue = parent.passportIssue,
+                    passportDate = parent.passportDate,
+                    passportCode = parent.passportCode,
+                };
+                dbContext.Users.Add(user);
+                await dbContext.SaveChangesAsync();
+                // Обработчик на телефон и емейл?
+                Parent parentSave = new Parent()
+                {
+                    UserId = user.Id,
+                    SecondEmail = parent.SecondEmail,
+                    SecondPhoneNumber = parent.SecondPhoneNumber,
+                    SignDate = parent.applyingDate,
+                    Type = parent.relationType
+                };
+                dbContext.Parents.Add(parentSave);
+                await dbContext.SaveChangesAsync();
+                ParentType parentOutput = new ParentType(user)
+                {
+                    Id = user.Id,
+                    SecondEmail = parent.SecondEmail,
+                    SecondPhoneNumber = parent.SecondPhoneNumber,
+                    SignDate = parent.applyingDate,
+                    Type = parent.relationType
+                };
 
-//                return parentOutput;
-//            }
-//            catch (Exception ex)
-//            {
-//                throw new GraphQLException(ex.ToString());
-//            }
+                return parentOutput;
+        }
 
-//        }
+        [Authorize(Roles = new[] { "admin" })]
+        [UseDbContext(typeof(CdodDbContext))]
+        public async Task<ParentType> ParentUpdate(int id, ParentInput parent, [ScopedService] CdodDbContext dbContext)
+        {
+            User? _user = dbContext.Users.FirstOrDefault(u => u.Id == id);
+            if (_user is null) throw new Exception($"Пользователя с таким ID: {id} - не существует");
+            Parent? _parent = dbContext.Parents.FirstOrDefault(p => p.UserId == id);
+            if (_user is null) throw new Exception($"Родителя с таким ID: {id} - не существует");
+            bool isEmailFree = dbContext.Users.FirstOrDefault(u => ((u.Email == parent.Email) && (u.Id != id))) is null;
+            if (!isEmailFree) throw new Exception($"Пользователь с таким емейлом уже существует");
+            
 
-//        [UseDbContext(typeof(CdodDbContext))]
-//        public async Task<bool> ParentUpdateMany(List<ParentInput > parent, [ScopedService] CdodDbContext dbContext)
-//        {
-//            List<int> errorUserIds = new List<int>();
-//            List<int> errorNotParentIds = new List<int>();
-//            List<User> userUpdated = new List<User>();
-//            List<Parent> parentUpdated = new List<Parent>();
-//            foreach (ParentInput  el in parent)
-//            {
-//                User? _user = dbContext.Users.FirstOrDefault(u => u.Id == el.Id);
-//                if (_user == null) { errorUserIds.Add(el.Id); continue; }
-//                Parent? _parent = dbContext.Parents.FirstOrDefault(p => p.UserId == el.Id);
-//                if (_parent is null) { errorNotParentIds.Add(el.Id); continue; }
-//                _user.Firstname = el.Firstname ?? _user.Firstname;
-//                _user.Lastname = el.Lastname ?? _user.Lastname;
-//                _user.Patronymic = el.Patronymic ?? _user.Patronymic;
-//                _user.PhoneNumber = el.PhoneNumber ?? _user.PhoneNumber;
-//                _user.Email = el.Email ?? _user.Email;
-//                _user.Password = el.Password ?? _user.Password;
-//                _user.Birthday = el.Birthday ?? _user.Birthday;
-//                _user.Address = el.Address ?? _user.Address;
-//                _user.Education = el.Education ?? _user.Education;
-//                _user.Inn = el.Inn ?? _user.Inn;
-//                _user.Snils = el.Snils ?? _user.Snils;
-//                _user.passportNo = el.passportNo ?? _user.passportNo;
-//                _user.passportIssue = el.passportIssue ?? _user.passportIssue;
-//                _user.passportDate = el.passportDate ?? _user.passportDate;
-//                _user.passportCode = el.passportCode ?? _user.passportCode;
-//                _parent.SecondPhoneNumber = el.SecondPhoneNumber ?? _parent.SecondPhoneNumber;
-//                _parent.SecondEmail = el.SecondEmail ?? _parent.SecondEmail;
-//                _parent.SignDate = el.applyingDate ?? _parent.SignDate;
-//                userUpdated.Add(_user);
-//                parentUpdated.Add(_parent);
-//            }
-//            dbContext.Users.UpdateRange(userUpdated);
-//            dbContext.Parents.UpdateRange(parentUpdated);
-//            if (errorUserIds.Count() > 0 || errorNotParentIds.Count() > 0)
-//            {
-//                if (errorUserIds.Count() > 0 && errorNotParentIds.Count > 0)
-//                {
-//                    throw new GraphQLException($"Невозможно обновить следующих пользователей:\n" +
-//                        $"ID следующих пользователей нет в системе: {string.Join(" ", errorUserIds)}\n" +
-//                        $"ID следующих пользователей не являющихся родителями: {string.Join(" ", errorNotParentIds)}");
-//                }
-//                else if (errorUserIds.Count() > 0)
-//                {
-//                    throw new GraphQLException($"Невозможно обновить следующих пользователей:\n" +
-//                        $"ID следующих пользователей нет в системе: {string.Join(" ", errorUserIds)}\n");
-//                }
-//                else
-//                {
-//                    throw new GraphQLException($"Невозможно обновить следующих пользователей:\n" +
-//                        $"ID следующих пользователей не являющихся родителями: {string.Join(" ", errorNotParentIds)}");
+            _user.Firstname = parent.Firstname ?? _user.Firstname;
+            _user.Lastname = parent.Lastname ?? _user.Lastname;
+            _user.Patronymic = parent.Patronymic ?? _user.Patronymic;
+            _user.PhoneNumber = parent.PhoneNumber ?? _user.PhoneNumber;
+            _user.Email = parent.Email ?? _user.Email;
+            _user.Password = parent.Password ?? _user.Password;
+            _user.Birthday = parent.Birthday ?? _user.Birthday;
+            _user.Address = parent.Address ?? _user.Address;
+            _user.Education = parent.Education ?? _user.Education;
+            _user.Inn = parent.Inn ?? _user.Inn;
+            _user.Snils = parent.Snils ?? _user.Snils;
+            _user.passportNo = parent.passportNo ?? _user.passportNo;
+            _user.passportIssue = parent.passportIssue ?? _user.passportIssue;
+            _user.passportDate = parent.passportDate ?? _user.passportDate;
+            _user.passportCode = parent.passportCode ?? _user.passportCode;
+            _parent.SecondPhoneNumber = parent.SecondPhoneNumber ?? _parent.SecondPhoneNumber;
+            _parent.SecondEmail = parent.SecondEmail ?? _parent.SecondEmail;
+            _parent.SignDate = parent.applyingDate ?? _parent.SignDate;
+            _parent.Type = parent.relationType ?? _parent.Type;
 
-//                }
-//            }
-//            return await dbContext.SaveChangesAsync() > 0;
-//        }
+            ParentType newParent = new ParentType(_user)
+            {
+                Id = _user.Id,
+                SecondEmail = _parent.SecondEmail,
+                SecondPhoneNumber = _parent.SecondPhoneNumber,
+                Type = _parent.Type
+            };
+            dbContext.Users.Update(_user);
+            dbContext.Parents.Update(_parent);
+            await dbContext.SaveChangesAsync();
+            return newParent;
+        }
 
-//        [UseDbContext(typeof(CdodDbContext))]
-//        public async Task<bool> ParentDeleteMany(List<int> parentsIds, [ScopedService] CdodDbContext dbContext)
-//        {
-//            List<int> errorNotParentIds = new List<int>();
-//            try
-//            {
-//                dbContext.Parents.RemoveRange(parentsIds.Select(p =>
-//                {
-//                    Parent? _parent = dbContext.Parents.FirstOrDefault(pid => pid.UserId == p);
-//                    if (_parent is null)
-//                    {
-//                        errorNotParentIds.Add(p);
-//                        throw new GraphQLException($"Невозможно удалить следующих пользователей:\n" +
-//                            $"ID следующих пользователей не являющихся родителями: {p}");
-//                    }
-//                    return _parent;
-//                }));
-//            }
-//            catch
-//            {
-//                throw new GraphQLException($"Невозможно удалить следующих пользователей:\n" +
-//    $"ID следующих пользователей не являющихся родителями: {string.Join(" ", errorNotParentIds)}");
+        [Authorize(Roles = new[] { "admin" })]
+        [UseDbContext(typeof(CdodDbContext))]
+        public async Task<bool> ParentDeleteMany(List<int> parentsIds, [ScopedService] CdodDbContext dbContext)
+        {
+            List<int> errorNotParentIds = new List<int>();
+            foreach(int id in parentsIds)
+            {
+                Parent? parent = dbContext.Parents.FirstOrDefault(p => p.UserId == id);
+                if (parent is null) {errorNotParentIds.Add(id); continue;}
+                dbContext.Parents.Remove(parent);
+            }
+            if (errorNotParentIds.Count() > 0) throw new GraphQLException($"Невозможно удалить следующих пользователей:\n" +
+    $"ID следующих пользователей не являющихся родителями: {string.Join(" ", errorNotParentIds)}");
+            return await dbContext.SaveChangesAsync() > 0;
+        }
 
-//            }
-//            return await dbContext.SaveChangesAsync() > 0;
-//        }
-
-//    }
-//}
+    }
+}

@@ -10,6 +10,7 @@
         public double? equipmentPriceWithoutRobot { get; set; }
         public string? color { get; set; }
         public string? svgIconColor { get; set; }
+        public int? durationInMonths { get; set; }
     }
 
     public class CourseUpdateInput
@@ -22,5 +23,7 @@
         public double? equipmentPriceWithoutRobot { get; set; }
         public string? color { get; set; }
         public string? svgIconColor { get; set; }
+        public int? durationInMonths { get; set; }
+
     }
 }
