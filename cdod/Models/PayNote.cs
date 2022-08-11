@@ -25,6 +25,8 @@ namespace cdod.Models
 
         public int Attempt { get; set; }
 
+        public StudentToCourse StudentToCourse { get; set; }
+
         public int UserId { get; set; }
         public User User { get; set; }
     }

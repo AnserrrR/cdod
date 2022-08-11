@@ -65,6 +65,11 @@ namespace cdod.Services
            modelBuilder.Entity<StudentToLesson>().HasKey(e => new {e.LessonId, e.StudentId});
 
            modelBuilder.Entity<AnnouncementToUser>().HasKey(e => new {e.AnnouncementId, e.UserId});
+
+           modelBuilder.Entity<PayNote>()
+               .HasOne<StudentToCourse>(pn => pn.StudentToCourse)
+               .WithMany(stc => stc.PayNotes)
+               .HasForeignKey(pn => new { pn.CourseId, pn.StudentId, pn.Attempt });
         }
     }
 }

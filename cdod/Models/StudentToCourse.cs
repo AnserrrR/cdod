@@ -39,6 +39,8 @@ namespace cdod.Models
 
         public Group? Group { get; set; }
 
+        public IEnumerable<PayNote?>? PayNotes { get; set; }
+
         //Default value = 0
         public double? Debt { get; set; }
     }
