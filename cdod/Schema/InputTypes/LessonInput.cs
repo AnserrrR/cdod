@@ -4,11 +4,11 @@
     {
         public string? Homework { get; set; }
 
-        public TimeOnly StartTime { get; set; }
+        public DateTime StartTime { get; set; }
 
         public int Duration { get; set; }
 
-        public string ClassRoom { get; set; }
+        public string? ClassRoom { get; set; }
 
         public string? LessonTopic { get; set; }
 
@@ -21,7 +21,7 @@
 
         public string? Homework { get; set; }
 
-        public TimeOnly? StartTime { get; set; }
+        public DateTime? StartTime { get; set; }
 
         public int? Duration { get; set; }
 

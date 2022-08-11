@@ -10,7 +10,7 @@ namespace cdod.Schema.Mutations
     {
 
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<ParentType> ParentCreate(ParentCreateInput parent, [ScopedService] CdodDbContext dbContext)
+        public async Task<ParentType> ParentCreate(ParentInput  parent, [ScopedService] CdodDbContext dbContext)
         { // throw new GraphQLException("Пользователь с таким емейлом уже существует")
             //if (dbContext.Users.FirstOrDefault(u => u.Email == parent.Email) is not null) throw new GraphQLException("Пользователь с таким емейлом уже существует");
             try
@@ -62,13 +62,13 @@ namespace cdod.Schema.Mutations
         }
 
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<bool> ParentUpdateMany(List<ParentUpdateInput> parent, [ScopedService] CdodDbContext dbContext)
+        public async Task<bool> ParentUpdateMany(List<ParentInput > parent, [ScopedService] CdodDbContext dbContext)
         {
             List<int> errorUserIds = new List<int>();
             List<int> errorNotParentIds = new List<int>();
             List<User> userUpdated = new List<User>();
             List<Parent> parentUpdated = new List<Parent>();
-            foreach (ParentUpdateInput el in parent)
+            foreach (ParentInput  el in parent)
             {
                 User? _user = dbContext.Users.FirstOrDefault(u => u.Id == el.Id);
                 if (_user == null) { errorUserIds.Add(el.Id); continue; }

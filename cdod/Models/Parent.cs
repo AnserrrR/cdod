@@ -15,6 +15,7 @@ namespace cdod.Models
         Brother,
         Sister,
         Guardian,
+        Godparent,
         Other
     }
 

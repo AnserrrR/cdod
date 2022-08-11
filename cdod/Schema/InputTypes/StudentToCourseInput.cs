@@ -6,8 +6,9 @@ namespace cdod.Schema.InputTypes
     {
         public int StudentId { get; set; }
         public int CourseId { get; set; }
+        public int? GroupId { get; set; }
 
-        public DateOnly admissionDate { get; set; }
+        public DateOnly? admissionDate { get; set; }
 
         public ContractState ContractState { get; set; }
 
@@ -20,6 +21,8 @@ namespace cdod.Schema.InputTypes
     {
         public int StudentId { get; set; }
         public int CourseId { get; set; }
+        public int Attempt { get; set; }
+        public int GroupId { get; set; }
 
         public DateOnly? admissionDate { get; set; }
 
@@ -34,5 +37,6 @@ namespace cdod.Schema.InputTypes
     {
         public int studentId { get; set; }
         public int courseId { get; set; }
+        public int Attempt { get; set; }
     }
 }
