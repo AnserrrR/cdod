@@ -7,6 +7,7 @@ using cdod.Schema.OutputTypes;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace cdod.Schema
 {
@@ -14,12 +15,12 @@ namespace cdod.Schema
     public class MutationUser
     {
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<string> Login(ParentLoginInput user, [ScopedService] CdodDbContext dbCOntext, [Service] IOptions<TokenSettings> tokenSettings)
+        public async Task<string> Login(LoginInput user, [ScopedService] CdodDbContext dbContext, [Service] IOptions<TokenSettings> tokenSettings)
         {
             
             // ДОБАВИТЬ ШИФРОВКУ ЮЗЕРОВ пароль всё такое
-            var currentUser = dbCOntext.Users.Where(u => u.Email == user.email &&
-                        u.Password == user.password).FirstOrDefault();
+            var currentUser = dbContext.Users.Where(u => u.Email == user.Email &&
+                        u.Password == user.Password).FirstOrDefault();
             
             if (currentUser != null)
             {
@@ -27,21 +28,25 @@ namespace cdod.Schema
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenSettings.Value.Key));
                 var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-                var jwtToken = new SecurityTokenDescriptor
+                //Непонятно что с ролями пока
+                string role = currentUser.IsAdmin ? "admin" : "user";
+
+                var claims = new List<Claim>()
                 {
-                    Expires = DateTime.Now.AddMinutes(20),
-                    SigningCredentials = credentials,
-                    Audience = tokenSettings.Value.Audience,
-                    Issuer = tokenSettings.Value.Issuer,
+                    new Claim(ClaimTypes.Role, role)
                 };
+
+                var jwtToken = new JwtSecurityToken
+                (
+                    expires : DateTime.Now.AddMinutes(20),
+                    signingCredentials : credentials,
+                    audience : tokenSettings.Value.Audience,
+                    issuer : tokenSettings.Value.Issuer,
+                    claims : claims
+                );
                 
-                JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-                var token = tokenHandler.CreateJwtSecurityToken(jwtToken);
 
-                // Куда лучше добавлять админа либо в хеддер либо в пейлоад.
-                token.Header.Add("isAdmin", currentUser.IsAdmin);
-
-                return tokenHandler.WriteToken(token);
+                return new JwtSecurityTokenHandler().WriteToken(jwtToken);
             }
             return string.Empty;
         }

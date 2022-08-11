@@ -1,3 +1,4 @@
+using System.Text;
 using cdod.Schema;
 using cdod.Schema.Mutations;
 using cdod.Schema.Queries;
@@ -6,11 +7,14 @@ using cdod.Models;
 using cdod.Schema.OutputTypes;
 using cdod.Services.DataLoaders;
 using cdod.Services.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddGraphQLServer()
+    .AddAuthorization()
     .AddQueryType<Query>()
     .AddType<SchoolType>()
     .AddType<StudentType>()
@@ -25,8 +29,23 @@ builder.Services.AddGraphQLServer()
     .AddSorting()
     .AddProjections();
 
-// ƒÀﬂ ¿¬“Œ–»«¿÷»»
+// ƒÀﬂ ¿”Õ“»‘» ¿÷»»
 builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidIssuer = builder.Configuration.GetSection("TokenSettings").GetValue<string>("Issuer"),
+            ValidateIssuer = true,
+            ValidAudience = builder.Configuration.GetSection("TokenSettings").GetValue<string>("Audience"),
+            ValidateAudience = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("TokenSettings").GetValue<string>("Key"))),
+            ValidateIssuerSigningKey = true
+        };
+    });
+builder.Services.AddAuthorization();
 //
 
 //builder.Services.AddPooledDbContextFactory<CdodDbContext>(o => o.UseMySql("server=localhost;user=root;password=Student;database=test_db1;", new MySqlServerVersion(new Version("8.0.28"))));
@@ -60,6 +79,10 @@ var app = builder.Build();
 
 //Enable CORS
 app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+//AUTH
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapGraphQL("/");
 

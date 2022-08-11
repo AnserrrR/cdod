@@ -3,6 +3,7 @@ using System.Runtime.InteropServices.ComTypes;
 using cdod.Services;
 using cdod.Models;
 using cdod.Schema.OutputTypes;
+using HotChocolate.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -18,6 +19,7 @@ namespace cdod.Schema.Queries
         [UseProjection]
         [UseFiltering]
         [UseSorting]
+        [Authorize(Roles = new[] {"admin"})]
         public IQueryable<StudentType> GetStudents(int? courseId, int? groupId, int? parentId, int? schoolId,
             [ScopedService] CdodDbContext ctx)
         {
