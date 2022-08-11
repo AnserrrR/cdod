@@ -35,12 +35,17 @@ namespace cdod.Schema.OutputTypes
 
         public string WorkPlace { get; set; }
 
-        public int PostId { get; set; }
+        public int? PostId { get; set; }
 
-        public async Task<string> Post([Service] PostDataLoader postDataLoader)
+        public async Task<string?> Post([Service] PostDataLoader postDataLoader)
         {
-            var post = await postDataLoader.LoadAsync(PostId);
-            return post.Name;
+            if (PostId is int postId)
+            {
+                var post = await postDataLoader.LoadAsync(postId);
+                return post.Name;
+            }
+
+            return null;
         }
     }
 }

@@ -10,7 +10,7 @@
         public int? ProgramId { get; set; }
 
         [GraphQLName("price")]
-        public double CoursePrice { get; set; }
+        public double? CoursePrice { get; set; }
 
         public string? Color { get; set; }
 
@@ -20,6 +20,6 @@
 
         public double? EquipmentPriceWithoutRobot { get; set; }
 
-        public int DurationInMonths { get; set; }
+        public int? DurationInMonths { get; set; }
     }
 }

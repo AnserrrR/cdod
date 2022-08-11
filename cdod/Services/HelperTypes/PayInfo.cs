@@ -12,11 +12,11 @@ namespace cdod.Services.HelperTypes
 
         public ContractState ContractState { get; set; }
 
-        public double CoursePrice { get; set; }
+        public double? CoursePrice { get; set; }
 
         public string CourseName { get; set; }
 
-        public int DurationInMonths { get; set; }
+        public int? DurationInMonths { get; set; }
 
         public DateOnly SignDate { get; set; }
 

@@ -52,7 +52,7 @@ namespace cdod.Schema
         }
 
         [UseDbContext(typeof(CdodDbContext))]
-        public async void Registration(ParentLoginInput user, [ScopedService] CdodDbContext dbCOntext)
+        public async void Registration(LoginInput user, [ScopedService] CdodDbContext dbCOntext)
         {
             // Здесь должен быть обработчик вхлода + возврат токена
 
