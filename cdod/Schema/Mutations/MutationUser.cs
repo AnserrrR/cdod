@@ -24,7 +24,6 @@ namespace cdod.Schema
             
             if (currentUser != null)
             {
-                tokenSettings.Value.isAdmin = currentUser.IsAdmin;
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenSettings.Value.Key));
                 var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
@@ -38,7 +37,7 @@ namespace cdod.Schema
 
                 var jwtToken = new JwtSecurityToken
                 (
-                    expires : DateTime.Now.AddMinutes(20),
+                    expires : DateTime.Now.AddHours(1),
                     signingCredentials : credentials,
                     audience : tokenSettings.Value.Audience,
                     issuer : tokenSettings.Value.Issuer,
@@ -48,7 +47,7 @@ namespace cdod.Schema
 
                 return new JwtSecurityTokenHandler().WriteToken(jwtToken);
             }
-            return string.Empty;
+            throw new GraphQLException("Not found");
         }
 
         [UseDbContext(typeof(CdodDbContext))]
