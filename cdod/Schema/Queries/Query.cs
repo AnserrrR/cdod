@@ -119,6 +119,7 @@ namespace cdod.Schema.Queries
 
         [UseDbContext(typeof(CdodDbContext))]
         [UseProjection]
+        [Authorize(Roles = new[] { "admin" })]
         public async Task<StudentType> GetStudentAsync(int id, [ScopedService] CdodDbContext cdodContext)
         {
             var s = await cdodContext.Students.FindAsync(id);
@@ -141,6 +142,7 @@ namespace cdod.Schema.Queries
         [UseProjection]
         [UseFiltering]
         [UseSorting]
+        [Authorize(Roles = new[] { "admin" })]
         public IQueryable<GroupType> GetGroups(int? courseId, [ScopedService] CdodDbContext ctx)
         {
             if (courseId is not null)
@@ -171,6 +173,7 @@ namespace cdod.Schema.Queries
 
         [UseDbContext(typeof(CdodDbContext))]
         [UseProjection]
+        [Authorize(Roles = new[] { "admin" })]
         public async Task<GroupType> GetGroupAsync(int id, [ScopedService] CdodDbContext cdodContext)
         {
             var g = await cdodContext.Groups.FindAsync(id);
@@ -190,6 +193,7 @@ namespace cdod.Schema.Queries
         [UseProjection]
         [UseFiltering]
         [UseSorting]
+        [Authorize(Roles = new[] { "admin" })]
         public IQueryable<CourseType> GetCourses([ScopedService] CdodDbContext ctx)
         {
             return ctx.Courses.Select(c => new CourseType()
@@ -208,6 +212,7 @@ namespace cdod.Schema.Queries
 
         [UseDbContext(typeof(CdodDbContext))]
         [UseProjection]
+        [Authorize(Roles = new[] { "admin" })]
         public async Task<CourseType> GetCourseAsync(int id, [ScopedService] CdodDbContext cdodContext)
         {
             var c = await cdodContext.Courses.FindAsync(id);
@@ -230,6 +235,7 @@ namespace cdod.Schema.Queries
         [UseDbContext(typeof(CdodDbContext))]
         [UseFiltering]
         [UseSorting]
+        [Authorize(Roles = new[] { "admin" })]
         public IQueryable<TeacherType> GetTeachers(int? lessonId, [ScopedService] CdodDbContext ctx)
         {
             if (lessonId is not null)
@@ -256,6 +262,7 @@ namespace cdod.Schema.Queries
         }
 
         [UseDbContext(typeof(CdodDbContext))]
+        [Authorize(Roles = new[] { "admin" })]
         public async Task<TeacherType> GetTeacherAsync(int? id, int? groupId, [ScopedService] CdodDbContext cdodContext)
         {
             if (id is not null)
@@ -299,6 +306,7 @@ namespace cdod.Schema.Queries
         [UseProjection]
         [UseFiltering]
         [UseSorting]
+        [Authorize(Roles = new[] { "admin" })]
         public IQueryable<TeachersWorkTimeType> GetTeachersWorkTime(int? lessonId, int? teacherId,
             [ScopedService] CdodDbContext ctx)
         {
@@ -339,6 +347,7 @@ namespace cdod.Schema.Queries
         [UseProjection]
         [UseFiltering]
         [UseSorting]
+        [Authorize(Roles = new[] { "admin" })]
         public IQueryable<LessonType> GetLessons(int? studentId, int? teacherId, int? groupId, 
             [ScopedService] CdodDbContext ctx)
         {
@@ -420,6 +429,7 @@ namespace cdod.Schema.Queries
 
         [UseDbContext(typeof(CdodDbContext))]
         [UseProjection]
+        [Authorize(Roles = new[] { "admin" })]
         public async Task<LessonType> GetLessonAsync(int id, [ScopedService] CdodDbContext cdodContext)
         {
             var l = await cdodContext.Lessons.FindAsync(id);
@@ -441,6 +451,7 @@ namespace cdod.Schema.Queries
         [UseProjection]
         [UseFiltering]
         [UseSorting]
+        [Authorize(Roles = new[] { "admin" })]
         public IQueryable<AttendanceType> GetAttendances(int? lessonId, int? studentId, int? courseId,
             [ScopedService] CdodDbContext ctx)
         {
@@ -507,6 +518,7 @@ namespace cdod.Schema.Queries
         [UseDbContext(typeof(CdodDbContext))]
         [UseFiltering]
         [UseSorting]
+        [Authorize(Roles = new[] { "admin" })]
         public IQueryable<ParentType> GetParents([ScopedService] CdodDbContext ctx)
         {
             return ctx.Parents.Select(p => new ParentType(p.User)
@@ -520,6 +532,7 @@ namespace cdod.Schema.Queries
         }
 
         [UseDbContext(typeof(CdodDbContext))]
+        [Authorize(Roles = new[] { "admin" })]
         public async Task<ParentType> GetParentAsync(int id, [ScopedService] CdodDbContext cdodContext)
         {
             var query = from p in cdodContext.Parents
@@ -544,6 +557,7 @@ namespace cdod.Schema.Queries
         [UseProjection]
         [UseFiltering]
         [UseSorting]
+        [Authorize(Roles = new[] { "admin" })]
         public IQueryable<SchoolType> GetSchools([ScopedService] CdodDbContext ctx)
         {
             return ctx.Schools.Select(s => new SchoolType()
@@ -556,6 +570,7 @@ namespace cdod.Schema.Queries
 
         [UseDbContext(typeof(CdodDbContext))]
         [UseProjection]
+        [Authorize(Roles = new[] { "admin" })]
         public async Task<SchoolType> GetSchoolAsync(int id, [ScopedService] CdodDbContext cdodContext)
         {
             var s = await cdodContext.Schools.FindAsync(id);
@@ -573,6 +588,7 @@ namespace cdod.Schema.Queries
         [UseProjection]
         [UseFiltering]
         [UseSorting]
+        [Authorize(Roles = new[] { "admin" })]
         public IQueryable<PostType> GetPosts([ScopedService] CdodDbContext ctx)
         {
             return ctx.Posts.Select(p => new PostType()
@@ -584,6 +600,7 @@ namespace cdod.Schema.Queries
 
         [UseDbContext(typeof(CdodDbContext))]
         [UseProjection]
+        [Authorize(Roles = new[] { "admin" })]
         public async Task<PostType> GetPostAsync(int id, [ScopedService] CdodDbContext cdodContext)
         {
             var p = await cdodContext.Posts.FindAsync(id);
