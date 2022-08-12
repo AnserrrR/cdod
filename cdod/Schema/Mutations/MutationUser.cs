@@ -15,7 +15,8 @@ namespace cdod.Schema
     public class MutationUser
     {
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<string> Login(LoginInput user, [ScopedService] CdodDbContext dbContext, [Service] IOptions<TokenSettings> tokenSettings)
+        public async Task<string> Login(LoginInput user, [ScopedService] CdodDbContext dbContext, 
+            [Service] IOptions<TokenSettings> tokenSettings)
         {
             
             // ДОБАВИТЬ ШИФРОВКУ ЮЗЕРОВ пароль всё такое
@@ -47,7 +48,7 @@ namespace cdod.Schema
 
                 return new JwtSecurityTokenHandler().WriteToken(jwtToken);
             }
-            throw new GraphQLException("Not found");
+            return "Not found";
         }
 
         [UseDbContext(typeof(CdodDbContext))]
