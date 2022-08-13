@@ -26,6 +26,8 @@ namespace cdod.Models
         public DateOnly? passportDate { get; set; }
         public string? passportCode { get; set; }
         public bool IsAdmin { get; set; }
+        public string? RefreshToken { get; set; }
+        public DateTime? RefreshTokenExpiration { get; set; }
 
         public IEnumerable<PayNote?> PayNotes { get; set; } = new List<PayNote?>();
         public IEnumerable<Announcement?> Announcements { get; set; } = new List<Announcement?>();
