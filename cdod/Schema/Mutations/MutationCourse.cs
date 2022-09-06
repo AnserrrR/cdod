@@ -15,7 +15,7 @@ namespace cdod.Schema.Mutations
             {
                 Name = course.name,
                 ProgramId = course.programId,
-                CoursePrice = course.coursePrice,
+                Price = course.coursePrice,
                 EquipmentPriceWithoutRobot = course.equipmentPriceWithoutRobot,
                 EquipmentPriceWithRobot = course.equipmentPriceWithRobot,
                 DurationInMonths = course.durationInMonths,
@@ -30,7 +30,7 @@ namespace cdod.Schema.Mutations
                 Id = _course.Id,
                 Name = _course.Name,
                 ProgramId = _course.ProgramId,
-                CoursePrice = _course.CoursePrice,
+                CoursePrice = _course.Price,
                 EquipmentPriceWithoutRobot = _course.EquipmentPriceWithoutRobot,
                 EquipmentPriceWithRobot = _course.EquipmentPriceWithRobot,
                 DurationInMonths = _course.DurationInMonths,
@@ -51,7 +51,7 @@ namespace cdod.Schema.Mutations
                 if (_course == null) { errorCourseIds.Add(el.name); continue; }
                 _course.Name = el.name ?? _course.Name;
                 _course.ProgramId = el.programId ?? _course.ProgramId;
-                _course.CoursePrice = el.coursePrice ?? _course.CoursePrice;
+                _course.Price = el.coursePrice ?? _course.Price;
                 _course.EquipmentPriceWithRobot = el.equipmentPriceWithRobot ?? _course.EquipmentPriceWithRobot;
                 _course.EquipmentPriceWithoutRobot = el.equipmentPriceWithoutRobot ?? _course.EquipmentPriceWithoutRobot;
                 _course.SvgIconUrl = el.svgIconColor ?? _course.SvgIconUrl;

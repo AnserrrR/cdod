@@ -20,7 +20,6 @@ namespace cdod.Services
         public DbSet<Post> Posts { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<CourseProgram> Programs { get; set; }
-        public DbSet<Topic> Topics { get; set; }
         public DbSet<WageRate> WageRates { get; set; }
 
         public DbSet<StudentToCourse> StudentToCourses { get; set; }

@@ -1,10 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Text.Json;
+using cdod.Models;
+using cdod.Services;
+using cdod.Services.DataLoaders;
 
-namespace cdod.Models
+namespace cdod.Schema.OutputTypes
 {
-    public class CourseProgram
+    public class ProgramType
     {
-        [Key]
+        [IsProjected]
         public int Id { get; set; }
 
         public int Hours { get; set; }
@@ -14,7 +17,5 @@ namespace cdod.Models
         public string? ProgramFileUrl { get; set; }
 
         public string? Topics { get; set; }
-
-        public IEnumerable<Course?> Courses { get; set; } = new List<Course?>();
     }
 }

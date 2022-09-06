@@ -10,7 +10,7 @@ namespace cdod.Models
 
         public string Name { get; set; }
 
-        public double? CoursePrice { get; set; }
+        public double? Price { get; set; }
 
         public double? EquipmentPriceWithRobot { get; set; }
 

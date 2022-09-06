@@ -145,7 +145,7 @@ namespace cdod.Schema.Mutations
                                 SignDate = DateOnly.Parse(dateCreateRecord[0]),
                                 ContractUrl = null,
                                 Debt = 0.0,
-                                EquipmentPriceWithRobot = false
+                                IsGetRobot = false
                             };
                             if (studentTOCourseBuf is null)
                             {

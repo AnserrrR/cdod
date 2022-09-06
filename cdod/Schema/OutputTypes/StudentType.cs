@@ -64,14 +64,14 @@ namespace cdod.Schema.OutputTypes
         {
             IEnumerable<StudentToCourse> STCs = await stcDataLoader.LoadAsync(Id);
 
-            return  STCs
+            return STCs
                 .Select(stc => new InfoType()
                 {
                     CourseId = stc.CourseId,
                     StudentId = stc.StudentId,
                     Attempt = stc.Attempt,
                     AdmissionDate = stc.SignDate,
-                    IsGetRobot = stc.EquipmentPriceWithRobot,
+                    IsGetRobot = stc.IsGetRobot,
                     ContractState = stc.ContractState
                 });
         }

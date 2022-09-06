@@ -201,7 +201,7 @@ namespace cdod.Schema.Queries
                 Id = c.Id,
                 Name = c.Name,
                 ProgramId = c.ProgramId,
-                CoursePrice = c.CoursePrice,
+                CoursePrice = c.Price,
                 EquipmentPriceWithRobot = c.EquipmentPriceWithRobot,
                 EquipmentPriceWithoutRobot = c.EquipmentPriceWithoutRobot,
                 DurationInMonths = c.DurationInMonths,
@@ -222,7 +222,7 @@ namespace cdod.Schema.Queries
                 Id = c.Id,
                 Name = c.Name,
                 ProgramId = c.ProgramId,
-                CoursePrice = c.CoursePrice,
+                CoursePrice = c.Price,
                 EquipmentPriceWithRobot = c.EquipmentPriceWithRobot,
                 EquipmentPriceWithoutRobot = c.EquipmentPriceWithoutRobot,
                 DurationInMonths = c.DurationInMonths,
@@ -609,6 +609,41 @@ namespace cdod.Schema.Queries
             {
                 Id = p.Id,
                 Name = p.Name
+            };
+        }
+
+        //Program queries
+        [UseDbContext(typeof(CdodDbContext))]
+        [UseProjection]
+        [UseFiltering]
+        [UseSorting]
+        [Authorize(Roles = new[] { "admin" })]
+        public IQueryable<ProgramType> GetPrograms([ScopedService] CdodDbContext ctx)
+        {
+            return ctx.Programs.Select(p => new ProgramType()
+            {
+                Id = p.Id,
+                Name = p.Name,
+                ProgramFileUrl = p.ProgramFileUrl,
+                Hours = p.Hours,
+                Topics = p.Topics
+            });
+        }
+
+        [UseDbContext(typeof(CdodDbContext))]
+        [UseProjection]
+        [Authorize(Roles = new[] { "admin" })]
+        public async Task<ProgramType> GetProgramAsync(int id, [ScopedService] CdodDbContext cdodContext)
+        {
+            var p = await cdodContext.Programs.FindAsync(id);
+            if (p is null) throw new GraphQLException($"{nameof(Program)} not found!");
+            return new ProgramType()
+            {
+                Id = p.Id,
+                Name = p.Name,
+                ProgramFileUrl = p.ProgramFileUrl,
+                Topics = p.Topics,
+                Hours = p.Hours
             };
         }
     }

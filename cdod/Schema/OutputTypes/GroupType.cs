@@ -41,7 +41,7 @@ namespace cdod.Schema.OutputTypes
                 Id = course.Id,
                 Name = course.Name,
                 ProgramId = course.ProgramId,
-                CoursePrice = course.CoursePrice,
+                CoursePrice = course.Price,
                 EquipmentPriceWithRobot = course.EquipmentPriceWithRobot,
                 EquipmentPriceWithoutRobot = course.EquipmentPriceWithoutRobot,
                 DurationInMonths = course.DurationInMonths

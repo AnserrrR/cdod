@@ -35,11 +35,11 @@ namespace cdod.Services.DataLoaders
                     StudentId = stc.StudentId,
                     Attempt = stc.Attempt,
                     ContractState = stc.ContractState,
-                    CoursePrice = c.CoursePrice,
+                    CoursePrice = c.Price,
                     CourseName = c.Name,
                     DurationInMonths = c.DurationInMonths,
                     SignDate = stc.SignDate,
-                    IsEquipmentPriceWithRobot = stc.EquipmentPriceWithRobot,
+                    IsEquipmentPriceWithRobot = stc.IsGetRobot,
                     EquipmentPriceWithRobot = c.EquipmentPriceWithRobot,
                     EquipmentPriceWithoutRobot = c.EquipmentPriceWithoutRobot,
                 };

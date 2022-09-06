@@ -33,7 +33,7 @@ namespace cdod.Models
 
         public string? ContractUrl { get; set; }
 
-        public bool? EquipmentPriceWithRobot { get; set; }
+        public bool? IsGetRobot { get; set; }
 
         public int? GroupId { get; set; }
 
