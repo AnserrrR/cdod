@@ -36,7 +36,7 @@ namespace cdod.Schema.OutputTypes
         public string WorkPlace { get; set; }
 
         public int? PostId { get; set; }
-
+        // ЖОРА  ДОБАВЬ ВАГЕ РАТЕ ИД и раскоменть в мутации учителя 52 строку 
         public async Task<string?> Post([Service] PostDataLoader postDataLoader)
         {
             if (PostId is int postId)
