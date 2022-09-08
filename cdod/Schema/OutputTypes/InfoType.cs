@@ -58,10 +58,10 @@ namespace cdod.Schema.OutputTypes
             return null;
         }
 
-        public async Task<bool> IsCoursePaid([Service] PayInfoDataLoader payInfoDataLoader,
+        public async Task<bool?> IsCoursePaid([Service] PayInfoDataLoader payInfoDataLoader,
             [Service] PayNotesDataLoader payNotesDataLoader)
         {
-            return await IsPaid(Appointment.Course, payInfoDataLoader, payNotesDataLoader) ?? false;
+            return await IsPaid(Appointment.Course, payInfoDataLoader, payNotesDataLoader);
         }
 
         public async Task<bool?> IsEquipmentPaid([Service] PayInfoDataLoader payInfoDataLoader,
@@ -90,29 +90,27 @@ namespace cdod.Schema.OutputTypes
             //Номер попытки не важен
             if (payInfo.ContractState == ContractState.Studying)
             {
+                var totalPrice = payInfo.CoursePrice;
+
+                if (appointment == Appointment.Material)
                 {
-                    var totalPrice = payInfo.CoursePrice;
-
-                    if (appointment == Appointment.Material)
-                    {
-                        if (payInfo.IsEquipmentPriceWithRobot == true)
-                            totalPrice = payInfo.EquipmentPriceWithRobot ?? 0;
-                        else if (payInfo.IsEquipmentPriceWithRobot == false)
-                            totalPrice = payInfo.EquipmentPriceWithoutRobot ?? 0;
-                        else
-                            throw new Exception("Not enough information: will the student pick up the robot");
-                    }
-
-                    var totalPayment = await payNotesDataLoader.LoadAsync((CourseId, StudentId, Attempt, appointment));
-
-                    var monthPassed = (DateTime.Today.Year - payInfo.SignDate.Year) * 12 + DateTime.Today.Month - payInfo.SignDate.Month;
-
-                    if (monthPassed < payInfo.DurationInMonths / 2) totalPrice /= 2;
-
-                    return totalPrice <= totalPayment?.TotalSum;
+                    if (payInfo.IsEquipmentPriceWithRobot == true)
+                        totalPrice = payInfo.EquipmentPriceWithRobot ?? 0;
+                    else if (payInfo.IsEquipmentPriceWithRobot == false)
+                        totalPrice = payInfo.EquipmentPriceWithoutRobot ?? 0;
+                    else
+                        throw new Exception("Not enough information: will the student pick up the robot");
                 }
+
+                var totalPayment = await payNotesDataLoader.LoadAsync((CourseId, StudentId, Attempt, appointment));
+
+                var monthPassed = (DateTime.Today.Year - payInfo.SignDate.Year) * 12 + DateTime.Today.Month - payInfo.SignDate.Month;
+
+                if (monthPassed < payInfo.DurationInMonths / 2) totalPrice /= 2;
+
+                return totalPrice <= totalPayment?.TotalSum;
             }
-            return false;
+            return null;
         }
     }
 }
