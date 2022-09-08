@@ -8,13 +8,15 @@ namespace cdod.Schema.InputTypes
         public int CourseId { get; set; }
         public int? GroupId { get; set; }
 
-        public DateOnly? admissionDate { get; set; }
+        public DateOnly? AdmissionDate { get; set; }
 
         public ContractState ContractState { get; set; }
 
+        [GraphQLType(typeof(UploadType))]
+        public IFile? Contract { get; set; }
         public string? ContractUrl { get; set; }
 
-        public bool? isGetRobot { get; set; }
+        public bool? IsGetRobot { get; set; }
     }
 
     public class StudentToCourseUpdateInput
@@ -24,19 +26,19 @@ namespace cdod.Schema.InputTypes
         public int Attempt { get; set; }
         public int GroupId { get; set; }
 
-        public DateOnly? admissionDate { get; set; }
+        public DateOnly? AdmissionDate { get; set; }
 
         public ContractState? ContractState { get; set; }
 
         public string? ContractUrl { get; set; }
 
-        public bool? isGetRobot { get; set; }
+        public bool? IsGetRobot { get; set; }
     }
 
-    public class StudentToCourseDetach
+    public class StudentToCourseDetachInput
     {
-        public int studentId { get; set; }
-        public int courseId { get; set; }
+        public int StudentId { get; set; }
+        public int CourseId { get; set; }
         public int Attempt { get; set; }
     }
 }

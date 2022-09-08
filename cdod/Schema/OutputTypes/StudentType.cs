@@ -75,5 +75,20 @@ namespace cdod.Schema.OutputTypes
                     ContractState = stc.ContractState
                 });
         }
+
+
+
+        // Хуй знает куда это закидывать
+        public Uri? GetContractOfEducation([Parent] StudentToCourse StudentToCourseRecord)
+        {
+            string ContractDirectory = "../StaticFiles/Contracts";
+            const string ContractRoot = "http://localhost:5000/contracts";
+            if (File.Exists(System.IO.Path.Combine(ContractDirectory, $"{StudentToCourseRecord.ContractUrl}.pdf")))
+            {
+                return new Uri($"{ContractRoot}/{StudentToCourseRecord.ContractUrl}.png");
+            }
+            return null;
+        }
+
     }
 }

@@ -13,7 +13,7 @@ namespace cdod.Schema.Mutations
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<StudentType> StudentCreate(StudentCreateInput student, [ScopedService] CdodDbContext dbContext)
         {
-            Student _student = new Student()
+            Student studentCreated = new Student()
             {
                 FirstName = student.FirstName,
                 LastName = student.LastName,
@@ -23,18 +23,18 @@ namespace cdod.Schema.Mutations
                 SchoolId = student.SchoolId,
                 ParentId = student.ParentId
             };
-            dbContext.Students.Add(_student);
+            dbContext.Students.Add(studentCreated);
             await dbContext.SaveChangesAsync();
             StudentType studentOutput = new StudentType()
             {
-                Id = _student.Id,
-                LastName = _student.LastName,
-                FirstName = _student.FirstName,
-                Patronymic = _student.Patronymic,
-                BirthDate = _student.BirthDate,
-                Description = _student.Description,
-                SchoolId = _student.SchoolId,
-                ParentId = _student.ParentId
+                Id = studentCreated.Id,
+                LastName = studentCreated.LastName,
+                FirstName = studentCreated.FirstName,
+                Patronymic = studentCreated.Patronymic,
+                BirthDate = studentCreated.BirthDate,
+                Description = studentCreated.Description,
+                SchoolId = studentCreated.SchoolId,
+                ParentId = studentCreated.ParentId
             };
             return studentOutput;
         }
@@ -57,8 +57,8 @@ namespace cdod.Schema.Mutations
                 student.SchoolId = el.SchoolId ?? student.SchoolId;
                 student.ParentId = el.ParentId ?? student.ParentId;
 
-                Student? _student = dbContext.Students.Find(el.Id);
-                if (_student == null) { errorStudentIds.Add(el.Id); continue; }
+                Student? studentEdited = dbContext.Students.Find(el.Id);
+                if (studentEdited == null) { errorStudentIds.Add(el.Id); continue; }
                 studentUpdated.Add(student);
             }
             dbContext.Students.UpdateRange(studentUpdated);
@@ -85,6 +85,25 @@ namespace cdod.Schema.Mutations
             if (errorNotStudentsIds.Count() > 0) throw new GraphQLException($"Невозможно удалить следующих пользователей:\n" +
     $"ID следующих пользователей не являющихся родителями: {string.Join(" ", errorNotStudentsIds)}");
             return await dbContext.SaveChangesAsync() > 0;
+        }
+
+    // Работа с файлами Не закончена, не понимаю что хотят 
+        [Authorize(Roles = new[] { "admin" })]
+        [UseDbContext(typeof(CdodDbContext))]
+        public async Task<bool> StudentStudyCreateMany(List<StudentToCourseCreateInput> StudentToCreate, [ScopedService] CdodDbContext dbContext, CancellationToken cancellationToken)
+        {
+            foreach(var StudentToCourseRecord in StudentToCreate)
+            {
+                IFile? contract = StudentToCourseRecord.Contract;
+                string ContractDirectory = "../StaticFiles/Contracts";
+                
+                using var stream = File.Create(System.IO.Path.Combine(ContractDirectory, $"S{StudentToCourseRecord.StudentId}C{StudentToCourseRecord.CourseId}A{StudentToCourseRecord.Contract.Name}.pdf"));
+                await contract.CopyToAsync(stream, cancellationToken);
+                
+                
+
+            }
+            return true;
         }
     }
 }
