@@ -124,7 +124,7 @@ namespace cdod.Schema.Mutations
                                                                                                  && (stc.Attempt == studentToCourseRecord.Attempt)));
                 if (studentToCourse == null) { errorsToUpdate.Add($"{studentToCourseRecord.CourseId}, {studentToCourseRecord.StudentId}, {studentToCourseRecord.Attempt};"); continue; }
 
-                studentToCourse.GroupId = studentToCourseRecord.GroupId;
+                studentToCourse.GroupId = studentToCourseRecord.GroupId ?? studentToCourse.GroupId;
                 studentToCourse.ContractState = studentToCourseRecord.ContractState ?? studentToCourse.ContractState;
                 studentToCourse.SignDate = studentToCourseRecord.AdmissionDate ?? studentToCourse.SignDate;
                 studentToCourse.ContractUrl = studentToCourseRecord.ContractUrl ?? studentToCourse.ContractUrl;
