@@ -13,17 +13,17 @@ namespace cdod.Schema.Mutations
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<SchoolType> CreateSchool(SchoolCreateInput school, [ScopedService] CdodDbContext dbContext)
         {
-            School _school = new School()
+            School schoolToCreate = new School()
             {
                 Name = school.Name,
                 District = school.District,
             };
-            dbContext.Schools.Add(_school);
+            dbContext.Schools.Add(schoolToCreate);
             await dbContext.SaveChangesAsync();
             SchoolType schoolOutput = new SchoolType()
             {
-                Name = _school.Name,
-                District = _school.District,
+                Name = schoolToCreate.Name,
+                District = schoolToCreate.District,
             };
             return schoolOutput;
         }
@@ -36,12 +36,12 @@ namespace cdod.Schema.Mutations
             List<School> schoolUpdated = new List<School>();
             foreach (var school in schools)
             {
-                School? _school = dbContext.Schools.FirstOrDefault(s => s.Id == school.Id);
-                if (_school == null) { errorSchoolIds.Add(school.Id); continue; };
+                School? schoolToUpdate = dbContext.Schools.FirstOrDefault(s => s.Id == school.Id);
+                if (schoolToUpdate == null) { errorSchoolIds.Add(school.Id); continue; };
 
-                _school.Name = school.Name ?? _school.Name;
-                _school.District = school.District ?? _school.District;
-                schoolUpdated.Add(_school);
+                schoolToUpdate.Name = school.Name ?? schoolToUpdate.Name;
+                schoolToUpdate.District = school.District ?? schoolToUpdate.District;
+                schoolUpdated.Add(schoolToUpdate);
             }
 
             dbContext.Schools.UpdateRange(schoolUpdated);

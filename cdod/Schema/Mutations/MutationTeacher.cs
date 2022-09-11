@@ -16,9 +16,9 @@ namespace cdod.Schema.Mutations
             if (dbContext.Users.FirstOrDefault(u => u.Email == teacher.Email) is not null) throw new GraphQLException("Пользователь с таким емейлом уже существует");
             User user = new User()
             {
-                Firstname = teacher.Firstname,
-                Lastname = teacher.Firstname,
-                Patronymic = teacher.Firstname,
+                Firstname = teacher.FirstName,
+                Lastname = teacher.LastName,
+                Patronymic = teacher.Patronymic,
                 PhoneNumber = teacher.PhoneNumber,
                 Email = teacher.Email,
                 Password = teacher.Password,
@@ -27,10 +27,10 @@ namespace cdod.Schema.Mutations
                 Education = teacher.Education,
                 Inn = teacher.Inn,
                 Snils = teacher.Snils,
-                passportNo = teacher.passportNo,
-                passportIssue = teacher.passportIssue,
-                passportDate = teacher.passportDate,
-                passportCode = teacher.passportCode,
+                passportNo = teacher.PassportNo,
+                passportIssue = teacher.PassportIssue,
+                passportDate = teacher.PassportDate,
+                passportCode = teacher.PassportCode,
             };
             dbContext.Users.Add(user);
             await dbContext.SaveChangesAsync();
@@ -39,7 +39,7 @@ namespace cdod.Schema.Mutations
                 UserId = user.Id,
                 WorkPlace = teacher.WorkPlace,
                 PostId = teacher.PostId,
-                WageRateId = teacher.wageRateId ?? 0
+                WageRateId = teacher.WageRateId ?? 0
             };
 
             dbContext.Teachers.Add(teacherSave);
@@ -69,8 +69,8 @@ namespace cdod.Schema.Mutations
             {
                 throw new GraphQLException($"Невозможно обновить следующего преподователя:{id}");
             }
-            userUpdated.Firstname = teacher.Firstname ?? userUpdated.Firstname;
-            userUpdated.Lastname = teacher.Lastname ?? userUpdated.Lastname;
+            userUpdated.Firstname = teacher.FirstName ?? userUpdated.Firstname;
+            userUpdated.Lastname = teacher.LastName ?? userUpdated.Lastname;
             userUpdated.Patronymic = teacher.Patronymic ?? userUpdated.Patronymic;
             userUpdated.PhoneNumber = teacher.PhoneNumber ?? userUpdated.PhoneNumber;
             userUpdated.Email = teacher.Email ?? userUpdated.Email;
@@ -80,13 +80,13 @@ namespace cdod.Schema.Mutations
             userUpdated.Education = teacher.Education ?? userUpdated.Education;
             userUpdated.Inn = teacher.Inn ?? userUpdated.Inn;
             userUpdated.Snils = teacher.Snils ?? userUpdated.Snils;
-            userUpdated.passportNo = teacher.passportNo ?? userUpdated.passportNo;
-            userUpdated.passportIssue = teacher.passportIssue ?? userUpdated.passportIssue;
-            userUpdated.passportDate = teacher.passportDate ?? userUpdated.passportDate;
-            userUpdated.passportCode = teacher.passportCode ?? userUpdated.passportCode;
+            userUpdated.passportNo = teacher.PassportNo ?? userUpdated.passportNo;
+            userUpdated.passportIssue = teacher.PassportIssue ?? userUpdated.passportIssue;
+            userUpdated.passportDate = teacher.PassportDate ?? userUpdated.passportDate;
+            userUpdated.passportCode = teacher.PassportCode ?? userUpdated.passportCode;
             teacherUpdated.WorkPlace = teacher.WorkPlace ?? teacherUpdated.WorkPlace;
             teacherUpdated.PostId = teacher.PostId ?? teacherUpdated.PostId;
-            teacherUpdated.WageRateId = teacher.wageRateId ?? teacherUpdated.WageRateId;
+            teacherUpdated.WageRateId = teacher.WageRateId ?? teacherUpdated.WageRateId;
 
             dbContext.Users.UpdateRange(userUpdated);
             dbContext.Teachers.UpdateRange(teacherUpdated);

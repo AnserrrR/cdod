@@ -2,8 +2,8 @@
 {
     public class TeacherInput
     {
-        public string? Firstname { get; set; }
-        public string? Lastname { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
         public string? Patronymic { get; set; }
 
         public string? PhoneNumber { get; set; }
@@ -14,14 +14,14 @@
         public string? Education { get; set; }
         public string? Inn { get; set; }
         public string? Snils { get; set; }
-        public string? passportNo { get; set; }
-        public string? passportIssue { get; set; }
-        public DateOnly? passportDate { get; set; }
-        public string? passportCode { get; set; }
-        public bool? isAdmin { get; set; }
+        public string? PassportNo { get; set; }
+        public string? PassportIssue { get; set; }
+        public DateOnly? PassportDate { get; set; }
+        public string? PassportCode { get; set; }
+        public bool? IsAdmin { get; set; }
         public string? WorkPlace { get; set; }
         public int? PostId { get; set; }
-        public bool? isInternal { get; set; }
-        public int? wageRateId { get; set; }
+        public bool? IsInternal { get; set; }
+        public int? WageRateId { get; set; }
     }
 }

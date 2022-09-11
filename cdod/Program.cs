@@ -28,8 +28,7 @@ builder.Services.AddGraphQLServer()
     //.AddTypeExtension<MutationGroup>()
     .AddFiltering()
     .AddSorting()
-    .AddProjections()
-    .AddType<UploadType>();
+    .AddProjections();
 
 // ƒÀﬂ ¿”Õ“»‘» ¿÷»»
 builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));

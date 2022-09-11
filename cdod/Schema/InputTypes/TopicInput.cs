@@ -2,14 +2,14 @@
 {
     public class TopicInputCreate
     {
-        public string title { get; set; }
-        public int programmId { get; set; }
+        public string Title { get; set; }
+        public int ProgrammId { get; set; }
     }
 
     public class TopicInputUpdate
     {
-        public int id { get; set; }
-        public string? title { get; set; }
-        public int? programmId { get; set; }
+        public int Id { get; set; }
+        public string? Title { get; set; }
+        public int? ProgrammId { get; set; }
     }
 }

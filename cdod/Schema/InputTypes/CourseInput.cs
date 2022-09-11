@@ -3,27 +3,27 @@
 
     public class CourseCreateInput
     {
-        public string name { get; set; }
-        public int? programId { get; set; }
-        public double? coursePrice { get; set; }
-        public double? equipmentPriceWithRobot { get; set; }
-        public double? equipmentPriceWithoutRobot { get; set; }
-        public string? color { get; set; }
-        public string? svgIconColor { get; set; }
-        public int? durationInMonths { get; set; }
+        public string Name { get; set; }
+        public int? ProgramId { get; set; }
+        public double? CoursePrice { get; set; }
+        public double? EquipmentPriceWithRobot { get; set; }
+        public double? EquipmentPriceWithoutRobot { get; set; }
+        public string? Color { get; set; }
+        public string? SvgIconColor { get; set; }
+        public int? DurationInMonths { get; set; }
     }
 
     public class CourseUpdateInput
     {
         public int Id { get; set; }
-        public string? name { get; set; }
-        public int? programId { get; set; }
-        public double? coursePrice { get; set; }
-        public double? equipmentPriceWithRobot { get; set; }
-        public double? equipmentPriceWithoutRobot { get; set; }
-        public string? color { get; set; }
-        public string? svgIconColor { get; set; }
-        public int? durationInMonths { get; set; }
+        public string? Name { get; set; }
+        public int? ProgramId { get; set; }
+        public double? CoursePrice { get; set; }
+        public double? EquipmentPriceWithRobot { get; set; }
+        public double? EquipmentPriceWithoutRobot { get; set; }
+        public string? Color { get; set; }
+        public string? SvgIconColor { get; set; }
+        public int? DurationInMonths { get; set; }
 
     }
 }

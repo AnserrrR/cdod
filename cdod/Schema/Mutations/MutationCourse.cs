@@ -13,14 +13,14 @@ namespace cdod.Schema.Mutations
         {
             Course _course = new Course()
             {
-                Name = course.name,
-                ProgramId = course.programId,
-                Price = course.coursePrice,
-                EquipmentPriceWithoutRobot = course.equipmentPriceWithoutRobot,
-                EquipmentPriceWithRobot = course.equipmentPriceWithRobot,
-                DurationInMonths = course.durationInMonths,
-                SvgIconUrl = course.svgIconColor,
-                Color = course.color,
+                Name = course.Name,
+                ProgramId = course.ProgramId,
+                Price = course.CoursePrice,
+                EquipmentPriceWithoutRobot = course.EquipmentPriceWithoutRobot,
+                EquipmentPriceWithRobot = course.EquipmentPriceWithRobot,
+                DurationInMonths = course.DurationInMonths,
+                SvgIconUrl = course.SvgIconColor,
+                Color = course.Color,
 
             };
             dbContext.Courses.Add(_course);
@@ -34,8 +34,8 @@ namespace cdod.Schema.Mutations
                 EquipmentPriceWithoutRobot = _course.EquipmentPriceWithoutRobot,
                 EquipmentPriceWithRobot = _course.EquipmentPriceWithRobot,
                 DurationInMonths = _course.DurationInMonths,
-                SvgIconUrl = course.svgIconColor,
-                Color = course.color,
+                SvgIconUrl = course.SvgIconColor,
+                Color = course.Color,
             };
             return courseOutput;
         }
@@ -48,14 +48,14 @@ namespace cdod.Schema.Mutations
             foreach (CourseUpdateInput el in courses)
             {
                 Course? _course = dbContext.Courses.FirstOrDefault(с => с.Id == el.Id);
-                if (_course == null) { errorCourseIds.Add(el.name); continue; }
-                _course.Name = el.name ?? _course.Name;
-                _course.ProgramId = el.programId ?? _course.ProgramId;
-                _course.Price = el.coursePrice ?? _course.Price;
-                _course.EquipmentPriceWithRobot = el.equipmentPriceWithRobot ?? _course.EquipmentPriceWithRobot;
-                _course.EquipmentPriceWithoutRobot = el.equipmentPriceWithoutRobot ?? _course.EquipmentPriceWithoutRobot;
-                _course.SvgIconUrl = el.svgIconColor ?? _course.SvgIconUrl;
-                _course.Color = el.color ?? _course.Color;
+                if (_course == null) { errorCourseIds.Add(el.Name); continue; }
+                _course.Name = el.Name ?? _course.Name;
+                _course.ProgramId = el.ProgramId ?? _course.ProgramId;
+                _course.Price = el.CoursePrice ?? _course.Price;
+                _course.EquipmentPriceWithRobot = el.EquipmentPriceWithRobot ?? _course.EquipmentPriceWithRobot;
+                _course.EquipmentPriceWithoutRobot = el.EquipmentPriceWithoutRobot ?? _course.EquipmentPriceWithoutRobot;
+                _course.SvgIconUrl = el.SvgIconColor ?? _course.SvgIconUrl;
+                _course.Color = el.Color ?? _course.Color;
                 courseUpdated.Add(_course);
             }
             dbContext.Courses.UpdateRange(courseUpdated);

@@ -90,20 +90,74 @@ namespace cdod.Schema.Mutations
     // Работа с файлами Не закончена, не понимаю что хотят 
         [Authorize(Roles = new[] { "admin" })]
         [UseDbContext(typeof(CdodDbContext))]
-        public async Task<bool> StudentStudyCreateMany(List<StudentToCourseCreateInput> StudentToCreate, [ScopedService] CdodDbContext dbContext, CancellationToken cancellationToken)
+        public async Task<bool> StudentStudyCreateMany(List<StudentToCourseCreateInput> studentToCourseCreate, [ScopedService] CdodDbContext dbContext)
         {
-            foreach(var StudentToCourseRecord in StudentToCreate)
+            List<StudentToCourse> stcMany = new List<StudentToCourse>();
+            List<string> errorsToCreate = new List<string>();
+            foreach (var studentToCourseRecord in studentToCourseCreate)
             {
-                IFile? contract = StudentToCourseRecord.Contract;
-                string ContractDirectory = "../StaticFiles/Contracts";
-                
-                using var stream = File.Create(System.IO.Path.Combine(ContractDirectory, $"S{StudentToCourseRecord.StudentId}C{StudentToCourseRecord.CourseId}A{StudentToCourseRecord.Contract.Name}.pdf"));
-                await contract.CopyToAsync(stream, cancellationToken);
-                
-                
+                StudentToCourse stc = new StudentToCourse()
+                {
+                    CourseId = studentToCourseRecord.CourseId,
+                    StudentId = studentToCourseRecord.StudentId,
+                    GroupId = studentToCourseRecord.GroupId,
+                    IsGetRobot = studentToCourseRecord.IsGetRobot,
+                    SignDate = studentToCourseRecord.AdmissionDate ?? DateOnly.FromDateTime(DateTime.UtcNow.Date),
+                    ContractState = studentToCourseRecord.ContractState
+                };
+                stcMany.Add(stc);
+            }
+            dbContext.StudentToCourses.AddRange(stcMany);
+            
+            return await dbContext.SaveChangesAsync() > 0;
+        }
+
+        [UseDbContext(typeof(CdodDbContext))]
+        public async Task<bool> StudentStudyUpdateMany(List<StudentToCourseUpdateInput> studentToCourseUpdate, [ScopedService] CdodDbContext dbContext)
+        {
+            List<StudentToCourse> stcMany = new List<StudentToCourse>();
+            List<string> errorsToUpdate = new List<string>();
+            foreach (var studentToCourseRecord in studentToCourseUpdate)
+            {
+                StudentToCourse? studentToCourse = dbContext.StudentToCourses.FirstOrDefault(stc => ((stc.CourseId == studentToCourseRecord.CourseId )
+                                                                                                 && (stc.StudentId == studentToCourseRecord.StudentId)
+                                                                                                 && (stc.Attempt == studentToCourseRecord.Attempt)));
+                if (studentToCourse == null) { errorsToUpdate.Add($"{studentToCourseRecord.CourseId}, {studentToCourseRecord.StudentId}, {studentToCourseRecord.Attempt};"); continue; }
+
+                studentToCourse.GroupId = studentToCourseRecord.GroupId;
+                studentToCourse.ContractState = studentToCourseRecord.ContractState ?? studentToCourse.ContractState;
+                studentToCourse.SignDate = studentToCourseRecord.AdmissionDate ?? studentToCourse.SignDate;
+                studentToCourse.ContractUrl = studentToCourseRecord.ContractUrl ?? studentToCourse.ContractUrl;
+                studentToCourse.IsGetRobot = studentToCourseRecord.IsGetRobot ?? studentToCourse.IsGetRobot;
+                stcMany.Add(studentToCourse);
 
             }
-            return true;
+            dbContext.StudentToCourses.UpdateRange(stcMany);
+            if(errorsToUpdate.Count() > 0) { throw new GraphQLException($"Невозможно обновить следующие записи привязки студента к курсу или группе: " +
+                $"{string.Join("\n", errorsToUpdate)}"); }
+
+            return await dbContext.SaveChangesAsync() > 0;
+        }
+
+        public async Task<Boolean> StudentsStudyDeleteMany(List<StudentToCourseDetachInput> studentToCourseDetach, [ScopedService] CdodDbContext dbContext)
+        {
+            List<StudentToCourseDetachInput> errorsIds = new List<StudentToCourseDetachInput>();
+            List<StudentToCourse> stcToDelete = new List<StudentToCourse>();
+            foreach (var el in studentToCourseDetach)
+            {
+                StudentToCourse? studentToCourse = dbContext.StudentToCourses.FirstOrDefault(stc => ((stc.CourseId == el.CourseId)
+                                                                                                && (stc.StudentId == el.StudentId)
+                                                                                                && (stc.Attempt == el.Attempt)));
+                if (studentToCourse is null) { errorsIds.Add(el); continue; }
+                stcToDelete.Add(studentToCourse);
+            }
+            dbContext.StudentToCourses.RemoveRange(stcToDelete);
+            if (errorsIds.Count() > 0)
+            {
+                throw new GraphQLException($"Невозможно обновить следующие записи привязки студента к курсу или группе: " +
+                $"{string.Join("\n", errorsIds)}");
+            }
+            return await dbContext.SaveChangesAsync() > 0;
         }
     }
 }

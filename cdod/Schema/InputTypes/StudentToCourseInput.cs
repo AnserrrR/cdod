@@ -12,8 +12,8 @@ namespace cdod.Schema.InputTypes
 
         public ContractState ContractState { get; set; }
 
-        [GraphQLType(typeof(UploadType))]
-        public IFile? Contract { get; set; }
+/*        [GraphQLType(typeof(UploadType))]
+        public IFile? Contract { get; set; }*/
         public string? ContractUrl { get; set; }
 
         public bool? IsGetRobot { get; set; }

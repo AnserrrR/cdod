@@ -17,9 +17,9 @@ namespace cdod.Schema.Mutations
             if (dbContext.Users.FirstOrDefault(u => ((u.Email == parent.Email) && (parent.Email != null))) is not null) throw new GraphQLException("Пользователь с таким емейлом уже существует");
                 User user = new User()
                 {
-                    Firstname = parent.Firstname,
-                    Lastname = parent.Firstname,
-                    Patronymic = parent.Firstname,
+                    Firstname = parent.FirstName,
+                    Lastname = parent.FirstName,
+                    Patronymic = parent.FirstName,
                     PhoneNumber = parent.PhoneNumber,
                     Email = parent.Email,
                     Password = parent.Password,
@@ -28,10 +28,10 @@ namespace cdod.Schema.Mutations
                     Education = parent.Education,
                     Inn = parent.Inn,
                     Snils = parent.Snils,
-                    passportNo = parent.passportNo,
-                    passportIssue = parent.passportIssue,
-                    passportDate = parent.passportDate,
-                    passportCode = parent.passportCode,
+                    passportNo = parent.PassportNo,
+                    passportIssue = parent.PassportIssue,
+                    passportDate = parent.PassportDate,
+                    passportCode = parent.PassportCode,
                 };
                 dbContext.Users.Add(user);
                 await dbContext.SaveChangesAsync();
@@ -41,8 +41,8 @@ namespace cdod.Schema.Mutations
                     UserId = user.Id,
                     SecondEmail = parent.SecondEmail,
                     SecondPhoneNumber = parent.SecondPhoneNumber,
-                    SignDate = parent.applyingDate,
-                    Type = parent.relationType
+                    SignDate = parent.ApplyingDate,
+                    Type = parent.RelationType
                 };
                 dbContext.Parents.Add(parentSave);
                 await dbContext.SaveChangesAsync();
@@ -51,8 +51,8 @@ namespace cdod.Schema.Mutations
                     Id = user.Id,
                     SecondEmail = parent.SecondEmail,
                     SecondPhoneNumber = parent.SecondPhoneNumber,
-                    SignDate = parent.applyingDate,
-                    Type = parent.relationType
+                    SignDate = parent.ApplyingDate,
+                    Type = parent.RelationType
                 };
 
                 return parentOutput;
@@ -62,43 +62,43 @@ namespace cdod.Schema.Mutations
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<ParentType> ParentUpdate(int id, ParentInput parent, [ScopedService] CdodDbContext dbContext)
         {
-            User? _user = dbContext.Users.FirstOrDefault(u => u.Id == id);
-            if (_user is null) throw new Exception($"Пользователя с таким ID: {id} - не существует");
-            Parent? _parent = dbContext.Parents.FirstOrDefault(p => p.UserId == id);
-            if (_user is null) throw new Exception($"Родителя с таким ID: {id} - не существует");
+            User? userToUpdate = dbContext.Users.FirstOrDefault(u => u.Id == id);
+            if (userToUpdate is null) throw new Exception($"Пользователя с таким ID: {id} - не существует");
+            Parent? parentToUpdate = dbContext.Parents.FirstOrDefault(p => p.UserId == id);
+            if (parentToUpdate is null) throw new Exception($"Родителя с таким ID: {id} - не существует");
             bool isEmailFree = dbContext.Users.FirstOrDefault(u => ((u.Email == parent.Email) && (u.Id != id))) is null;
             if (!isEmailFree) throw new Exception($"Пользователь с таким емейлом уже существует");
             
 
-            _user.Firstname = parent.Firstname ?? _user.Firstname;
-            _user.Lastname = parent.Lastname ?? _user.Lastname;
-            _user.Patronymic = parent.Patronymic ?? _user.Patronymic;
-            _user.PhoneNumber = parent.PhoneNumber ?? _user.PhoneNumber;
-            _user.Email = parent.Email ?? _user.Email;
-            _user.Password = parent.Password ?? _user.Password;
-            _user.Birthday = parent.Birthday ?? _user.Birthday;
-            _user.Address = parent.Address ?? _user.Address;
-            _user.Education = parent.Education ?? _user.Education;
-            _user.Inn = parent.Inn ?? _user.Inn;
-            _user.Snils = parent.Snils ?? _user.Snils;
-            _user.passportNo = parent.passportNo ?? _user.passportNo;
-            _user.passportIssue = parent.passportIssue ?? _user.passportIssue;
-            _user.passportDate = parent.passportDate ?? _user.passportDate;
-            _user.passportCode = parent.passportCode ?? _user.passportCode;
-            _parent.SecondPhoneNumber = parent.SecondPhoneNumber ?? _parent.SecondPhoneNumber;
-            _parent.SecondEmail = parent.SecondEmail ?? _parent.SecondEmail;
-            _parent.SignDate = parent.applyingDate ?? _parent.SignDate;
-            _parent.Type = parent.relationType ?? _parent.Type;
+            userToUpdate.Firstname = parent.FirstName ?? userToUpdate.Firstname;
+            userToUpdate.Lastname = parent.LastName ?? userToUpdate.Lastname;
+            userToUpdate.Patronymic = parent.Patronymic ?? userToUpdate.Patronymic;
+            userToUpdate.PhoneNumber = parent.PhoneNumber ?? userToUpdate.PhoneNumber;
+            userToUpdate.Email = parent.Email ?? userToUpdate.Email;
+            userToUpdate.Password = parent.Password ?? userToUpdate.Password;
+            userToUpdate.Birthday = parent.Birthday ?? userToUpdate.Birthday;
+            userToUpdate.Address = parent.Address ?? userToUpdate.Address;
+            userToUpdate.Education = parent.Education ?? userToUpdate.Education;
+            userToUpdate.Inn = parent.Inn ?? userToUpdate.Inn;
+            userToUpdate.Snils = parent.Snils ?? userToUpdate.Snils;
+            userToUpdate.passportNo = parent.PassportNo ?? userToUpdate.passportNo;
+            userToUpdate.passportIssue = parent.PassportIssue ?? userToUpdate.passportIssue;
+            userToUpdate.passportDate = parent.PassportDate ?? userToUpdate.passportDate;
+            userToUpdate.passportCode = parent.PassportCode ?? userToUpdate.passportCode;
+            parentToUpdate.SecondPhoneNumber = parent.SecondPhoneNumber ?? parentToUpdate.SecondPhoneNumber;
+            parentToUpdate.SecondEmail = parent.SecondEmail ?? parentToUpdate.SecondEmail;
+            parentToUpdate.SignDate = parent.ApplyingDate ?? parentToUpdate.SignDate;
+            parentToUpdate.Type = parent.RelationType ?? parentToUpdate.Type;
 
-            ParentType newParent = new ParentType(_user)
+            ParentType newParent = new ParentType(userToUpdate)
             {
-                Id = _user.Id,
-                SecondEmail = _parent.SecondEmail,
-                SecondPhoneNumber = _parent.SecondPhoneNumber,
-                Type = _parent.Type
+                Id = userToUpdate.Id,
+                SecondEmail = parentToUpdate.SecondEmail,
+                SecondPhoneNumber = parentToUpdate.SecondPhoneNumber,
+                Type = parentToUpdate.Type
             };
-            dbContext.Users.Update(_user);
-            dbContext.Parents.Update(_parent);
+            dbContext.Users.Update(userToUpdate);
+            dbContext.Parents.Update(parentToUpdate);
             await dbContext.SaveChangesAsync();
             return newParent;
         }

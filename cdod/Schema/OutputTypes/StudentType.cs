@@ -79,7 +79,7 @@ namespace cdod.Schema.OutputTypes
 
 
         // Хуй знает куда это закидывать
-        public Uri? GetContractOfEducation([Parent] StudentToCourse StudentToCourseRecord)
+/*        public Uri? GetContractOfEducation([Parent] StudentToCourse StudentToCourseRecord)
         {
             string ContractDirectory = "../StaticFiles/Contracts";
             const string ContractRoot = "http://localhost:5000/contracts";
@@ -88,7 +88,7 @@ namespace cdod.Schema.OutputTypes
                 return new Uri($"{ContractRoot}/{StudentToCourseRecord.ContractUrl}.png");
             }
             return null;
-        }
+        }*/
 
     }
 }

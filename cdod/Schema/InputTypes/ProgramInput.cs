@@ -2,16 +2,16 @@
 {
     public class ProgramInputCreate
     {
-        public string? name { get; set; }
-        public int hours { get; set; }
+        public string? Name { get; set; }
+        public int Hours { get; set; }
 
-        public string? programFileUrl { get; set; }
+        public string? ProgramFileUrl { get; set; }
     }
 
     public class ProgramInputUpdate
     {
-        public string? name { set; get; }
-        public int? hours { get; set; }
-        public string? programFileUrl { get; set; }
+        public string? Name { set; get; }
+        public int? Hours { get; set; }
+        public string? ProgramFileUrl { get; set; }
     }
 }
