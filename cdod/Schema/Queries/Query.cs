@@ -23,6 +23,34 @@ namespace cdod.Schema.Queries
         public IQueryable<StudentType> GetStudents(int? courseId, int? groupId, int? parentId, int? schoolId,
             [ScopedService] CdodDbContext ctx)
         {
+            /*
+             *   groupID - единственный аргумент: все студенты в этой группе
+             *   groupID и courseID: студенты которых в группе ещё нет, но могут быть добавлены
+             */
+
+            if (groupId is not null && courseId is not null)
+            {
+                if (!ctx.Courses.Any(c => c.Id == courseId))
+                    throw new GraphQLException($"{nameof(Course)} not found!");
+                if (!ctx.Groups.Any(g => g.Id == groupId))
+                    throw new GraphQLException($"{nameof(Group)} not found!");
+
+                return from s in ctx.Students
+                    join stc in ctx.StudentToCourses on s.Id equals stc.StudentId
+                    where stc.CourseId == courseId && stc.GroupId == null
+                    select new StudentType()
+                    {
+                        Id = s.Id,
+                        FirstName = s.FirstName,
+                        LastName = s.LastName,
+                        Patronymic = s.Patronymic,
+                        BirthDate = s.BirthDate,
+                        Description = s.Description,
+                        ParentId = s.ParentId,
+                        SchoolId = s.SchoolId
+                    };
+            }
+
             if (courseId is not null)
             {
                 if (!ctx.Courses.Any(c => c.Id == courseId))
@@ -455,6 +483,11 @@ namespace cdod.Schema.Queries
         public IQueryable<AttendanceType> GetAttendances(int? lessonId, int? studentId, int? courseId,
             [ScopedService] CdodDbContext ctx)
         {
+            /*
+            *   Если нужно получить {оценки, присутствия, заметки} студентов на занятия, то указываем lessonID
+            *   Если нужна статистика по студенту (по всем занятиям и курсам), то указываем только studentID
+            *   Если в интерфейсе родителя нужно узнать оценки студента по курсу, то указываем studentID и courseID
+            */
             if ((studentId is not null) && (courseId is not null))
             {
                 if (!ctx.Students.Any(s => s.Id == studentId))
