@@ -112,6 +112,7 @@ namespace cdod.Schema.Mutations
             return await dbContext.SaveChangesAsync() > 0;
         }
 
+        [Authorize(Roles = new[] { "admin" })]
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<bool> StudentStudyUpdateMany(List<StudentToCourseUpdateInput> studentToCourseUpdate, [ScopedService] CdodDbContext dbContext)
         {
@@ -139,6 +140,8 @@ namespace cdod.Schema.Mutations
             return await dbContext.SaveChangesAsync() > 0;
         }
 
+        [Authorize(Roles = new[] { "admin" })]
+        [UseDbContext(typeof(CdodDbContext))]
         public async Task<Boolean> StudentsStudyDeleteMany(List<StudentToCourseDetachInput> studentToCourseDetach, [ScopedService] CdodDbContext dbContext)
         {
             List<StudentToCourseDetachInput> errorsIds = new List<StudentToCourseDetachInput>();
