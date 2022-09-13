@@ -1,0 +1,20 @@
+version: '2.2'
+services:
+  cdod:
+    image: "cdod:latest"
+    hostname: cdod
+    container_name: cdod
+    restart: always
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - 5094:80
+    networks:
+      - global
+
+networks:
+  global:
+    external: true
