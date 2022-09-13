@@ -9,6 +9,7 @@ using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore;
 
 namespace cdod.Schema
 {
@@ -28,17 +29,18 @@ namespace cdod.Schema
                 return result;
             }
 
-            var user = dbContext.Users.Where(_ => _.Email == loginInput.Email).FirstOrDefault();
-            if (user == null)
+            var users = await dbContext.Users.Where(_ => _.Email == loginInput.Email).ToListAsync();
+            if (users.IsNullOrEmpty())
             {
                 result.Message = "Invalid Credentials";
                 return result;
             }
 
             //Проверять с хэшированным паролем
-            if (BCrypt.Net.BCrypt.Verify(loginInput.Password, user.Password))
+            var user = users.FirstOrDefault(u => BCrypt.Net.BCrypt.Verify(loginInput.Password, u.Password));
+            if (user is null)
             {
-                result.Message = "Invalid Password";
+                result.Message = "Invalid Credentials";
                 return result;
             }
 
