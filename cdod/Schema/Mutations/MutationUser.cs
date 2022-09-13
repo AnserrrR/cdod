@@ -36,7 +36,7 @@ namespace cdod.Schema
             }
 
             //Проверять с хэшированным паролем
-            if (user.Password != loginInput.Password)
+            if (BCrypt.Net.BCrypt.Verify(loginInput.Password, user.Password))
             {
                 result.Message = "Invalid Password";
                 return result;
