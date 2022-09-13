@@ -37,7 +37,16 @@ namespace cdod.Schema
             }
 
             //Проверять с хэшированным паролем
-            var user = users.FirstOrDefault(u => BCrypt.Net.BCrypt.Verify(loginInput.Password, u.Password));
+            var user = new User();
+            try
+            {
+                user = users.FirstOrDefault(u => BCrypt.Net.BCrypt.Verify(loginInput.Password, u.Password));
+            }
+            catch
+            {
+                result.Message = "Invalid Credentials";
+                return result;
+            }
             if (user is null)
             {
                 result.Message = "Invalid Credentials";
