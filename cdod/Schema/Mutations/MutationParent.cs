@@ -14,8 +14,8 @@ namespace cdod.Schema.Mutations
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<ParentType> ParentCreate(ParentInput  parent, [ScopedService] CdodDbContext dbContext)
         {
-            if (dbContext.Users.FirstOrDefault(u => ((u.Email == parent.Email) && (parent.Email != null))) is not null) throw new GraphQLException("Пользователь с таким емейлом уже существует");
-                User user = new User()
+/*            if (dbContext.Users.FirstOrDefault(u => ((u.Email == parent.Email) && (parent.Email != null))) is not null) throw new GraphQLException("Пользователь с таким емейлом уже существует");
+*/                User user = new User()
                 {
                     Firstname = parent.FirstName,
                     Lastname = parent.LastName,
@@ -66,9 +66,9 @@ namespace cdod.Schema.Mutations
             if (userToUpdate is null) throw new Exception($"Пользователя с таким ID: {id} - не существует");
             Parent? parentToUpdate = dbContext.Parents.FirstOrDefault(p => p.UserId == id);
             if (parentToUpdate is null) throw new Exception($"Родителя с таким ID: {id} - не существует");
-            bool isEmailFree = dbContext.Users.FirstOrDefault(u => ((u.Email == parent.Email) && (u.Id != id))) is null;
-            if (!isEmailFree) throw new Exception($"Пользователь с таким емейлом уже существует");
-            
+/*            bool isEmailFree = dbContext.Users.FirstOrDefault(u => ((u.Email == parent.Email) && (u.Id != id))) is null;
+            if (!isEmailFree) throw new Exception($"Пользователь с таким емейлом уже существует");*/
+
 
             userToUpdate.Firstname = parent.FirstName ?? userToUpdate.Firstname;
             userToUpdate.Lastname = parent.LastName ?? userToUpdate.Lastname;
