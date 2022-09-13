@@ -37,7 +37,8 @@ namespace cdod.Schema.Queries
 
                 return from s in ctx.Students
                     join stc in ctx.StudentToCourses on s.Id equals stc.StudentId
-                    where stc.CourseId == courseId && stc.GroupId == null
+                    where (stc.CourseId == courseId) && (stc.GroupId == null) &&
+                          (stc.ContractState == ContractState.Consideration || stc.ContractState == ContractState.Studying)
                     select new StudentType()
                     {
                         Id = s.Id,
