@@ -18,8 +18,8 @@ namespace cdod.Schema.Mutations
                 User user = new User()
                 {
                     Firstname = parent.FirstName,
-                    Lastname = parent.FirstName,
-                    Patronymic = parent.FirstName,
+                    Lastname = parent.LastName,
+                    Patronymic = parent.Patronymic,
                     PhoneNumber = parent.PhoneNumber,
                     Email = parent.Email,
                     Password = parent.Password,
