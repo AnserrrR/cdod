@@ -1,7 +1,7 @@
-alter table "PayNotes"
-    add constraint paynotes_studenttocourses_studentid_courseid_attempt_fk
-        foreign key ("StudentId", "CourseId",  "Attempt") references "StudentToCourses" ("StudentId", "CourseId",  "Attempt")
-            on delete cascade;
+--alter table "PayNotes"
+--    add constraint paynotes_studenttocourses_studentid_courseid_attempt_fk
+--        foreign key ("StudentId", "CourseId",  "Attempt") references "StudentToCourses" ("StudentId", "CourseId",  "Attempt")
+--            on delete cascade;
 
 CREATE OR REPLACE FUNCTION attempt_counter()
     RETURNS TRIGGER
