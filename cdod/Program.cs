@@ -25,12 +25,12 @@ builder.Services.AddGraphQLServer()
     .AddTypeExtension<MutationStudent>()
     .AddTypeExtension<MutationCourse>()
     .AddTypeExtension<MutationTeacher>()
-    //.AddTypeExtension<MutationGroup>()
+    .AddTypeExtension<MutationGroup>()
     .AddFiltering()
     .AddSorting()
     .AddProjections();
 
-// ÄËß ÀÓÍÒÈÔÈÊÀÖÈÈ
+// ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

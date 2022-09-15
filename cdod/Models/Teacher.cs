@@ -11,13 +11,13 @@ namespace cdod.Models
 
         public User User { get; set; }
 
-        public string WorkPlace { get; set; }
+        public string? WorkPlace { get; set; }
 
         public int? PostId { get; set; }
 
         public Post Post { get; set; }
 
-        public int WageRateId { get; set; }
+        public int? WageRateId { get; set; }
 
         public WageRate WageRate { get; set; }
 
