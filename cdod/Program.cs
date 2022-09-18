@@ -70,6 +70,7 @@ builder.Services.AddScoped<StudentsCountDataLoader>();
 builder.Services.AddScoped<StudentDataLoader>();
 builder.Services.AddScoped<GroupDataLoader>();
 builder.Services.AddScoped<LessonDataLoader>();
+builder.Services.AddScoped<WageRateDataLoader>();
 
 //Enable CORS
 builder.Services.AddCors(c =>

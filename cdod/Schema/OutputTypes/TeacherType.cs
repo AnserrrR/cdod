@@ -20,8 +20,8 @@ namespace cdod.Schema.OutputTypes
         public string? LastName => _user.Lastname;
         public string? Patronymic => _user.Patronymic;
         public string? PhoneNumber => _user.PhoneNumber;
-        public string Email => _user.Email;
-        public string Password => _user.Password;
+        public string? Email => _user.Email;
+        public string? Password => _user.Password;
         public DateOnly? Birthday => _user.Birthday;
         public string? Address => _user.Address;
         public string? Education => _user.Education;
@@ -33,10 +33,24 @@ namespace cdod.Schema.OutputTypes
         public string? passportCode => _user.passportCode;
         public bool IsAdmin => _user.IsAdmin;
 
-        public string WorkPlace { get; set; }
+        public string? WorkPlace { get; set; }
 
-        public int? PostId { get; set; }
+
         // ЖОРА  ДОБАВЬ ВАГЕ РАТЕ ИД и раскоменть в мутации учителя 52 строку 
+        [IsProjected]
+        public int? WageRateId { get; set; }
+
+        public async Task<WageRate?> WageRate([Service] WageRateDataLoader wageRateDataLoader)
+        {
+            if (WageRateId is int wageRateId)
+                return await wageRateDataLoader.LoadAsync(wageRateId);
+
+            return null;
+        }
+
+        [IsProjected]
+        public int? PostId { get; set; }
+
         public async Task<string?> Post([Service] PostDataLoader postDataLoader)
         {
             if (PostId is int postId)

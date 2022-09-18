@@ -49,7 +49,7 @@ namespace cdod.Schema.Mutations
                 Id = user.Id,
                 WorkPlace = teacher.WorkPlace,
                 PostId = teacher.PostId,
-                // WageRateId = teacher.wageRateId ЖОРА РАСКОМЕНТЬ
+                WageRateId = teacher.WageRateId
             };
 
             return patentOutput;
