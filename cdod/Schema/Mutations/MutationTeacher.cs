@@ -13,7 +13,7 @@ namespace cdod.Schema.Mutations
         [UseDbContext(typeof(CdodDbContext))]
         public async Task<TeacherType> TeacherCreate(TeacherInput teacher, [ScopedService] CdodDbContext dbContext)
         {
-            if (dbContext.Users.FirstOrDefault(u => u.Email == teacher.Email) is not null) throw new GraphQLException("Пользователь с таким емейлом уже существует");
+            // if (dbContext.Users.FirstOrDefault(u => u.Email == teacher.Email) is not null) throw new GraphQLException("Пользователь с таким емейлом уже существует");
             User user = new User()
             {
                 Firstname = teacher.FirstName,
@@ -39,7 +39,7 @@ namespace cdod.Schema.Mutations
                 UserId = user.Id,
                 WorkPlace = teacher.WorkPlace,
                 PostId = teacher.PostId,
-                WageRateId = teacher.WageRateId ?? 0
+                WageRateId = teacher.WageRateId ?? 1
             };
 
             dbContext.Teachers.Add(teacherSave);
