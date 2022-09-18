@@ -40,10 +40,17 @@ namespace cdod.Schema.OutputTypes
         [IsProjected]
         public int? WageRateId { get; set; }
 
-        public async Task<WageRate?> WageRate([Service] WageRateDataLoader wageRateDataLoader)
+        public async Task<WageRateType?> WageRate([Service] WageRateDataLoader wageRateDataLoader)
         {
             if (WageRateId is int wageRateId)
-                return await wageRateDataLoader.LoadAsync(wageRateId);
+            {
+                var wageRate = await wageRateDataLoader.LoadAsync(wageRateId);
+                return new WageRateType
+                {
+                    Id = wageRate.Id,
+                    Rate = wageRate.Rate,
+                };
+            }
 
             return null;
         }
